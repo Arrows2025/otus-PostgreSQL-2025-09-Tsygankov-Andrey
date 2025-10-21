@@ -13,7 +13,7 @@
 
 <img width="1414" height="795" alt="image" src="https://github.com/user-attachments/assets/29110acf-14c1-4dd4-8d47-7f090778d3e1" /><br>
 
-Установка статического IP-адреса 192.168.0.50 через редактирование файла: `sudo nano /etc/netplan/01-netcfg.yaml` и применения новых сетевых настроек: `sudo netplan apply`  
+Установка статического IP-адреса 192.168.0.50 через редактирование файла: `sudo nano /etc/netplan/01-netcfg.yaml` и применение новых сетевых настроек: `sudo netplan apply`  
 Содержимое файла 01-netcfg.yaml:
 ```
 network:
@@ -41,28 +41,14 @@ network:
 
 <img width="1305" height="851" alt="image" src="https://github.com/user-attachments/assets/b03d867f-35a9-46a2-860f-ead27f8eebdd" /><br>
 
-Создаю ключи командой `ssh-keygen -t ed25519`
+Создаю ключи командой `ssh-keygen -t ed25519` и записываю публичный ключ в авторизованные ключи сервера: `cat .ssh/arrows.key.pub >> .ssh/authorized_keys`
 
-<img width="1305" height="731" alt="image" src="https://github.com/user-attachments/assets/b36d57f5-c2b4-445b-a23b-ce34807e1271" /><br>
+<img width="1369" height="731" alt="image" src="https://github.com/user-attachments/assets/6c64407b-fbb2-4b91-9901-b9ab5adeea1f" /><br>
 
-и записываю публичный ключ в авторизованные ключи сервера: `cat arrows_key.pub > /home/arrows/.ssh/authorized_keys`
+На основе созданного приватного ключа с помощью программы PuTTY Key Generator сформирован новый приватный ключ формата PuTTY для авторизации без пароля и добавлен в настройки PuTTY
 
-<img width="985" height="221" alt="image" src="https://github.com/user-attachments/assets/08e9965e-9223-45a5-86e8-b0fd8173b5c6" />
+<img width="602" height="543" alt="image" src="https://github.com/user-attachments/assets/a8138ad3-0094-4464-bc20-f60023b6f3fa" /><br>
 
-<img width="1033" height="911" alt="image" src="https://github.com/user-attachments/assets/f8b7ac76-0022-47c9-9e4f-14df677ca732" />
+Подключаюсь к серверу через программу PuTTY посредством ввода своего пользователя с авторизацией с помощью ключа
 
-<img width="1305" height="761" alt="image" src="https://github.com/user-attachments/assets/7f7a4138-5f70-4fde-bc6d-290d7424baf7" />
-
-<img width="1305" height="761" alt="image" src="https://github.com/user-attachments/assets/d0cb95e2-cfdb-4e3d-ae4d-121557b611f5" />
-
-<img width="602" height="543" alt="image" src="https://github.com/user-attachments/assets/a8138ad3-0094-4464-bc20-f60023b6f3fa" />
-
-
-
-
-
-<img width="1369" height="731" alt="image" src="https://github.com/user-attachments/assets/6c64407b-fbb2-4b91-9901-b9ab5adeea1f" />
-
-На основе созданного приватного ключа с помощью программы PuTTY Key Generator сформирован приватный ключ для авторизации на сервер с помощью клиента PuTTY без пароля
 <img width="1305" height="851" alt="image" src="https://github.com/user-attachments/assets/483178d3-6348-4589-88f7-14ac9641c796" />
-
