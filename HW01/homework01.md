@@ -54,3 +54,9 @@ network:
 <img width="1305" height="851" alt="image" src="https://github.com/user-attachments/assets/483178d3-6348-4589-88f7-14ac9641c796" /><br>
 
 Установка PostgreSQL и пакетов дополнительных программ: ```sudo apt update && sudo apt upgrade -y -q && sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list' && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add - && sudo apt-get update && sudo apt -y install postgresql && sudo apt install unzip && sudo apt -y install mc```
+
+Проверка статуса кластера PostgreSQL: `pg_lsclusters`
+
+<img width="1305" height="941" alt="image" src="https://github.com/user-attachments/assets/aa296430-3964-4375-ab8c-0e8a61b5831e" /><br>
+
+
