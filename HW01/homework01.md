@@ -123,4 +123,18 @@ postgres=*# select * from persons;
 (2 строки)
 ```
 
-<img width="2450" height="881" alt="image" src="https://github.com/user-attachments/assets/da4069f8-c698-4b12-bc5d-7d3d9eb9f323" />
+<img width="2450" height="881" alt="image" src="https://github.com/user-attachments/assets/da4069f8-c698-4b12-bc5d-7d3d9eb9f323" /><br>
+
+Фиксирую транзакцию в первой сессии `postgres=*# COMMIT;`, выборка данных из таблицы persons во второй сессии получает уже три строки, так как транзакция в первой сессии зафиксирована и её данные теперь доступны всем транзакциям
+```
+postgres=*# select * from persons;
+ id | first_name | second_name
+----+------------+-------------
+  1 | ivan       | ivanov
+  2 | petr       | petrov
+  3 | sergey     | sergeev
+(3 строки)
+```
+
+<img width="2450" height="880" alt="image" src="https://github.com/user-attachments/assets/44a4fbab-eb4d-4a73-a0bc-6cb492a26bde" /><br>
+
