@@ -196,4 +196,3 @@ postgres=# select* from persons;
 ```
 
 <img width="2451" height="881" alt="image" src="https://github.com/user-attachments/assets/0e20e7e4-5017-48f6-a6c2-a82b6e1aabb3" /><br>
-
