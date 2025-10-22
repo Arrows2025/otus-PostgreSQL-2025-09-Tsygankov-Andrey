@@ -59,4 +59,14 @@ network:
 
 <img width="1305" height="941" alt="image" src="https://github.com/user-attachments/assets/aa296430-3964-4375-ab8c-0e8a61b5831e" /><br>
 
+Редактирование конфигурационного файла PostgreSQL `sudo nano /etc/postgresql/18/main/postgresql.conf` для прослушивания всех адресов
+
+`#listen_addresses = 'localhost'          # what IP address(es) to listen on;`  
+изменить на  
+`listen_addresses = '*'                   # what IP address(es) to listen on;`
+
+Редактирование конфигурационного файла PostgreSQL: `sudo nano /etc/postgresql/18/main/pg_hba.conf` для доступа к БД PostgreSQL с моей локальной машины
+
+добавить в конец файла строку  
+`host    all             all             192.168.0.129/24            scram-sha-256`  
 
