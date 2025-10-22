@@ -49,7 +49,7 @@ network:
 
 <img width="602" height="543" alt="image" src="https://github.com/user-attachments/assets/a8138ad3-0094-4464-bc20-f60023b6f3fa" /><br>
 
-Подключаюсь к серверу через программу PuTTY посредством ввода своего пользователя с авторизацией с помощью ключа (первая сессия)
+Подключаюсь к серверу через программу PuTTY посредством ввода своего пользователя с авторизацией с помощью ключа
 
 <img width="1305" height="851" alt="image" src="https://github.com/user-attachments/assets/483178d3-6348-4589-88f7-14ac9641c796" /><br>
 
@@ -77,7 +77,50 @@ sudo -u postgres psql
 \q
 ```
 
-Тест соединения с БД PostgreSQL через приложение DBeaver прошёл успешно
+Перезагрузка кластера базы данных `sudo pg_ctlcluster 18 main restart` и тест соединения с БД PostgreSQL через приложение DBeaver прошёл успешно
 
 <img width="870" height="747" alt="image" src="https://github.com/user-attachments/assets/03c5a4ac-21dc-473f-b5f4-191e0a2190c3" /><br>
 
+Запускаю два экземпляра PuTTY, в каждом подключаюсь к БД PostgreSQL пользователем postgres и выключаю AUTOCOMMIT
+```
+psql -h 192.168.0.50 -U postgres
+
+postgres=# \set AUTOCOMMIT off
+postgres=# \echo :AUTOCOMMIT
+off
+```
+В первой сессии создаю таблицу persons, добавляю в неё две строки
+```
+postgres=# create table persons(id serial, first_name text, second_name text); insert into persons(first_name, second_name) values('ivan', 'ivanov'); insert into persons(first_name, second_name) values('petr', 'petrov'); commit;
+CREATE TABLE
+INSERT 0 1
+INSERT 0 1
+COMMIT
+```
+
+Текущий уровень изоляции по умолчанию в обеих сессиях Read Committed
+```
+postgres=# SHOW TRANSACTION ISOLATION LEVEL;
+ transaction_isolation
+-----------------------
+ read committed
+(1 строка)
+```
+
+Добавляю третью строку в первой сессии в таблицу persons, не фиксируя транзакцию
+```
+postgres=*# insert into persons(first_name, second_name) values('sergey', 'sergeev');
+INSERT 0 1
+```
+
+Полная выборка данных из таблицы persons во второй сессии получает только две строки и не видит третью, так как уровень изоляции Read Committed гарантирует, что транзакция видит только зафиксированные данные, а транзакция в первой сессии не зафиксирована
+```
+postgres=*# select * from persons;
+ id | first_name | second_name
+----+------------+-------------
+  1 | ivan       | ivanov
+  2 | petr       | petrov
+(2 строки)
+```
+
+<img width="2450" height="881" alt="image" src="https://github.com/user-attachments/assets/da4069f8-c698-4b12-bc5d-7d3d9eb9f323" />
