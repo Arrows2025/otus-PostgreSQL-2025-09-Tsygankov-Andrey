@@ -138,3 +138,41 @@ postgres=*# select * from persons;
 
 <img width="2450" height="880" alt="image" src="https://github.com/user-attachments/assets/44a4fbab-eb4d-4a73-a0bc-6cb492a26bde" /><br>
 
+Начинаю новые транзакции и устанавливаю в обеих сессиях уровень изоляции Repeatable Read, который гарантирует, что если транзакция дважды прочитает одни и те же данные, она получит одинаковые результаты
+```
+postgres=# SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+SET
+postgres=*# SHOW TRANSACTION ISOLATION LEVEL;
+ transaction_isolation
+-----------------------
+ repeatable read
+(1 строка)
+```
+
+Добавляю четвёртую строку в первой сессии в таблицу persons, не фиксируя транзакцию
+```
+postgres=*# insert into persons(first_name, second_name) values('sveta', 'svetova');
+INSERT 0 1
+```
+
+Полная выборка данных из таблицы persons во второй сессии получает только три строки и не видит четвёртую, так как транзакция в первой сессии не зафиксирована
+```
+postgres=*# select* from persons;
+ id | first_name | second_name
+----+------------+-------------
+  1 | ivan       | ivanov
+  2 | petr       | petrov
+  3 | sergey     | sergeev
+(3 строки)
+```
+
+<img width="2450" height="880" alt="image" src="https://github.com/user-attachments/assets/5e666dee-16db-4bdc-860d-b560f82ffb2d" /><br>
+
+Фиксирую транзакцию в первой сессии `postgres=*# COMMIT;`, выборка данных из таблицы persons во второй сессии всё равно получает три строки, так как транзакция во второй уже сессии начата, а уровень изоляции Repeatable Read гарантирует, что если транзакция дважды прочитает одни и те же данные, она получит одинаковые результаты, даже если транзакция в первой сессии зафиксировала внесённые изменения, которые удовлетворяют условию запроса второй транзакции
+
+<img width="2450" height="881" alt="image" src="https://github.com/user-attachments/assets/0ef9c29e-f4ee-4244-9e3a-5279c4eeda6e" /><br>
+
+Завершаю транзакцию во второй сессии и делаю выборку данных из таблицы persons, теперь выбираются все четыре строки, так как транзакция новая и для неё выбираются все зафиксированные на данный момент записи
+
+<img width="2451" height="881" alt="image" src="https://github.com/user-attachments/assets/0e20e7e4-5017-48f6-a6c2-a82b6e1aabb3" /><br>
+
