@@ -70,3 +70,14 @@ network:
 добавить в конец файла строку  
 `host    all             all             192.168.0.129/24            scram-sha-256`  
 
+Изменение пароля для пользователя базы данных `postgres`
+```
+sudo -u postgres psql
+\password
+\q
+```
+
+Тест соединения с БД PostgreSQL через приложение DBeaver прошёл успешно
+
+<img width="870" height="747" alt="image" src="https://github.com/user-attachments/assets/03c5a4ac-21dc-473f-b5f4-191e0a2190c3" /><br>
+
