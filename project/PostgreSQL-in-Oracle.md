@@ -51,4 +51,13 @@ SQL> select * from asuds.ns_prgr;
 
 ### Настройка Oracle Gateway на сервере БД Oracle (initpgodbc.ora)
 Файл с параметрами инициализации подключения из Oracle. Расположение: $ORACLE_HOME/hs/admin/. Имя файла должно иметь вид init<sid>.ora, где <sid> – имя DSN для ODBC с учётом регистра (в нашем случае pgodbc)
+```
+HS_FDS_CONNECT_INFO = pgodbc
+HS_FDS_SHAREABLE_NAME = /usr/pgsql-13/lib/psqlodbcw.so
+HS_LANGUAGE = AMERICAN_AMERICA.AL32UTF8
+HS_FDS_TRACE_LEVEL = OFF
+
+set ODBCINI=/etc/odbc.ini
+set ODBCSYSINI=/etc
+```
 
