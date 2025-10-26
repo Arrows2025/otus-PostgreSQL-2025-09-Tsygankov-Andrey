@@ -86,13 +86,33 @@ sudo docker run --name pg-server --network pg-net -e POSTGRES_PASSWORD=postgres 
 ```
 sudo docker run -it --rm --network pg-net --name pg-client postgres:15 psql -h pg-server -U postgres
 ```
+Выбираю базу данных `yandexcloud` и проверяю наличие таблицы `ns_prgr` и данных в ней. После пересоздания контейнера с сервером БД таблица и данные остались на месте.
+```
+postgres=# \l
+                                                 List of databases
+    Name     |  Owner   | Encoding |  Collate   |   Ctype    | ICU Locale | Locale Provider |   Access privileges
+-------------+----------+----------+------------+------------+------------+-----------------+-----------------------
+ postgres    | postgres | UTF8     | en_US.utf8 | en_US.utf8 |            | libc            |
+ template0   | postgres | UTF8     | en_US.utf8 | en_US.utf8 |            | libc            | =c/postgres          +
+             |          |          |            |            |            |                 | postgres=CTc/postgres
+ template1   | postgres | UTF8     | en_US.utf8 | en_US.utf8 |            | libc            | =c/postgres          +
+             |          |          |            |            |            |                 | postgres=CTc/postgres
+ yandexcloud | postgres | UTF8     | en_US.utf8 | en_US.utf8 |            | libc            |
+(4 rows)
 
-<img width="2549" height="581" alt="image" src="https://github.com/user-attachments/assets/4dc05e08-cef9-4538-92cc-0f06e2dfae2b" /><br>
+postgres=# \c yandexcloud
+You are now connected to database "yandexcloud" as user "postgres".
+yandexcloud=# select * from ns_prgr;
+ prgr | nam_prgr
+------+----------
+    0 | Всего
+    1 | Порожний
+    2 | Груженый
+(3 rows)
 
+yandexcloud=# exit
+```
 
-
-
-
-<img width="2537" height="1271" alt="image" src="https://github.com/user-attachments/assets/297a00ad-859c-43dc-ac21-ae8a39ce5e96" />
+<img width="2537" height="1271" alt="image" src="https://github.com/user-attachments/assets/297a00ad-859c-43dc-ac21-ae8a39ce5e96" /><br>
 
 Остановил виртуальную машину в облачном сервисе Yandex Cloud
