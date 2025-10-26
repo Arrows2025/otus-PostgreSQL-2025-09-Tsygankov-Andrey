@@ -1,17 +1,14 @@
-## Подключение Oracle 12.1 к PostgreSQL через DBLink
+## Подключение Oracle 11 к PostgreSQL через DBLink
 
-### Установка ODBC-драйвера на сервере БД PostgreSQL
+### Установка ODBC-драйвера на сервере БД Oracle
 Первым шагом на всякий случай удаляем уже установленные библиотеки (если были установлены более старые версии – до 13). Добавляем репозиторий PostgreSQL и устанавливаем пакет
 ```
 yum remove postgresql-odbc
 yum install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
 yum install -y postgresql13-odbc
 ```
-<img width="1305" height="1380" alt="image" src="https://github.com/user-attachments/assets/efa6a332-884f-40f1-9e5e-8da33fba97d2" />
-<img width="1305" height="1380" alt="image" src="https://github.com/user-attachments/assets/f75bd978-e70c-4c0b-ad9f-8a57f57e9cbd" />
-<img width="1305" height="1380" alt="image" src="https://github.com/user-attachments/assets/d68c7c03-5be1-4331-a230-02bde91c169b" />
-<img width="1305" height="1380" alt="image" src="https://github.com/user-attachments/assets/ae5e933c-80b0-483a-b866-3f06f7304c0c" />
-<img width="1305" height="1271" alt="image" src="https://github.com/user-attachments/assets/e89d0bdf-859a-410b-9ed6-84fd242f26b2" /><br>
+<img width="2560" height="1380" alt="image" src="https://github.com/user-attachments/assets/f27ca5a5-5066-4407-9214-98aeb27dbf7e" />
+<img width="2552" height="311" alt="image" src="https://github.com/user-attachments/assets/feb8f1f2-944e-487c-ab11-f4f622deca26" /><br>
 
 ### Настройка odbcinst.ini
 
@@ -47,10 +44,14 @@ isql -v pgodbc tst pgs_2020
 SQL> select * from asuds.ns_prgr;
 ```
 
-<img width="1305" height="941" alt="image" src="https://github.com/user-attachments/assets/f8b786fa-8f77-4457-b100-6720fa65e2a9" />
+<img width="2153" height="701" alt="image" src="https://github.com/user-attachments/assets/d4a43639-f4d4-4e35-9bb7-184cc79161ba" /><br>
 
-### Настройка Oracle Gateway на сервере БД Oracle (initpgodbc.ora)
+
+### Настройка Oracle Gateway (initpgodbc.ora)
 Файл с параметрами инициализации подключения из Oracle. Расположение: $ORACLE_HOME/hs/admin/. Имя файла должно иметь вид init<sid>.ora, где <sid> – имя DSN для ODBC с учётом регистра (в нашем случае pgodbc)
+
+$ORACLE_HOME = '/u01/oracle/ora11'
+
 ```
 HS_FDS_CONNECT_INFO = pgodbc
 HS_FDS_SHAREABLE_NAME = /usr/pgsql-13/lib/psqlodbcw.so
@@ -60,4 +61,34 @@ HS_FDS_TRACE_LEVEL = OFF
 set ODBCINI=/etc/odbc.ini
 set ODBCSYSINI=/etc
 ```
+
+### Настройка listener.ora
+Добавляем настройки в прослушиватель для обработки входящих запросов на подключение. Расположение: $ORACLE_HOME/network/admin/
+```
+(SID_DESC =
+  (SID_NAME = pgodbc)
+  (PROGRAM = dg4odbc)
+  (ENVS = "LD_LIBRARY_PATH=/usr/lib64:/usr/pgsql-13/lib")
+  (ORACLE_HOME = /u01/oracle/ora11)
+)
+```
+После обновления конфигурации перезапускаем прослушиватель `lsnrctl reload`
+<img width="1417" height="431" alt="image" src="https://github.com/user-attachments/assets/1632a332-30a4-444f-a5a8-3ad5c650cc77" /><br>
+
+### Настройка tnsnames.ora
+И добавляем описание имени подключения. Расположение: $ORACLE_HOME/network/admin/.
+```
+PGODBC.ASUST.TST.RZD =
+  (DESCRIPTION =
+    (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.101.50)(PORT = 1521))
+    (CONNECT_DATA = (SID = pgodbc))
+    (HS = OK)
+  )
+```
+Проверка подключения `tnsping PGODBC`
+
+<img width="2329" height="461" alt="image" src="https://github.com/user-attachments/assets/2a8e316b-f7c4-49b6-a9d5-c408676e1470" />
+
+
+
 
