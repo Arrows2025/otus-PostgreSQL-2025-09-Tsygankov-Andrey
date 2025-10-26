@@ -1,6 +1,6 @@
 ## Подключение Oracle 12.1 к PostgreSQL через DBLink
 
-### Установка ODBC-драйвера PostgreSQL
+### Установка ODBC-драйвера на сервере БД PostgreSQL
 Первым шагом на всякий случай удаляем уже установленные библиотеки (если были установлены более старые версии – до 13). Добавляем репозиторий PostgreSQL и устанавливаем пакет
 ```
 yum remove postgresql-odbc
@@ -15,15 +15,15 @@ yum install -y postgresql13-odbc
 
 ### Настройка odbcinst.ini
 
-В файле `/etc/odbcinst.ini` появилась конфигурация для PostgreSQL:
+В файле `/etc/odbcinst.ini` появилась конфигурация для PostgreSQL, поправить путь для файла `/usr/pgsql-13/lib/psqlodbcw.so`
 ```
 [PostgreSQL]
 Description	= ODBC for PostgreSQL
-Driver		= /usr/pgsql-13/lib/psqlodbcw.so
-Setup		  = /usr/lib/libodbcpsqlS.so
-Driver64  = /usr/pgsql-13/lib/psqlodbcw.so
-Setup64		= /usr/lib64/libodbcpsqlS.so
-FileUsage	= 1
+Driver      = /usr/pgsql-13/lib/psqlodbcw.so
+Setup       = /usr/lib/libodbcpsqlS.so
+Driver64    = /usr/pgsql-13/lib/psqlodbcw.so
+Setup64     = /usr/lib64/libodbcpsqlS.so
+FileUsage   = 1
 
 ```
 
@@ -40,5 +40,15 @@ SSLmode = disable
 
 Проверка соединениния через ODBC
 ```
-isql -v pgodbc atk pgs_2o20
+isql -v pgodbc tst pgs_2020
 ```
+И выборка из произвольной таблицы - соединение работает
+```
+SQL> select * from asuds.ns_prgr;
+```
+
+<img width="1305" height="941" alt="image" src="https://github.com/user-attachments/assets/f8b786fa-8f77-4457-b100-6720fa65e2a9" />
+
+### Настройка Oracle Gateway на сервере БД Oracle (initpgodbc.ora)
+Файл с параметрами инициализации подключения из Oracle. Расположение: $ORACLE_HOME/hs/admin/. Имя файла должно иметь вид init<sid>.ora, где <sid> – имя DSN для ODBC с учётом регистра (в нашем случае pgodbc)
+
