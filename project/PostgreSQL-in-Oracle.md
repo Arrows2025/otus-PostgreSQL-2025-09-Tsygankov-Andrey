@@ -35,7 +35,7 @@ Database = S22ATK.PGS.TST.RU
 SSLmode = disable
 ```
 
-Проверка соединениния через ODBC
+Проверка соединения через ODBC
 ```
 isql -v pgodbc tst pgs_2020
 ```
