@@ -3,7 +3,9 @@
 ### Установка ODBC-драйвера на сервере БД Oracle
 Устанавливаю пакет `postgresql-odbc`
 ```
-yum install postgresql-odbc
+yum remove postgresql-odbc
+yum install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+yum install -y postgresql15-odbc
 ```
 <img width="2560" height="1380" alt="image" src="https://github.com/user-attachments/assets/f27ca5a5-5066-4407-9214-98aeb27dbf7e" />
 <img width="2552" height="311" alt="image" src="https://github.com/user-attachments/assets/feb8f1f2-944e-487c-ab11-f4f622deca26" /><br>
@@ -15,7 +17,7 @@ yum install postgresql-odbc
 [PostgreSQL]
 Description	= ODBC for PostgreSQL (Unicode)
 Driver      = /usr/pgsql-15/lib/psqlodbcw.so
-Setup       = /usr/lib64/libodbcpsqlS.so
+Setup       = /usr/lib/libodbcpsqlS.so
 Driver64    = /usr/pgsql-15/lib/psqlodbcw.so
 Setup64     = /usr/lib64/libodbcpsqlS.so
 FileUsage   = 1
@@ -27,7 +29,7 @@ FileUsage   = 1
 ```
 [PG]
 Description = PG
-Driver = /usr/lib64/psqlodbc.so
+Driver = /usr/pgsql-15/lib/psqlodbcw.so
 ServerName = 192.168.101.55
 Username = tst
 Password = pgs_2020
@@ -101,7 +103,10 @@ PG.ASUST.TST.RZD =
 Проверка подключения `tnsping PG.ASUST.TST.RZD`
 <img width="2265" height="461" alt="image" src="https://github.com/user-attachments/assets/89379499-e114-4da3-b246-cc8e7038099a" />
 
-
+Создаю DB Link
+```
+CREATE DATABASE LINK PG.ASUST.TST.RZD CONNECT TO "tst" IDENTIFIED BY "pgs_2020" USING 'PG.ASUST.TST.RZD';
+```
 
 
 
