@@ -42,3 +42,30 @@ postgres=# \q
 
 <img width="1689" height="281" alt="image" src="https://github.com/user-attachments/assets/d0b7908c-3dd8-4f6a-a436-b5bf59e982e3" /><br>
 
+Проверяю наличие дисков в системе `lsblk`
+<img width="1033" height="311" alt="image" src="https://github.com/user-attachments/assets/aeba3b11-8892-4e7d-8cbf-3cf0f4aeb6fe" /><br>
+
+Останавливаю виртуальную машину и с помощью панели управления VirtualBox добавляю новый виртуальный диск объёмом 10 Gb
+<img width="777" height="454" alt="image" src="https://github.com/user-attachments/assets/0f40fb2c-571a-4761-b4cb-d1e0a8e6507b" /><br>
+
+<img width="856" height="498" alt="image" src="https://github.com/user-attachments/assets/11d34c8a-178d-4769-8645-5fd8fd75bc4f" /><br>
+
+<img width="1203" height="504" alt="image" src="https://github.com/user-attachments/assets/05811dda-2ac2-49fd-9401-adcc7203282a" /><br>
+
+Запускаю виртуальную машину и проверяю наличие дисков в системе `lsblk`, в системе появился новый неразмеченный диск `sdb`
+<img width="1033" height="341" alt="image" src="https://github.com/user-attachments/assets/3213fd2d-2206-4170-8991-baf349e71a6f" /><br>
+
+Размечаю диск, добавляю раздел, форматирую его под файловую систему `ext4` и монтирую диск в систему
+```
+sudo parted /dev/sdb mklabel gpt -- создаю таблицу разделов для диска sdb
+sudo parted -a opt /dev/sdb mkpart primary ext4 0% 100% -- создаю раздел на диске sdb
+sudo mkfs.ext4 -L new-data /dev/sdb1 - создаю файловую систему для раздела
+sudo mkdir -p /mnt/new-data -- создаю директорию для монтирования файловой системы
+sudo mount -o defaults /dev/sdb1 /mnt/new-data
+df -h -- проверка примонтированных устройств в системе, новый раздел диска примонтирован по пути /mnt/new-data
+```
+
+<img width="2553" height="911" alt="image" src="https://github.com/user-attachments/assets/611b9d29-2cdf-472c-8dca-311ff31fec7b" />
+<img width="1177" height="401" alt="image" src="https://github.com/user-attachments/assets/ede13724-a72a-4871-964b-fdfd72cdb7f8" /><br>
+
+
