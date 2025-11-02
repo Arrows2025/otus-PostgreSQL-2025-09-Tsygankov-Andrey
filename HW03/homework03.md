@@ -64,8 +64,6 @@ sudo mkdir -p /mnt/new-data -- создаю директорию для монт
 sudo mount -o defaults /dev/sdb1 /mnt/new-data
 df -h -- проверка примонтированных устройств в системе, новый раздел диска примонтирован по пути /mnt/new-data
 ```
-
-<img width="2553" height="911" alt="image" src="https://github.com/user-attachments/assets/611b9d29-2cdf-472c-8dca-311ff31fec7b" />
-<img width="1177" height="401" alt="image" src="https://github.com/user-attachments/assets/ede13724-a72a-4871-964b-fdfd72cdb7f8" /><br>
+<img width="1321" height="971" alt="image" src="https://github.com/user-attachments/assets/5ad07dbe-d276-486b-aa5c-21c18f5e31c7" /><br>
 
 
