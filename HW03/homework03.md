@@ -64,4 +64,14 @@ df -h -- проверка примонтированных устройств в
 ```
 <img width="1321" height="971" alt="image" src="https://github.com/user-attachments/assets/5ad07dbe-d276-486b-aa5c-21c18f5e31c7" /><br>
 
+Для автоматической загрузки нового раздела необходимо в файл `/etc/fstab` добавить строку загрузки раздела
+```
+LABEL=new-data /mnt/new-data ext4 defaults 0 2
+```
+
+Для этого делаю бекап файла `/etc/fstab` и редактирую его с помощью редактора `nano`
+```
+sudo cp /etc/fstab /etc/fstab.bak
+sudo nano /etc/fstab
+```
 
