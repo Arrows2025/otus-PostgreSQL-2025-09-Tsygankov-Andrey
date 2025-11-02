@@ -48,8 +48,6 @@ postgres=# \q
 Останавливаю виртуальную машину и с помощью панели управления VirtualBox добавляю новый виртуальный диск объёмом 10 Gb
 <img width="777" height="454" alt="image" src="https://github.com/user-attachments/assets/0f40fb2c-571a-4761-b4cb-d1e0a8e6507b" /><br>
 
-<img width="856" height="498" alt="image" src="https://github.com/user-attachments/assets/11d34c8a-178d-4769-8645-5fd8fd75bc4f" /><br>
-
 <img width="1203" height="504" alt="image" src="https://github.com/user-attachments/assets/05811dda-2ac2-49fd-9401-adcc7203282a" /><br>
 
 Запускаю виртуальную машину и проверяю наличие дисков в системе `lsblk`, в системе появился новый неразмеченный диск `sdb`
