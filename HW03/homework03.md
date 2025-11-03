@@ -76,3 +76,25 @@ sudo nano /etc/fstab
 
 Проверяю статус кластера `pg_lsclusters` и останавливаю PostgreSQL `sudo systemctl stop postgresql@18-main`
 <img width="1689" height="281" alt="image" src="https://github.com/user-attachments/assets/d0b7908c-3dd8-4f6a-a436-b5bf59e982e3" /><br>
+
+Делаю пользователя `postgres` владельцем `/mnt/new-data`, переношу данные БД PostgreSQL на новый диск в директорию `/mnt/new-data`, пробую запустить PostgreSQL
+```
+sudo chown -R postgres:postgres /mnt/new-data
+sudo mv /var/lib/postgresql/18 /mnt/new-data
+sudo systemctl start postgresql@18-main
+pg_lsclusters
+```
+<img width="1705" height="251" alt="image" src="https://github.com/user-attachments/assets/90da3a2f-74bf-4960-b0dc-42a5ffb3ce98" />
+
+PostgreSQL не запустился из-за того, что не смог обнаружить папку со базой данных
+
+Меняю параметр каталога, в котором хранятся файлы баз данных и конфигурация кластера `data_directory` в файле настроек PostgreSQL `/etc/postgresql/18/main/postgresql.conf` на директорию, в которой сейчас находятся файлы базы данных PostgreSQL `data_directory = '/mnt/new-data/18/main'`, пробую запустить PostgreSQL. PostgreSQL стартует, так как настройки сооствествуют местонахождению каталога баз данных PostgreSQL. Захожу в БД PostgreSQL под пользователем postgres `sudo -u postgres psql` и проверяю наличие таблицы с данными `ns_prgr`. Таблица на месте, нужные данные подключены к PostgreSQL.
+```
+sudo nano /etc/postgresql/18/main/postgresql.conf
+sudo systemctl start postgresql@18-main
+pg_lsclusters
+sudo -u postgres psql
+postgres=# select * from ns_prgr;
+postgres-# \q
+```
+<img width="1593" height="668" alt="image" src="https://github.com/user-attachments/assets/3a88d863-78ce-46ca-a061-ea3af8d87ce4" /><br>
