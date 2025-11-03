@@ -88,7 +88,7 @@ pg_lsclusters
 
 PostgreSQL не запустился из-за того, что не смог обнаружить папку со базой данных
 
-Меняю параметр каталога, в котором хранятся файлы баз данных и конфигурация кластера `data_directory` в файле настроек PostgreSQL `/etc/postgresql/18/main/postgresql.conf` на директорию, в которой сейчас находятся файлы базы данных PostgreSQL `data_directory = '/mnt/new-data/18/main'`, пробую запустить PostgreSQL. PostgreSQL стартует, так как настройки сооствествуют местонахождению каталога баз данных PostgreSQL. Захожу в БД PostgreSQL под пользователем postgres `sudo -u postgres psql` и проверяю наличие таблицы с данными `ns_prgr`. Таблица на месте, нужные данные подключены к PostgreSQL.
+Меняю параметр каталога, в котором хранятся файлы баз данных и конфигурация кластера `data_directory` в файле настроек PostgreSQL `/etc/postgresql/18/main/postgresql.conf` на директорию, в которой сейчас находятся файлы базы данных PostgreSQL `data_directory = '/mnt/new-data/18/main'`, пробую запустить PostgreSQL. PostgreSQL стартует, так как настройки соотвествуют местонахождению каталога баз данных PostgreSQL. Захожу в БД PostgreSQL под пользователем postgres `sudo -u postgres psql` и проверяю наличие таблицы с данными `ns_prgr`. Таблица на месте, нужные данные подключены к PostgreSQL.
 ```
 sudo nano /etc/postgresql/18/main/postgresql.conf
 sudo systemctl start postgresql@18-main
