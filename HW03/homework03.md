@@ -88,7 +88,7 @@ pg_lsclusters
 
 PostgreSQL не запустился из-за того, что не смог обнаружить папку со базой данных :thumbsdown:
 
-Меняю параметр каталога, в котором хранятся файлы баз данных и конфигурация кластера `data_directory` в файле настроек PostgreSQL `/etc/postgresql/18/main/postgresql.conf` на директорию, в которой сейчас находятся файлы базы данных PostgreSQL `data_directory = '/mnt/new-data/18/main'`, пробую запустить PostgreSQL. PostgreSQL стартует, так как настройки соотвествуют местонахождению каталога баз данных PostgreSQL. Захожу в БД PostgreSQL под пользователем postgres `sudo -u postgres psql` и проверяю наличие таблицы с данными `ns_prgr`. Таблица на месте, нужные данные подключены к PostgreSQL :thumbsup:
+Меняю параметр каталога, в котором хранятся файлы баз данных и конфигурация кластера `data_directory` в файле настроек PostgreSQL `/etc/postgresql/18/main/postgresql.conf` на директорию, в которой сейчас находятся файлы базы данных PostgreSQL `data_directory = '/mnt/new-data/18/main'`, пробую запустить PostgreSQL. PostgreSQL стартует, так как настройки соответствуют местонахождению каталога баз данных PostgreSQL. Захожу в БД PostgreSQL под пользователем postgres `sudo -u postgres psql` и проверяю наличие таблицы с данными `ns_prgr`
 ```
 sudo nano /etc/postgresql/18/main/postgresql.conf
 sudo systemctl start postgresql@18-main
@@ -98,6 +98,8 @@ postgres=# select * from ns_prgr;
 postgres-# \q
 ```
 <img width="1593" height="668" alt="image" src="https://github.com/user-attachments/assets/3a88d863-78ce-46ca-a061-ea3af8d87ce4" /><br>
+
+Таблица на месте, нужные данные подключены к PostgreSQL :thumbsup:
 
 ### Задание со :star:
 
