@@ -38,10 +38,6 @@ postgres=# \q
 
 <img width="2281" height="791" alt="image" src="https://github.com/user-attachments/assets/0c7f59ac-4fad-4e77-9bc6-09fc3a0f73d1" /><br>
 
-Проверяю статус кластера `pg_lsclusters` и останавливаю PostgreSQL `sudo systemctl stop postgresql@18-main`
-
-<img width="1689" height="281" alt="image" src="https://github.com/user-attachments/assets/d0b7908c-3dd8-4f6a-a436-b5bf59e982e3" /><br>
-
 Проверяю наличие дисков в системе `lsblk`
 <img width="1033" height="311" alt="image" src="https://github.com/user-attachments/assets/aeba3b11-8892-4e7d-8cbf-3cf0f4aeb6fe" /><br>
 
@@ -64,14 +60,19 @@ df -h -- проверка примонтированных устройств в
 ```
 <img width="1321" height="971" alt="image" src="https://github.com/user-attachments/assets/5ad07dbe-d276-486b-aa5c-21c18f5e31c7" /><br>
 
-Для автоматической загрузки нового раздела необходимо в файл `/etc/fstab` добавить строку загрузки раздела
+Для автоматической загрузки нового раздела нахожу идентификатор диска командой `blkid` и добавляю строку загрузки раздела в файл `/etc/fstab`
 ```
-LABEL=new-data /mnt/new-data ext4 defaults 0 2
+UUID="f5b15ab5-3166-41dc-a21e-3fd9635b6571" /mnt/new-data ext4 defaults 0 2
 ```
+<img width="2745" height="221" alt="image" src="https://github.com/user-attachments/assets/23cd5d5c-9589-429b-87c9-f24492b7319b" /><br>
 
 Для этого делаю бекап файла `/etc/fstab` и редактирую его с помощью редактора `nano`
 ```
 sudo cp /etc/fstab /etc/fstab.bak
 sudo nano /etc/fstab
 ```
+После перезапуска операционной системы новый диск монтируется в систему автоматически
+<img width="1305" height="1271" alt="image" src="https://github.com/user-attachments/assets/58223fe3-4930-4483-afc3-2829d9cab09b" /><br>
 
+Проверяю статус кластера `pg_lsclusters` и останавливаю PostgreSQL `sudo systemctl stop postgresql@18-main`
+<img width="1689" height="281" alt="image" src="https://github.com/user-attachments/assets/d0b7908c-3dd8-4f6a-a436-b5bf59e982e3" /><br>
