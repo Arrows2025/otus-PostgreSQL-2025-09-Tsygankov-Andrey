@@ -55,7 +55,7 @@ sudo parted /dev/sdb mklabel gpt -- создаю таблицу разделов
 sudo parted -a opt /dev/sdb mkpart primary ext4 0% 100% -- создаю раздел на диске sdb
 sudo mkfs.ext4 -L new-data /dev/sdb1 - создаю файловую систему для раздела
 sudo mkdir -p /mnt/new-data -- создаю директорию для монтирования файловой системы
-sudo mount -o defaults /dev/sdb1 /mnt/new-data
+sudo mount -o defaults /dev/sdb1 /mnt/new-data -- монтирую новый раздел диска в директорию /mnt/new-data
 df -h -- проверка примонтированных устройств в системе, новый раздел диска примонтирован по пути /mnt/new-data
 ```
 <img width="1321" height="971" alt="image" src="https://github.com/user-attachments/assets/5ad07dbe-d276-486b-aa5c-21c18f5e31c7" /><br>
@@ -105,12 +105,39 @@ postgres-# \q
 
 Для выполнения задания со :star: установлен сервер Ubuntu 24.04.3 на виртуальной машине, используя Oracle VirtualBox Manager. Для этой машины через `netplan` прописываю статический IP-адрес 192.168.0.51, как в первом домашнем задании. Подключаюсь к серверу через программу PuTTY посредством ввода своего пользователя с авторизацией с помощью ключа
 
-<img width="1305" height="821" alt="image" src="https://github.com/user-attachments/assets/52601e9e-7da9-4c06-afac-ba74ec3b8404" />
+<img width="1305" height="821" alt="image" src="https://github.com/user-attachments/assets/52601e9e-7da9-4c06-afac-ba74ec3b8404" /><br>
 
 Устанавливаю PostgreSQL 18 и набор пакетов дополнительных программ
 ```sudo apt update && sudo apt upgrade -y -q && sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list' && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add - && sudo apt-get update && sudo apt -y install postgresql && sudo apt install unzip && sudo apt -y install mc```
 
 Проверяю статус кластера `pg_lsclusters`, останавливаю PostgreSQL `sudo systemctl stop postgresql@18-main` и удаляю файлы из каталога, в котором хранятся файлы баз данных и конфигурация кластера `sudo rm -rf /var/lib/postgresql/18`
 
-<img width="1689" height="1361" alt="image" src="https://github.com/user-attachments/assets/5ee18624-b459-4b3b-93a9-aa9377e187e9" />
+<img width="1689" height="1361" alt="image" src="https://github.com/user-attachments/assets/5ee18624-b459-4b3b-93a9-aa9377e187e9" /><br>
 
+Останавливаю виртуальную машину и подключаю к ней виртуальный диск, созданный в первой части домашнего задания, который содержит каталог с файлами баз данных и конфигурация кластера PosgreSQL и таблицей `ns_prgr`
+
+<img width="1169" height="504" alt="image" src="https://github.com/user-attachments/assets/97be2a81-b714-4a05-8c1f-25345e6c1680" /><br>
+
+Монтирую диск в систему
+```
+lsblk -- проверяю наличие диска в системе
+sudo mkdir -p /mnt/new-data -- создаю директорию для монтирования файловой системы
+sudo mount -o defaults /dev/sdb1 /mnt/new-data -- монтирую новый раздел диска в директорию /mnt/new-data
+df -h -- проверка примонтированных устройств в системе, новый раздел диска примонтирован по пути /mnt/new-data
+```
+<img width="1177" height="791" alt="image" src="https://github.com/user-attachments/assets/291adedf-2b43-4b12-bf46-03dcf44f2843" />
+
+Проверяю статус кластера и меняю параметр каталога, в котором хранятся файлы баз данных и конфигурация кластера `data_directory` в файле настроек PostgreSQL `/etc/postgresql/18/main/postgresql.conf` на директорию, в которой сейчас находятся файлы базы данных PostgreSQL `data_directory = '/mnt/new-data/18/main'`, пробую запустить PostgreSQL. PostgreSQL стартует, так как настройки соответствуют местонахождению каталога баз данных PostgreSQL. Захожу в БД PostgreSQL под пользователем postgres `sudo -u postgres psql` и проверяю наличие таблицы с данными `ns_prgr`
+```
+pg_lsclusters
+sudo nano /etc/postgresql/18/main/postgresql.conf
+pg_lsclusters
+sudo systemctl start postgresql@18-main
+pg_lsclusters
+sudo -u postgres psql
+postgres=# select * from ns_prgr;
+postgres-# \q
+```
+<img width="1705" height="821" alt="image" src="https://github.com/user-attachments/assets/b9748411-c878-4180-a604-e925ac41191b" />
+
+Таблица на месте, нужные данные с подмонтированного диска подключены к PostgreSQL :thumbsup:
