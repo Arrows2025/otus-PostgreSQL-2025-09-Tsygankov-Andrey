@@ -1,7 +1,7 @@
 # Домашнее задание 03
 ## Установка и настройка PostgreSQL
 
-Для выполнения домашнего задания установлен сервер Ubuntu 24.04.3 на виртуальной машине, используя Oracle VirtualBox Manager. Подключаюсь к серверу через программу PuTTY посредством ввода своего пользователя с авторизацией с помощью ключа
+Для выполнения домашнего задания установлен сервер Ubuntu 24.04.3 на виртуальной машине, используя Oracle VirtualBox Manager. Для этой машины через `netplan` прописываю статический IP-адрес 192.168.0.50, как в первом домашнем задании. Подключаюсь к серверу через программу PuTTY посредством ввода своего пользователя с авторизацией с помощью ключа
 
 <img width="1305" height="1061" alt="image" src="https://github.com/user-attachments/assets/0d40a3d3-4e12-4cd8-9673-f190177fc8d3" /><br>
 
@@ -102,4 +102,15 @@ postgres-# \q
 Таблица на месте, нужные данные подключены к PostgreSQL :thumbsup:
 
 ### Задание со :star:
+
+Для выполнения задания со :star: установлен сервер Ubuntu 24.04.3 на виртуальной машине, используя Oracle VirtualBox Manager. Для этой машины через `netplan` прописываю статический IP-адрес 192.168.0.51, как в первом домашнем задании. Подключаюсь к серверу через программу PuTTY посредством ввода своего пользователя с авторизацией с помощью ключа
+
+<img width="1305" height="821" alt="image" src="https://github.com/user-attachments/assets/52601e9e-7da9-4c06-afac-ba74ec3b8404" />
+
+Устанавливаю PostgreSQL 18 и набор пакетов дополнительных программ
+```sudo apt update && sudo apt upgrade -y -q && sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list' && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add - && sudo apt-get update && sudo apt -y install postgresql && sudo apt install unzip && sudo apt -y install mc```
+
+Проверяю статус кластера `pg_lsclusters`, останавливаю PostgreSQL `sudo systemctl stop postgresql@18-main` и удаляю файлы из каталога, в котором хранятся файлы баз данных и конфигурация кластера `sudo rm -rf /var/lib/postgresql/18`
+
+<img width="1689" height="1361" alt="image" src="https://github.com/user-attachments/assets/5ee18624-b459-4b3b-93a9-aa9377e187e9" />
 
