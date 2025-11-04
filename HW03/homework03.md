@@ -86,7 +86,7 @@ pg_lsclusters
 ```
 <img width="1705" height="251" alt="image" src="https://github.com/user-attachments/assets/90da3a2f-74bf-4960-b0dc-42a5ffb3ce98" />
 
-PostgreSQL не запустился из-за того, что не смог обнаружить папку со базой данных :thumbsdown:
+PostgreSQL не запустился из-за того, что не смог обнаружить папку с файлами баз данных и конфигурацией кластера по пути, прописанному в настройках PostgreSQL: `/var/lib/postgresql/18` :thumbsdown:
 
 Меняю параметр каталога, в котором хранятся файлы баз данных и конфигурация кластера `data_directory` в файле настроек PostgreSQL `/etc/postgresql/18/main/postgresql.conf` на директорию, в которой сейчас находятся файлы базы данных PostgreSQL `data_directory = '/mnt/new-data/18/main'`, пробую запустить PostgreSQL. PostgreSQL стартует, так как настройки соответствуют местонахождению каталога баз данных PostgreSQL. Захожу в БД PostgreSQL под пользователем postgres `sudo -u postgres psql` и проверяю наличие таблицы с данными `ns_prgr`
 ```
@@ -114,7 +114,7 @@ postgres-# \q
 
 <img width="1689" height="1361" alt="image" src="https://github.com/user-attachments/assets/5ee18624-b459-4b3b-93a9-aa9377e187e9" /><br>
 
-Останавливаю виртуальную машину и подключаю к ней виртуальный диск, созданный в первой части домашнего задания, который содержит каталог с файлами баз данных и конфигурация кластера PosgreSQL и таблицей `ns_prgr`
+Останавливаю виртуальную машину и подключаю к ней виртуальный диск, созданный в первой части домашнего задания, который содержит каталог с файлами баз данных и конфигурация кластера PosgreSQL и таблицу `ns_prgr`
 
 <img width="1169" height="504" alt="image" src="https://github.com/user-attachments/assets/97be2a81-b714-4a05-8c1f-25345e6c1680" /><br>
 
@@ -125,7 +125,7 @@ sudo mkdir -p /mnt/new-data -- создаю директорию для монт
 sudo mount -o defaults /dev/sdb1 /mnt/new-data -- монтирую новый раздел диска в директорию /mnt/new-data
 df -h -- проверка примонтированных устройств в системе, новый раздел диска примонтирован по пути /mnt/new-data
 ```
-<img width="1177" height="791" alt="image" src="https://github.com/user-attachments/assets/291adedf-2b43-4b12-bf46-03dcf44f2843" />
+<img width="1177" height="791" alt="image" src="https://github.com/user-attachments/assets/291adedf-2b43-4b12-bf46-03dcf44f2843" /><br>
 
 Проверяю статус кластера и меняю параметр каталога, в котором хранятся файлы баз данных и конфигурация кластера `data_directory` в файле настроек PostgreSQL `/etc/postgresql/18/main/postgresql.conf` на директорию, в которой сейчас находятся файлы базы данных PostgreSQL `data_directory = '/mnt/new-data/18/main'`, пробую запустить PostgreSQL. PostgreSQL стартует, так как настройки соответствуют местонахождению каталога баз данных PostgreSQL. Захожу в БД PostgreSQL под пользователем postgres `sudo -u postgres psql` и проверяю наличие таблицы с данными `ns_prgr`
 ```
@@ -138,6 +138,6 @@ sudo -u postgres psql
 postgres=# select * from ns_prgr;
 postgres-# \q
 ```
-<img width="1705" height="821" alt="image" src="https://github.com/user-attachments/assets/b9748411-c878-4180-a604-e925ac41191b" />
+<img width="1705" height="821" alt="image" src="https://github.com/user-attachments/assets/b9748411-c878-4180-a604-e925ac41191b" /><br>
 
 Таблица на месте, нужные данные с подмонтированного диска подключены к PostgreSQL :thumbsup:
