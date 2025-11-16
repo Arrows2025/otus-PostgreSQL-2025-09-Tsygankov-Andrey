@@ -25,10 +25,10 @@ Cоздаю и сразу стартую новый кластер `sudo pg_crea
 
 И редактирую конфигурационный файл PostgreSQL: `sudo nano /etc/postgresql/18/otus/pg_hba.conf` для доступа к БД PostgreSQL с моей локальной машины
 
-добавить в конец файла строку  
-`host    all             all             192.168.0.129/24            scram-sha-256`  
+добавляю в конец файла строку
+`host    all             all             192.168.0.129/24            scram-sha-256`
 
-Изменение пароля для пользователя базы данных `postgres`
+Меняю пароль для пользователя базы данных `postgres`
 ```
 sudo -u postgres psql --cluster 18/otus
 \password
@@ -38,3 +38,4 @@ sudo -u postgres psql --cluster 18/otus
 Перезагрузка кластера базы данных `sudo pg_ctlcluster 18 otus restart` и тест соединения с БД PostgreSQL через приложение DBeaver прошёл успешно
 
 <img width="893" height="775" alt="image" src="https://github.com/user-attachments/assets/10b9d991-ed8b-4eed-976b-45d10cf8dede" /><br>
+
