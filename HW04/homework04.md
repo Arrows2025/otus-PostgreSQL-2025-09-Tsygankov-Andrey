@@ -16,3 +16,6 @@ Cоздаю и сразу стартую новый кластер `sudo pg_crea
 ```
 
 <img width="1689" height="1091" alt="image" src="https://github.com/user-attachments/assets/0495641c-d212-4492-a09b-d2ebe99c0425" /><br>
+
+
+<img width="893" height="775" alt="image" src="https://github.com/user-attachments/assets/10b9d991-ed8b-4eed-976b-45d10cf8dede" /><br>
