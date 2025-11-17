@@ -39,3 +39,29 @@ sudo -u postgres psql --cluster 18/otus
 
 <img width="893" height="775" alt="image" src="https://github.com/user-attachments/assets/10b9d991-ed8b-4eed-976b-45d10cf8dede" /><br>
 
+* Захожу в созданный кластер `otus` под пользователем `postgres` и создаю новую базу данных `tetsdb`
+
+```
+sudo -u postgres psql --cluster 18/otus
+
+postgres=# CREATE DATABASE testdb;
+CREATE DATABASE
+```
+
+* Подключаюсь к созданной базе данных `tetsdb` под пользователем `postgres` и создаю новую схему `testnm`
+```
+postgres=# \c testdb;
+Вы подключены к базе данных "testdb" как пользователь "postgres".
+testdb=# CREATE SCHEMA IF NOT EXISTS testnm;
+CREATE SCHEMA
+```
+
+* Создаю новую таблицу `t1` с одной колонкой `с1` типа `integer` и вставляю в неё строку со значением `c1=1`
+```
+testdb=# CREATE TABLE t1(с1 int);
+CREATE TABLE
+testdb=# INSERT INTO t1 VALUES (1);
+INSERT 0 1
+```
+
+<img width="1081" height="491" alt="image" src="https://github.com/user-attachments/assets/befc074a-ef1a-4f69-bf97-952a0fdc38aa" /><br>
