@@ -79,5 +79,53 @@ testdb=# GRANT SELECT ON ALL TABLES IN SCHEMA testnm TO readonly;
 GRANT
 ```
 
-<img width="1081" height="731" alt="image" src="https://github.com/user-attachments/assets/a562a137-a547-4738-a926-251f771d7055" /><br>
+* Создаю пользователя `testread` с паролем `test123`, даю пользователю `testread` роль `readonly`
+```
+testdb=# CREATE USER testread WITH PASSWORD 'test123';
+CREATE ROLE
+testdb=# GRANT readonly TO testread;
+GRANT ROLE
+```
+<img width="1081" height="821" alt="image" src="https://github.com/user-attachments/assets/7fadd6d5-e067-4760-b82c-6aeeb704034e" /><br>
+
+* При попытке переключиться на пользователя `testread` получаю ошибку
+```
+testdb=# \c testdb testread
+подключиться к серверу через сокет "/var/run/postgresql/.s.PGSQL.5433" не удалось: ВАЖНО:  пользователь "testread" не прошёл проверку подлинности (Peer)
+Сохранено предыдущее подключение
+```
+<img width="2361" height="1001" alt="image" src="https://github.com/user-attachments/assets/15b9d0d1-d9fe-4064-844f-161c7c806992" /><br>
+
+* Выхожу из терминального клиента PostgreSQL Shell и подключаюсь к базе данных `testdb` пользователем `testread` напрямую через терминальный клиент, запрашиваю данные таблицы `t1` и получаю ошибку `нет доступа к таблице t1`
+```
+psql -h 127.0.0.1 --cluster 18/otus -U testread -d testdb -W
+
+testdb=> SELECT * FROM t1;
+ОШИБКА:  нет доступа к таблице t1
+testdb=> \dt;
+           Список таблиц
+ Схема  | Имя |   Тип   | Владелец
+--------+-----+---------+----------
+ public | t1  | таблица | postgres
+(1 строка)
+
+testdb=> SHOW search_path;
+   search_path
+-----------------
+ "$user", public
+(1 строка)
+```
+<img width="1593" height="701" alt="image" src="https://github.com/user-attachments/assets/4e2aaa68-9628-480f-a43f-655334a12e81" /><br>
+
+* Так как `search_path = '"$user", public'`, а схемы `$user` нет, то таблица по умолчанию создалась в схеме `public`. Пользователь `testread` не смог получить доступ к таблице `t1`, потому что роль `readonly`, которой он обладает, не имеет прав на выборку данных из схемы `public`
+
+* Чтобы избежать этой ошибки, таблицу `t1` необходимо было создать в схеме `testnm`. Для этого надо было либо:
+	* перед созданием таблицы `t1` указать схему для текущей сессии `SET search_path = testnm;`
+	* перед созданием таблицы `t1` настроить путь поиска на уровне базы данных `ALTER DATABASE testdb SET search_path = 'testnm,public';`
+	* перед созданием таблицы `t1` настроить путь поиска для пользователя (роли) `ALTER ROLE testread SET search_path = 'testnm,public';` (не для нашего случая, т.к. пользователя мы создавали после создания таблицы)
+	* создать таблицу с явным указанием префикса схемы базы данных `CREATE TABLE testnm.t1(с1 int);`
+
+
+
+
 
