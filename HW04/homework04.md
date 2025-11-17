@@ -64,4 +64,20 @@ testdb=# INSERT INTO t1 VALUES (1);
 INSERT 0 1
 ```
 
-<img width="1081" height="491" alt="image" src="https://github.com/user-attachments/assets/befc074a-ef1a-4f69-bf97-952a0fdc38aa" /><br>
+* Создаю новую роль `readonly`, даю новой роли права:
+	* на подключение к базе данных `testdb`
+	* на использование схемы `testnm`
+	* на выборку данных для всех таблиц схемы `testnm`
+```
+testdb=# CREATE role readonly;
+CREATE ROLE
+testdb=# GRANT CONNECT ON DATABASE testdb TO readonly;
+GRANT
+testdb=# GRANT USAGE ON SCHEMA testnm TO readonly;
+GRANT
+testdb=# GRANT SELECT ON ALL TABLES IN SCHEMA testnm TO readonly;
+GRANT
+```
+
+<img width="1081" height="731" alt="image" src="https://github.com/user-attachments/assets/a562a137-a547-4738-a926-251f771d7055" /><br>
+
