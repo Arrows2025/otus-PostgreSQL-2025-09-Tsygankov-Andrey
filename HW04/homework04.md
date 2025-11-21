@@ -125,7 +125,56 @@ testdb=> SHOW search_path;
 	* либо перед созданием таблицы `t1` настроить путь поиска для пользователя (роли) `ALTER ROLE testread SET search_path = 'testnm,public';` (не для нашего случая, т.к. пользователя мы создавали после создания таблицы)
 	* либо создать таблицу с явным указанием префикса схемы базы данных `CREATE TABLE testnm.t1(с1 int);`
 
+* Возвращаюсь в базу данных `testdb` под пользователем `postgres`, удаляю таблицу `t1` и создаю её заново с явным указанием префикса схемы базы данных `testnm.t1` и добавляю одну строку со значением `c1=1`
+```
+testdb=> \c testdb postgres
+Вы подключены к базе данных "testdb" как пользователь "postgres".
+testdb=# DROP TABLE t1;
+DROP TABLE
+testdb=# CREATE TABLE testnm.t1(c1 int);
+CREATE TABLE
+testdb=# INSERT INTO testnm.t1 VALUES (1);
+INSERT 0 1
+testdb=# \q
+```
+<img width="1593" height="1031" alt="image" src="https://github.com/user-attachments/assets/0a86a814-e192-403f-b6a9-32c39474bb33" /><br>
 
+* Захожу под пользователем `testread` в базу данных `testdb` и делаю выборку из таблицы `testnm.t1`, опять получаю ошибку - нет доступа к таблице, потому что `GRANT SELECT ON ALL TABLES IN SCHEMA testnm TO readonly;` дал право выборки для роли `readonly` для всех уже существующих на тот момент таблиц, для новой таблицы `testnm.t1` такого права нет. От пользователя `postgres` выдаю право роли `readonly` на выборку из всех новых таблиц схемы `testnm` - `ALTER DEFAULT PRIVILEGES IN SCHEMA testnm GRANT SELECT ON TABLES TO readonly;`
+```
+psql -h 127.0.0.1 --cluster 18/otus -U testread -d testdb -W
 
+testdb=> SELECT * FROM testnm.t1;
+ОШИБКА:  нет доступа к таблице t1
+testdb=> \c testdb postgres;
+Вы подключены к базе данных "testdb" как пользователь "postgres".
+testdb=# ALTER DEFAULT PRIVILEGES IN SCHEMA testnm GRANT SELECT ON TABLES TO readonly;
+ALTER DEFAULT PRIVILEGES
+testdb=# \q
+```
+<img width="1593" height="521" alt="image" src="https://github.com/user-attachments/assets/e6850d0f-09d2-41ad-b2fe-643569e2eb30" /><br>
 
+* Снова захожу под пользователем `testread` в базу данных `testdb` и делаю выборку из таблицы `testnm.t1` и опять получаю ошибку - нет доступа к таблице, теперь причина ошибки в том, что право `ALTER DEFAULT PRIVILEGES` будет действовать для всех вновь создаваемых таблиц и не действует на уже созданную `testnm.t1`, для выборки из таблицы `testnm.t1` пользователю `testread` надо повторно дать право `GRANT SELECT ON ALL TABLES IN SCHEMA testnm TO readonly;` от пользователя `postgres`
+```
+psql -h 127.0.0.1 --cluster 18/otus -U testread -d testdb -W
 
+testdb=> SELECT * FROM testnm.t1;
+ОШИБКА:  нет доступа к таблице t1
+testdb=> \c testdb postgres;
+Вы подключены к базе данных "testdb" как пользователь "postgres".
+testdb=# GRANT SELECT ON ALL TABLES IN SCHEMA testnm TO readonly;
+GRANT
+testdb=# \q
+```
+<img width="1593" height="971" alt="image" src="https://github.com/user-attachments/assets/a3197667-328f-452a-93e6-b89fab6690a2" /><br>
+
+* И ещё раз захожу захожу под пользователем `testread` в базу данных `testdb`, делаю выборку из таблицы `testnm.t1` и запрос отрабатывает без ошибки 
+```
+psql -h 127.0.0.1 --cluster 18/otus -U testread -d testdb -W
+
+testdb=> SELECT * FROM testnm.t1;
+ c1
+----
+  1
+(1 строка)
+```
+<img width="1593" height="1331" alt="image" src="https://github.com/user-attachments/assets/39220f11-c30f-4a3f-963a-bc2fe1d743d2" /><br>
