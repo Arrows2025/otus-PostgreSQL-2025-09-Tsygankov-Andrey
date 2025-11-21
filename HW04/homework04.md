@@ -191,5 +191,40 @@ testdb=> CREATE TABLE t2(c1 integer); INSERT INTO t2 VALUES (2);
 ```
 <img width="1593" height="641" alt="image" src="https://github.com/user-attachments/assets/5e93d7a8-101a-46bc-9dc6-93c177577cf3" /><br>
 
-* Но судя по информации из задания эти таблицы якобы должны были создаться, из интеренета узнаю, что в PosgreSQL версии 14 и ниже роли `PUBLIC` предоставлена возможность создавать объекты (CREATE) в схеме `public` по умолчанию, но PostgreSQL версии 15 и выше не позволяют это делать. Теперь понятно, почему в первом пункте было задание - создайте новый кластер PostgresSQL 14, но так как в начале курса нам сказали не обращать внимания на версии операционных систем и БД PostgreSQL, в первом пункте был создан новый кластер PostgresSQL версии 18
+* Но судя по информации из задания таблица t2 якобы должна была создаться, поэтому из интернета узнаю, что в PostgreSQL версии 14 и ниже роли `PUBLIC` предоставлена возможность создавать объекты (CREATE) в схеме `public` по умолчанию, но БД PostgreSQL версии 15 и выше не позволяют это делать. Теперь понятно, почему в первом пункте было задание: `создайте новый кластер PostgresSQL 14`, но так как в начале курса нам сказали не обращать внимания на версии операционных систем и БД PostgreSQL, в первом пункте был создан новый кластер PostgresSQL версии 18. Это недоразумение можно исправить выдачей нового гранта пользователю `testread` (роли `readonly`) на создание объектов в схеме `public` - `GRANT CREATE ON SCHEMA public TO readonly;` и создать необходимую таблицу t2 для дальнейших экспериментов
+```
+\c testdb postgres;
+Вы подключены к базе данных "testdb" как пользователь "postgres".
+testdb=# GRANT CREATE ON SCHEMA public TO readonly;
+GRANT
+testdb=# \q
+
+psql -h 127.0.0.1 --cluster 18/otus -U testread -d testdb -W
+
+testdb=> CREATE TABLE t2(c1 integer); INSERT INTO t2 VALUES (2);
+CREATE TABLE
+INSERT 0 1
+
+```
 <img width="1593" height="1121" alt="image" src="https://github.com/user-attachments/assets/f86575a2-691f-4969-853d-b8fc61ffbedc" /><br>
+
+* Но как мы выдали права на создание объектов в схеме `public` для пользователя `testread`, таким же образом мы можем их и отозвать, чтобы избежать случайных ошибок создания таблиц не в своих схемах, а в схеме `public`, таких, как таблица `t3` без явного указания префикса схемы базы данных и без редактирования переменной `search_path`, в которой схема `public` прописана по умолчанию
+```
+testdb=> \c testdb postgres;
+Вы подключены к базе данных "testdb" как пользователь "postgres".
+testdb=# REVOKE CREATE ON SCHEMA public FROM readonly;
+REVOKE
+testdb=# \q
+
+psql -h 127.0.0.1 --cluster 18/otus -U testread -d testdb -W
+
+testdb=> CREATE TABLE t3(c1 integer); INSERT INTO t3 VALUES (3);
+ОШИБКА:  нет доступа к схеме public
+СТРОКА 1: CREATE TABLE t3(c1 integer);
+                       ^
+ОШИБКА:  отношение "t3" не существует
+СТРОКА 1: INSERT INTO t3 VALUES (3);
+                      ^
+testdb=> \q
+```
+<img width="1593" height="1380" alt="image" src="https://github.com/user-attachments/assets/2a13e937-0e3d-403b-955a-3528cae6a8a8" /><br>
