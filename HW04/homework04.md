@@ -167,7 +167,7 @@ testdb=# \q
 ```
 <img width="1593" height="971" alt="image" src="https://github.com/user-attachments/assets/a3197667-328f-452a-93e6-b89fab6690a2" /><br>
 
-* И ещё раз захожу захожу под пользователем `testread` в базу данных `testdb`, делаю выборку из таблицы `testnm.t1` и запрос отрабатывает без ошибки 
+* И ещё раз захожу захожу под пользователем `testread` в базу данных `testdb`, делаю выборку из таблицы `testnm.t1` и запрос отрабатывает без ошибки, так как пользователь `testread` наконец-то получил необходимые права для выборки из таблицы `testnm.t1` :thumbsup:
 ```
 psql -h 127.0.0.1 --cluster 18/otus -U testread -d testdb -W
 
@@ -178,3 +178,18 @@ testdb=> SELECT * FROM testnm.t1;
 (1 строка)
 ```
 <img width="1593" height="1331" alt="image" src="https://github.com/user-attachments/assets/39220f11-c30f-4a3f-963a-bc2fe1d743d2" /><br>
+
+* Пробую выполнить команду на создание таблицы t2 и вставку в неё одной записи, получаю ошибку доступа к схеме `public`, т.к. без указания префикса схемы таблица опять создаётся в схеме public, которая указана по умолчанию в переменной `search_path`, а прав на создание таблицы в схеме public у пользователя `testread` нет.
+```
+testdb=> CREATE TABLE t2(c1 integer); INSERT INTO t2 VALUES (2);
+ОШИБКА:  нет доступа к схеме public
+СТРОКА 1: CREATE TABLE t2(c1 integer);
+                       ^
+ОШИБКА:  отношение "t2" не существует
+СТРОКА 1: INSERT INTO t2 VALUES (2);
+                      ^
+```
+<img width="1593" height="641" alt="image" src="https://github.com/user-attachments/assets/5e93d7a8-101a-46bc-9dc6-93c177577cf3" /><br>
+
+* Но судя по информации из задания эти таблицы якобы должны были создаться, из интеренета узнаю, что в PosgreSQL версии 14 и ниже роли `PUBLIC` предоставлена возможность создавать объекты (CREATE) в схеме `public` по умолчанию, но PostgreSQL версии 15 и выше не позволяют это делать. Теперь понятно, почему в первом пункте было задание - создайте новый кластер PostgresSQL 14, но так как в начале курса нам сказали не обращать внимания на версии операционных систем и БД PostgreSQL, в первом пункте был создан новый кластер PostgresSQL версии 18
+<img width="1593" height="1121" alt="image" src="https://github.com/user-attachments/assets/f86575a2-691f-4969-853d-b8fc61ffbedc" /><br>
