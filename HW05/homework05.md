@@ -6,9 +6,18 @@
 ```
 sudo -u postgres psql
 
-postgres=# CREATE DATABASE testdb;
+postgres=# CREATE DATABASE test;
 CREATE DATABASE
+postgres=# \q
+
+sudo su postgres
+pgbench -i test
 ```
+<img width="2009" height="791" alt="image" src="https://github.com/user-attachments/assets/e65e6d21-1f9f-439a-8773-8a16cddfabec" /><br>
+
+
+<img width="1724" height="609" alt="image" src="https://github.com/user-attachments/assets/6e338e8f-6591-46d4-92e1-3364f5bac52b" />
+<img width="1724" height="1069" alt="image" src="https://github.com/user-attachments/assets/39d1903e-1903-4211-8487-61c0a258ad11" />
 
 
 Таблица результатов нагрузочного тестирования
