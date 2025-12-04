@@ -43,11 +43,20 @@ sysbench --db-driver=pgsql --pgsql-host=192.168.0.50 --pgsql-port=5432 --pgsql-d
 
 <img width="1789" height="954" alt="image" src="https://github.com/user-attachments/assets/d392536f-43e7-499d-8b1f-6060252a3880" />
 
+Запускаю тест утилит Pgbench и Sysbench :star: на базовых параметрах БД PostgreSQL, результаты TPS - количество транзакций в секунду заношу в таблицу
+```
+pgbench -c 50 -j 2 -P 10 -T 60 pbtest
+
+sysbench --db-driver=pgsql --pgsql-host=192.168.0.50 --pgsql-port=5432 --pgsql-db=sbtest --pgsql-user=postgres --pgsql-password=postgres --threads=2 --time=60 oltp_read_write run
+```
+<img width="1659" height="563" alt="image" src="https://github.com/user-attachments/assets/4461ab25-3e42-4066-9d4d-eba57762bc17" />
+<img width="1672" height="954" alt="image" src="https://github.com/user-attachments/assets/afe88c28-4f29-4211-8307-c802cc414b24" /><br>
+
 
 Таблица результатов нагрузочного тестирования
-|Параметры PostgreSQL|Pgbench|Sysbench|
-|:-|:-|:-|
-|Равнение по левому краю|Равнение по центру|Равнение по правому краю|
+|Параметры PostgreSQL|Pgbench|Sysbench :star:|
+|:-|-:|-:|
+|Базовые параметры|297.55 tps|189.86 tps|
 |Запись|Запись|Запись|
 |Запись|Запись|Запись|
 |Запись|Запись|Запись|
