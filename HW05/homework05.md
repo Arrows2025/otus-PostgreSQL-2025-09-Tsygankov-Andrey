@@ -84,7 +84,7 @@ postgres=# \q
 <img width="1672" height="563" alt="image" src="https://github.com/user-attachments/assets/a1385607-c43a-458a-8aed-55cb4221e3e5" />
 <img width="1672" height="954" alt="image" src="https://github.com/user-attachments/assets/92b11271-5740-4ad9-be5c-461eb4abda35" /><br><br>
 
-:four: Изменение параметра synchronous_commit не дало увеличение производительности, далее меняю параметр random_page_cost = 1.25, на рекомендуемое значение для SSD дисков по верхней планке. Этот параметр планировщика запросов задаёт примерную стоимость чтения с диска одной страницы данных при произвольном доступе
+:four: Изменение параметра synchronous_commit не дало увеличения производительности, далее меняю параметр random_page_cost = 1.25, на рекомендуемое значение для SSD дисков по верхней планке. Этот параметр планировщика запросов задаёт примерную стоимость чтения с диска одной страницы данных при произвольном доступе
 ```
 postgres@ubuntu24server:/home/arrows$ psql
 postgres=# show random_page_cost;
@@ -100,6 +100,20 @@ postgres=# \q
 <img width="1672" height="563" alt="image" src="https://github.com/user-attachments/assets/5a303453-313f-47f6-8f1d-6b689317b32a" />
 <img width="1672" height="954" alt="image" src="https://github.com/user-attachments/assets/5fcbc64e-97fc-40a2-8d05-3f13963a8f4a" /><br><br>
 
+:five: Изменение параметра random_page_cost = 1.25 так же на дало увеличения производительности, пробую поставить этот параметр в значение random_page_cost = 1.1 на рекомендуемое значение для SSD дисков по нижней планке
+```
+postgres@ubuntu24server:/home/arrows$ psql
+postgres=# show random_page_cost;
+postgres=# alter system set random_page_cost = 1.1;
+postgres=# select pg_reload_conf();
+postgres=# show random_page_cost;
+postgres=# \q
+```
+<img width="1672" height="632" alt="image" src="https://github.com/user-attachments/assets/dd19c8dd-663e-4d60-a722-bf0a087744f6" /><br>
+
+Запускаю повторно тест утилит Pgbench и Sysbench :star: на новых параметрах БД PostgreSQL, результаты TPS - количество транзакций в секунду заношу в таблицу
+<img width="1672" height="563" alt="image" src="https://github.com/user-attachments/assets/d4dbcc0d-949a-402a-b21d-25d0a4bf57ec" />
+<img width="1672" height="954" alt="image" src="https://github.com/user-attachments/assets/20ca8bfd-e145-4275-bb1f-faf32380e8e5" /><br><br>
 
 Таблица результатов нагрузочного тестирования
 |Параметры PostgreSQL|Pgbench|Sysbench :star:|
@@ -108,4 +122,6 @@ postgres=# \q
 |fsync = off|978.09 tps|300.48 tps|
 |synchronous_commit = off|973.43 tps|289.42 tps|
 |random_page_cost = 1.25|935.48 tps|286.08 tps|
-|random_page_cost = 1.1| tps| tps|
+|random_page_cost = 1.1|947.36 tps|260.44 tps|
+
+Как видно по результатам из таблицы самое большое повышение производительности дало отключение параметра fsync = off, другие параметры существенного изменения производительности не дали.
