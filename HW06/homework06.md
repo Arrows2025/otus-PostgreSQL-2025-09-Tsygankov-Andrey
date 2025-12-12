@@ -53,3 +53,4 @@ pg_lsclusters
 pgbench -c 8 -P 6 -T 60 -U postgres pbtest
 ```
 <img width="1321" height="881" alt="image" src="https://github.com/user-attachments/assets/76f716c3-b135-4d0e-8494-528c02ace5e2" /><br>
+
