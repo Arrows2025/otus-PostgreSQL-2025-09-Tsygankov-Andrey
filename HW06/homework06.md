@@ -24,20 +24,20 @@ pgbench -c 8 -P 6 -T 60 -U postgres pbtest
 ```
 <img width="1321" height="851" alt="image" src="https://github.com/user-attachments/assets/cb2485a5-8c4c-4564-9a8c-2f2cd430af7b" /><br>
 
-Добавляю в конец файла `postgresql.conf` параметры настройки PostgreSQL из прикрепленного к материалам занятия файла
+Добавляю в конец файла `postgresql.conf` параметры настройки PostgreSQL из прикрепленного к материалам занятия файла, с скобках для себя сохранил базовые значения параметров
 ```
-max_connections = 40 --100
-shared_buffers = 1GB -- 16384
-effective_cache_size = 3GB -- 524288
-maintenance_work_mem = 512MB -- 65536
-checkpoint_completion_target = 0.9 -- 0.9
-wal_buffers = 16MB -- 512
-default_statistics_target = 500 -- 100
-random_page_cost = 4 -- 4
-effective_io_concurrency = 2 -- 16
-work_mem = 6553kB -- 4096
-min_wal_size = 4GB -- 80
-max_wal_size = 16GB -- 1024
+max_connections = 40 (default 100)
+shared_buffers = 1GB (default 16384)
+effective_cache_size = 3GB (default 524288)
+maintenance_work_mem = 512MB (default 65536)
+checkpoint_completion_target = 0.9 (default 0.9)
+wal_buffers = 16MB (default 512)
+default_statistics_target = 500 (default 100)
+random_page_cost = 4 (default 4)
+effective_io_concurrency = 2 (default 16)
+work_mem = 6553kB (default 4096)
+min_wal_size = 4GB (default 80)
+max_wal_size = 16GB (default 1024)
 ```
 Перестартовываю кластер PostgreSQL `main`
 ```
