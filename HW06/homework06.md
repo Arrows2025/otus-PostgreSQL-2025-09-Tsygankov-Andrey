@@ -56,10 +56,39 @@ pgbench -c 8 -P 6 -T 60 -U postgres pbtest
 
 Тест Pgbench с новыми параметрами не показал изменения производительности в транзакциях в секунду, так как почти все изменённые параметры относились к оперативной памяти, что не являвляется узким местом производительности и повышения производительности на виртуальных машинах не даёт
 
-Создаю таблицу `test_table` с текстовым полем и заполняю её случайными сгенерированными данными в размере 1 миллион строк
+Создаю таблицу `test_table` с текстовым полем, заполняю её случайными сгенерированными данными в размере 1 миллион строк и узнаю её размер - 87 MB
+```
+sudo -u postgres psql
+
+postgres=# CREATE TABLE test_table (
+    id SERIAL PRIMARY KEY,
+    Data TEXT
+);
+CREATE TABLE
+postgres=# INSERT INTO test_table (Data) SELECT md5(random()::text) FROM generate_series(1, 1000000);
+INSERT 0 1000000
+postgres=# SELECT pg_size_pretty(pg_total_relation_size('test_table'));
+ pg_size_pretty
+----------------
+ 87 MB
+(1 строка)
+```
+<img width="1657" height="581" alt="image" src="https://github.com/user-attachments/assets/f0d69721-3a63-446a-80a2-9105239f1164" /><br>
 
 
-Задание со :star: Безымянная процедура которая 
+Задание со :star: Безымянная процедура, которая в цикле несколько раз обновляет все строки и добавляет к строкам номер шага цикла +S1+S2+S3... и т.д.
+```
+DO
+$BODY$
+BEGIN
+    FOR i IN 1 .. 10 LOOP
+        UPDATE test_table set Data = Data || '+S' || i;
+        RAISE NOTICE 'Шаг %', i;
+    END LOOP;
+END;
+$BODY$
+LANGUAGE plpgsql;
+```
 
 
 <img width="1602" height="1258" alt="image" src="https://github.com/user-attachments/assets/20d639ea-a351-411b-b1c9-56109331a5ea" />
