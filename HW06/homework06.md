@@ -90,5 +90,4 @@ $BODY$
 LANGUAGE plpgsql;
 ```
 
-
-<img width="1602" height="1258" alt="image" src="https://github.com/user-attachments/assets/20d639ea-a351-411b-b1c9-56109331a5ea" />
+<img width="1118" height="784" alt="image" src="https://github.com/user-attachments/assets/706c60ec-f5ac-4421-913f-71bd1d079b23" /><br>
