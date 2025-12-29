@@ -84,3 +84,6 @@ pgbench -c 50 -j 2 -P 60 -T 600 pbtest
 <img width="1267" height="903" alt="image" src="https://github.com/user-attachments/assets/380fc918-f60f-42fe-84b5-8adadfff98b5" /><br>
 
 
+
+
+<img width="1267" height="423" alt="image" src="https://github.com/user-attachments/assets/5fd17c19-a323-4d48-bc8d-dfbbf0fe6364" />
