@@ -83,7 +83,7 @@ postgres=# show data_checksums;
 ```
 <img width="1267" height="423" alt="image" src="https://github.com/user-attachments/assets/5fd17c19-a323-4d48-bc8d-dfbbf0fe6364" /><br>
 
-Создаю таблицу `test` и записываю в неё три значения: test1, test2, test3
+Создаю таблицу `test` и записываю в неё три значения: `test1, test2, test3`
 ```
 postgres=# create table test(id serial, value text);
 insert into test(value) values('test1'); 
@@ -99,20 +99,34 @@ postgres=# SELECT pg_relation_filenode('test'::regclass);
 ```
 <img width="963" height="423" alt="image" src="https://github.com/user-attachments/assets/c1327274-52ac-4efe-92ff-843762bbc022" /><br>
 
-123
+Останавливаю кластер `sudo pg_ctlcluster 18 main stop`
 
-<img width="1699" height="363" alt="image" src="https://github.com/user-attachments/assets/75a65106-8da7-4f8f-932c-8538a9278320" />
+<img width="1699" height="363" alt="image" src="https://github.com/user-attachments/assets/75a65106-8da7-4f8f-932c-8538a9278320" /><br>
+
+Нахожу и правлю файл `/var/lib/PostgreSQL/18/main/base/5/66172`, заменяю значения `test1, test2, test3` на значения `test4, test5, test6`
+
+<img width="1305" height="761" alt="image" src="https://github.com/user-attachments/assets/e75ad876-ac25-42db-bfd2-f973917b9e62" /><br>
+
+Стартую кластер, делаю выборку из таблицы `test` и получаю ошибку `ОШИБКА: некорректная страница в блоке 0 отношения "base/5/66172"`. Чтобы продолжить работу, включаю параметр `ignore_checksum_failure` в ON и снова делаю выборку из таблицы `test`. Теперь выборка выполняется без ошибки с новыми значениями `test4, test5, test6`, но с предупреждением об ошибке контрольной суммы.
+```
+postgres=# select * from test;
+ОШИБКА: некорректная страница в блоке 0 отношения "base/5/66172"
+postgres=# show ignore_checksum_failure;
+postgres=# ALTER SYSTEM SET ignore_checksum_failure = on;
+postgres=# select pg_reload_conf();
+postgres=# show ignore_checksum_failure;
+postgres=# select * from test;
+ПРЕДУПРЕЖДЕНИЕ: ошибка контрольной суммы в блоке 0 отношения "base/5/66172" игнорируется
+```
+<img width="1699" height="1323" alt="image" src="https://github.com/user-attachments/assets/ddb3a7e4-10b9-4e0d-8c2d-2803c884a5b7" /><br>
 
 
-<img width="4480" height="1595" alt="image" src="https://github.com/user-attachments/assets/2fc696b7-b16a-4695-b103-617ac2cea391" />
 
 
-<img width="1699" height="423" alt="image" src="https://github.com/user-attachments/assets/a4fcf224-15d5-4077-b91a-a950c58f0c87" />
 
 
-<img width="1699" height="1323" alt="image" src="https://github.com/user-attachments/assets/ddb3a7e4-10b9-4e0d-8c2d-2803c884a5b7" />
 
 
-<img width="1305" height="761" alt="image" src="https://github.com/user-attachments/assets/e75ad876-ac25-42db-bfd2-f973917b9e62" />
+
 
 
