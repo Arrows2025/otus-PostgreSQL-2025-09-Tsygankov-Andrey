@@ -33,4 +33,33 @@ postgres=# \q
 sudo su postgres
 pgbench -c 50 -j 2 -P 60 -T 600 pbtest
 ```
-<img width="1321" height="851" alt="image" src="https://github.com/user-attachments/assets/cb2485a5-8c4c-4564-9a8c-2f2cd430af7b" /><br>
+<img width="1267" height="903" alt="image" src="https://github.com/user-attachments/assets/cbf5927c-7dfe-4845-8a09-1f3b7721ff98" /><br>
+
+С помощью запроса нахожу идентификатор базы данных утилиты Pgbench: dbid = 40990
+```
+SELECT dbid,
+       queryid,
+       query,
+       total_exec_time,
+       wal_records,
+       wal_fpi,
+       wal_bytes,
+       stats_since
+FROM pg_stat_statements;
+```
+<img width="1297" height="622" alt="image" src="https://github.com/user-attachments/assets/515afeeb-3529-460c-be2a-a54b95e2eb6b" /><br>
+
+Считаю сумму байт журнальных файлов, которые были сгенерированы утилитой Pgbench - `358 083 342 байт ~ 342 Мб`. На одну контрольную точку приходится объём данных `342 Мб / 20 = 17.1 Мб`
+```
+SELECT sum(wal_bytes)
+FROM pg_stat_statements
+where dbid = 40990;
+```
+<img width="1267" height="753" alt="image" src="https://github.com/user-attachments/assets/ac355cb4-d77f-41a5-80b9-349cb2518716" /><br>
+
+
+Вывожу из лога БД PostgreSQL строки с временем запуска контрольных точек, за 10 минут работы утилиты Pgbench все 20 запусков контрольных точек произошли по расписанию через 30 секунд - в 08 и 38 секунд каждой минуты
+```
+tail -f -n52 /var/log/postgresql/postgresql-18-main.log | grep "начата контрольная точка: time"
+```
+<img width="1961" height="701" alt="image" src="https://github.com/user-attachments/assets/bd603f88-a9bc-461e-ae25-e9af653cadad" /><br>
