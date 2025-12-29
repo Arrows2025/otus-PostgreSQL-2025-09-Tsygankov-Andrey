@@ -18,13 +18,10 @@ pgbench -i pbtest
 
 Сбрасываю статистику, чтобы измерить какой объём журнальных файлов был сгенерирован за время работы утилиты Pgbench, и настраиваю выполнение контрольной точки раз в 30 секунд
 ```
-sudo -u postgres psql
-
 postgres=# SELECT pg_stat_statements_reset();
 postgres=# ALTER SYSTEM SET checkpoint_timeout = 30;
 postgres=# select pg_reload_conf();
 postgres=# show checkpoint_timeout;
-postgres=# \q
 ```
 <img width="1299" height="873" alt="image" src="https://github.com/user-attachments/assets/d65e1c19-d1a7-4598-ae40-55af6a030dd6" /><br>
 
@@ -67,14 +64,11 @@ tail -f -n52 /var/log/postgresql/postgresql-18-main.log | grep "начата к�
 
 Отключаю синхронный режим работы кластера
 ```
-sudo -u postgres psql
-
 postgres=# ALTER SYSTEM SET synchronous_commit = off;
 postgres=# select pg_reload_conf();
 postgres=# show synchronous_commit;
-postgres=# \q
 ```
-<img width="1267" height="663" alt="image" src="https://github.com/user-attachments/assets/2cfb4a89-5a37-472d-98a9-d0570276e781" />
+<img width="1267" height="663" alt="image" src="https://github.com/user-attachments/assets/2cfb4a89-5a37-472d-98a9-d0570276e781" /><br>
 
 И вновь запускаю утилиту Pgbench с такими же параметрами, чтобы измерить количество транзакций в секунду в асинхронном режиме. В синхронном режиме количество транзакций в секунду TPS = 250.744716, в асинхронном количество транзакций в секунду более чем вдвое выше TPS = 517.283712. В асинхронном режиме транзакции считаются зафиксированными сразу после записи в журнал WAL, без ожидания записи на диск, это кратно увеличивает производительность, но повышает риск потери данных
 ```
@@ -83,13 +77,42 @@ pgbench -c 50 -j 2 -P 60 -T 600 pbtest
 ```
 <img width="1267" height="903" alt="image" src="https://github.com/user-attachments/assets/380fc918-f60f-42fe-84b5-8adadfff98b5" /><br>
 
+Системная переменная в PostgreSQL `data_checksums` сообщает, включён ли в кластере контроль целостности данных (подсчёт контрольных сумм). В ранних версиях PostgreSQL эта переменная устанавливалась при инициализации кластера, в PostgreSQL 18 эта переменная включена по умолчанию, поэтому создание нового кластера не требуется. Проверяю значение параметра `data_checksums` - параметр включён
+```
+postgres=# show data_checksums;
+```
+<img width="1267" height="423" alt="image" src="https://github.com/user-attachments/assets/5fd17c19-a323-4d48-bc8d-dfbbf0fe6364" /><br>
+
+Создаю таблицу `test` и записываю в неё три значения: test1, test2, test3
+```
+postgres=# create table test(id serial, value text);
+insert into test(value) values('test1'); 
+insert into test(value) values('test2');
+insert into test(value) values('test3');
+postgres=# select * from test;
+```
+<img width="883" height="723" alt="image" src="https://github.com/user-attachments/assets/9f4db85d-f312-460d-8a8c-346a091f4b73" /><br>
+
+Нахожу имя файла, в котором находится созданная таблица `test` - `66172`
+```
+postgres=# SELECT pg_relation_filenode('test'::regclass);
+```
+<img width="963" height="423" alt="image" src="https://github.com/user-attachments/assets/c1327274-52ac-4efe-92ff-843762bbc022" /><br>
+
+123
+
+<img width="1699" height="363" alt="image" src="https://github.com/user-attachments/assets/75a65106-8da7-4f8f-932c-8538a9278320" />
 
 
-
-<img width="1267" height="423" alt="image" src="https://github.com/user-attachments/assets/5fd17c19-a323-4d48-bc8d-dfbbf0fe6364" />
-
-<img width="1571" height="333" alt="image" src="https://github.com/user-attachments/assets/f177225b-5f1e-4121-a756-5405c6fbc61a" />
+<img width="4480" height="1595" alt="image" src="https://github.com/user-attachments/assets/2fc696b7-b16a-4695-b103-617ac2cea391" />
 
 
-<img width="883" height="723" alt="image" src="https://github.com/user-attachments/assets/9f4db85d-f312-460d-8a8c-346a091f4b73" />
+<img width="1699" height="423" alt="image" src="https://github.com/user-attachments/assets/a4fcf224-15d5-4077-b91a-a950c58f0c87" />
+
+
+<img width="1699" height="1323" alt="image" src="https://github.com/user-attachments/assets/ddb3a7e4-10b9-4e0d-8c2d-2803c884a5b7" />
+
+
+<img width="1305" height="761" alt="image" src="https://github.com/user-attachments/assets/e75ad876-ac25-42db-bfd2-f973917b9e62" />
+
 
