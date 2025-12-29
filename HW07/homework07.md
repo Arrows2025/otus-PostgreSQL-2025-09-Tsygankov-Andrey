@@ -63,3 +63,24 @@ where dbid = 40990;
 tail -f -n52 /var/log/postgresql/postgresql-18-main.log | grep "начата контрольная точка: time"
 ```
 <img width="1961" height="701" alt="image" src="https://github.com/user-attachments/assets/bd603f88-a9bc-461e-ae25-e9af653cadad" /><br>
+
+
+Отключаю синхронный режим работы кластера
+```
+sudo -u postgres psql
+
+postgres=# ALTER SYSTEM SET synchronous_commit = off;
+postgres=# select pg_reload_conf();
+postgres=# show synchronous_commit;
+postgres=# \q
+```
+<img width="1267" height="663" alt="image" src="https://github.com/user-attachments/assets/2cfb4a89-5a37-472d-98a9-d0570276e781" />
+
+И вновь запускаю утилиту Pgbench с такими же параметрами, чтобы измерить количество транзакций в секунду в асинхронном режиме. В синхронном режиме количество транзакций в секунду TPS = 250.744716, в асинхронном количество транзакций в секунду более чем вдвое выше TPS = 517.283712. В асинхронном режиме транзакции считаются зафиксированными сразу после записи в журнал WAL, без ожидания записи на диск, это кратно увеличивает производительность, но повышает риск потери данных
+```
+sudo su postgres
+pgbench -c 50 -j 2 -P 60 -T 600 pbtest
+```
+<img width="1267" height="903" alt="image" src="https://github.com/user-attachments/assets/380fc918-f60f-42fe-84b5-8adadfff98b5" /><br>
+
+
