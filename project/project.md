@@ -37,6 +37,7 @@ etcd --version                       # проверка установки
 ```
 <img width="2537" height="641" alt="image" src="https://github.com/user-attachments/assets/e083d8bd-7fba-424e-9b06-9ba2d0293149" />
 <img width="2537" height="1361" alt="image" src="https://github.com/user-attachments/assets/664912f2-e361-4080-bb49-db7a219b3d48" />
-<img width="2537" height="221" alt="image" src="https://github.com/user-attachments/assets/491ca40e-1520-4799-bb42-dfb63cea3c67" />
+<img width="2537" height="221" alt="image" src="https://github.com/user-attachments/assets/491ca40e-1520-4799-bb42-dfb63cea3c67" /><br><br>
 
-
+Отключаю автоматический запуск сервиса PostgreSQL `systemctl disable postgresql.service`
+<img width="1801" height="221" alt="image" src="https://github.com/user-attachments/assets/1c923260-e1c5-46af-bbb6-9df4e35869da" /><br>
