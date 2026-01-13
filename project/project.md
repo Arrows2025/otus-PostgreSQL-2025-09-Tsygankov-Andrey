@@ -61,13 +61,13 @@ sudo rm -rf /var/lib/etcd/default
 Настраиваю etcd на трёх узлах `sudo nano /etc/default/etcd`
 
 ```
-ETCD_NAME="etcd-Node-0"
+ETCD_NAME="etcd-node-0"
 ETCD_LISTEN_CLIENT_URLS="http://192.168.0.50:2379,http://localhost:2379"
-ETCD_ADVERTISE_CLIENT_URLS="http://ubuntu24server:2379"
+ETCD_ADVERTISE_CLIENT_URLS="http://192.168.0.50:2379"
 ETCD_LISTEN_PEER_URLS="http://192.168.0.50:2380"
-ETCD_INITIAL_ADVERTISE_PEER_URLS="http://ubuntu24server:2380"
-ETCD_INITIAL_CLUSTER_TOKEN="etcd_Cluster"
-ETCD_INITIAL_CLUSTER="etcd-Node-0=http://ubuntu24server:2380, etcd-Node-1=http://ubuntu24node1:2380, etcd-Node-2 = http://ubuntu24node2:2380"
+ETCD_INITIAL_ADVERTISE_PEER_URLS="http://192.168.0.50:2380"
+ETCD_INITIAL_CLUSTER_TOKEN="etcd_cluster"
+ETCD_INITIAL_CLUSTER="etcd-node-0=http://192.168.0.50:2380,etcd-node-1=http://192.168.0.51:2380,etcd-node-2=http://192.168.0.52:2380"
 ETCD_INITIAL_CLUSTER_STATE="new"
 ETCD_DATA_DIR="/var/lib/etcd"
 ETCD_ELECTION_TIMEOUT="10000"
