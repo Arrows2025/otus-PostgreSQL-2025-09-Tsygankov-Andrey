@@ -29,6 +29,9 @@ postgres=# \q
 
 Перезагрузка кластера базы данных `sudo pg_ctlcluster 18 main restart` и тест соединения с БД PostgreSQL через приложение DBeaver прошёл успешно
 
+Отключаю автоматический запуск сервиса PostgreSQL `sudo systemctl disable postgresql.service`
+<img width="1801" height="221" alt="image" src="https://github.com/user-attachments/assets/1c923260-e1c5-46af-bbb6-9df4e35869da" /><br>
+
 Устанавливаю etcd
 ```
 sudo apt-get update                  # обновление системы
@@ -52,8 +55,6 @@ sudo rm -rf /var/lib/etcd/default
 
 
 
-Отключаю автоматический запуск сервиса PostgreSQL `sudo systemctl disable postgresql.service`
-<img width="1801" height="221" alt="image" src="https://github.com/user-attachments/assets/1c923260-e1c5-46af-bbb6-9df4e35869da" /><br>
 
 Проверяю статус etcd `systemctl status etcd`
 <img width="2361" height="761" alt="image" src="https://github.com/user-attachments/assets/d8e552eb-f9ad-4682-a3a5-33b1daccb7a8" /><br>
@@ -107,3 +108,11 @@ ETCD_HEARTBEAT_INTERVAL="2000"
 ETCD_INITIAL_ELECTION_TICK_ADVANCE="false"
 ETCD_ENABLE_V2="true"
 ```
+
+Проверка кластера etcd, кластер стартован успешно
+```
+etcdctl member list
+etcdctl endpoint --cluster health
+etcdctl endpoint status --cluster -w table
+```
+<img width="2393" height="551" alt="image" src="https://github.com/user-attachments/assets/08540393-4c66-42e2-aa6d-a68b1198b2a4" /><br>
