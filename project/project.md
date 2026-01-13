@@ -32,12 +32,23 @@ postgres=# \q
 Устанавливаю etcd
 ```
 sudo apt-get update                  # обновление системы
-sudo apt-get install etcd-server     # установка etcd
+sudo apt-get install etcd-server     # установка etcd-server
+sudo apt-get install etcd-client     # установка etcd-client
 etcd --version                       # проверка установки
 ```
 <img width="2537" height="641" alt="image" src="https://github.com/user-attachments/assets/e083d8bd-7fba-424e-9b06-9ba2d0293149" />
 <img width="2537" height="1361" alt="image" src="https://github.com/user-attachments/assets/664912f2-e361-4080-bb49-db7a219b3d48" />
+<img width="2537" height="1031" alt="image" src="https://github.com/user-attachments/assets/b7553652-3db2-401f-be5f-a343db2a7c6d" />
 <img width="2537" height="221" alt="image" src="https://github.com/user-attachments/assets/491ca40e-1520-4799-bb42-dfb63cea3c67" /><br><br>
 
-Отключаю автоматический запуск сервиса PostgreSQL `systemctl disable postgresql.service`
+Отключаю автоматический запуск сервиса PostgreSQL `sudo systemctl disable postgresql.service`
 <img width="1801" height="221" alt="image" src="https://github.com/user-attachments/assets/1c923260-e1c5-46af-bbb6-9df4e35869da" /><br>
+
+Проверяю статус etcd `systemctl status etcd`
+<img width="2361" height="761" alt="image" src="https://github.com/user-attachments/assets/d8e552eb-f9ad-4682-a3a5-33b1daccb7a8" /><br>
+
+
+
+```
+ETCD_NAME="etcd-Name-1" ETCD_LISTEN_CLIENT_URLS="http://192.168.1.14:2379,http://localhost:2379" ETCD_ADVERTISE_CLIENT_URLS="http://hostname1:2379" ETCD_LISTEN_PEER_URLS="http://192.168.1.14:2380" ETCD_INITIAL_ADVERTISE_PEER_URLS="http://hostname1:2380" ETCD_INITIAL_CLUSTER_TOKEN="etcd_Name_Claster" ETCD_INITIAL_CLUSTER="etcd-Name-1=http://hostname1:2380, etcd-Name-2=http://hostname2:2380, etcd-Name-3 = http://hostname3:2380" ETCD_INITIAL_CLUSTER_STATE="new" ETCD_DATA_DIR="/var/lib/etcd" ETCD_ELECTION_TIMEOUT="10000" ETCD_HEARTBEAT_INTERVAL="2000" ETCD_INITIAL_ELECTION_TICK_ADVANCE="false" ETCD_ENABLE_V2="true"
+```
