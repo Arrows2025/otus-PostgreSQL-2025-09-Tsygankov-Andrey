@@ -1,6 +1,7 @@
 # Проектная работа
 ## Создание и тестирование высоконагруженного отказоустойчивого кластера PostgreSQL с использованием Patroni, etcd, HAProxy
 
+### 1. Установка PostgreSQL
 Для проектной работы в Oracle VirtualBox Manager созданы три виртуальные машины с процессором на 1 ядро и 2 Гб оперативной памяти, на каждую виртуальную машину установлена серверная операционная система Ubuntu 24.04.3:
 * Ubuntu24Server - IP 192.168.0.50
 * Ubuntu24Node1 - IP 192.168.0.51
@@ -32,7 +33,7 @@ postgres=# \q
 Отключаю автоматический запуск сервиса PostgreSQL `sudo systemctl disable postgresql.service`
 <img width="1801" height="221" alt="image" src="https://github.com/user-attachments/assets/1c923260-e1c5-46af-bbb6-9df4e35869da" /><br>
 
-Устанавливаю etcd
+### 2. Установка etcd
 ```
 sudo apt-get update                  # обновление системы
 sudo apt-get install etcd-server     # установка etcd-server
