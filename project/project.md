@@ -116,7 +116,7 @@ sudo systemctl start etcd
 sudo systemctl enable etcd
 etcdctl endpoint status --cluster -w table
 ```
-<img width="4480" height="1595" alt="image" src="https://github.com/user-attachments/assets/c094112a-5dbc-4655-927d-ffca359dfe31" /><br>
+<img width="2393" height="491" alt="image" src="https://github.com/user-attachments/assets/03fc81aa-696d-42d7-a696-24aedacf036f" /><br>
 
 Проверка работоспособности кластера - лидером на текущий момент является узел 192.168.0.51, останавливаю etdc на узле 192.168.0.51 и проверяю состояние кластера - лидером становится узел 192.168.0.52
 <img width="2393" height="401" alt="image" src="https://github.com/user-attachments/assets/f2b090d0-70f6-4aa0-b580-a07ad36bb9d2" /><br>
