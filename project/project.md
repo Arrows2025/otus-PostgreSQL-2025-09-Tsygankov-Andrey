@@ -44,7 +44,7 @@ etcd --version                       # проверка установки
 <img width="2537" height="1031" alt="image" src="https://github.com/user-attachments/assets/b7553652-3db2-401f-be5f-a343db2a7c6d" />
 <img width="2537" height="221" alt="image" src="https://github.com/user-attachments/assets/491ca40e-1520-4799-bb42-dfb63cea3c67" /><br><br>
 
-Удаляю конфигурацию etcd по умолчанию
+Останавливаю etcd, выключаю сервис etcd из автозагрузки systemd и удаляю конфигурацию etcd по умолчанию
 ```
 sudo systemctl stop etcd
 sudo systemctl disable etcd
@@ -52,15 +52,7 @@ sudo rm -rf /var/lib/etcd/default
 ```
 <img width="1705" height="281" alt="image" src="https://github.com/user-attachments/assets/eddc7e25-5f64-4c52-9bb0-ab53c9afad1b" /><br>
 
-
-
-
-
-Проверяю статус etcd `systemctl status etcd`
-<img width="2361" height="761" alt="image" src="https://github.com/user-attachments/assets/d8e552eb-f9ad-4682-a3a5-33b1daccb7a8" /><br>
-
 Настраиваю etcd на трёх узлах `sudo nano /etc/default/etcd`
-
 ```
 ETCD_NAME="etcd-node-0"
 ETCD_LISTEN_PEER_URLS="http://0.0.0.0:2380"
@@ -117,4 +109,19 @@ etcdctl endpoint status --cluster -w table
 ```
 <img width="2393" height="551" alt="image" src="https://github.com/user-attachments/assets/21eea86f-67d2-46b8-b1ed-d0e97d42ea81" /><br>
 
-Останавливаю etcd для корректировки параметра ETCD_INITIAL_CLUSTER_STATE="new" на ETCD_INITIAL_CLUSTER_STATE="existing" и вновь запускаю кластер
+Останавливаю etcd на трёх узлах для корректировки параметра ETCD_INITIAL_CLUSTER_STATE="new" на ETCD_INITIAL_CLUSTER_STATE="existing" и вновь запускаю кластер, включаю сервис etcd в автозагрузку systemd
+```
+sudo systemctl start etcd
+sudo systemctl enable etcd
+etcdctl endpoint status --cluster -w table
+```
+<img width="4480" height="1595" alt="image" src="https://github.com/user-attachments/assets/c094112a-5dbc-4655-927d-ffca359dfe31" /><br>
+
+Проверка работоспособности кластера - лидером на текущий момент является узел 192.168.0.51, останавливаю etdc на узле 192.168.0.51 и проверяю состояние кластера - лидером становится узел 192.168.0.52
+<img width="2393" height="401" alt="image" src="https://github.com/user-attachments/assets/f2b090d0-70f6-4aa0-b580-a07ad36bb9d2" /><br>
+
+Стартую etcd на узле 192.168.0.51, узел возвращается в состав кластера
+<img width="2393" height="311" alt="image" src="https://github.com/user-attachments/assets/37bf7bf7-656c-4cd1-b17d-332628424fc5" /><br>
+
+
+
