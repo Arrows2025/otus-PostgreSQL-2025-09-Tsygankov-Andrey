@@ -109,10 +109,12 @@ ETCD_INITIAL_ELECTION_TICK_ADVANCE="false"
 ETCD_ENABLE_V2="true"
 ```
 
-Проверка кластера etcd, кластер стартован успешно
+Запускаю etcd на трёх узлах `sudo systemctl start etcd' и проверяю состояние кластера etcd, кластер стартован успешно
 ```
 etcdctl member list
 etcdctl endpoint --cluster health
 etcdctl endpoint status --cluster -w table
 ```
-<img width="2393" height="551" alt="image" src="https://github.com/user-attachments/assets/08540393-4c66-42e2-aa6d-a68b1198b2a4" /><br>
+<img width="2393" height="551" alt="image" src="https://github.com/user-attachments/assets/21eea86f-67d2-46b8-b1ed-d0e97d42ea81" /><br>
+
+Останавливаю etcd для корректировки параметра ETCD_INITIAL_CLUSTER_STATE="new" на ETCD_INITIAL_CLUSTER_STATE="existing" и вновь запускаю кластер
