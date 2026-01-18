@@ -17,14 +17,16 @@ listen_addresses = '*'                   # what IP address(es) to listen on;
 ```
 Редактирую конфигурационный файл PostgreSQL `sudo nano /etc/postgresql/18/main/pg_hba.conf` для доступа к БД PostgreSQL с моей локальной машины
 ```
-добавить в конец файла строку
-host    all             all             192.168.0.129/24        scram-sha-256
+добавить в конец файла строки
+host    all             all             0.0.0.0/0               scram-sha-256
+host    replication     replicator      0.0.0.0/0               scram-sha-256
 ```
-Устанавливаю пароль для пользователя базы данных postgres
+Устанавливаю пароль для пользователя базы данных postgres и создаю нового пользователя replicator
 ```
 sudo -u postgres psql
 
 postgres=# \password
+postgres=# create user replicator replication login encrypted password 'replicator';
 postgres=# \q
 ```
 
