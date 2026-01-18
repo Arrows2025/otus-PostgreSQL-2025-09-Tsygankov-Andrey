@@ -124,6 +124,8 @@ etcdctl endpoint status --cluster -w table
 Стартую etcd на узле 192.168.0.51, узел возвращается в состав кластера
 <img width="2393" height="311" alt="image" src="https://github.com/user-attachments/assets/37bf7bf7-656c-4cd1-b17d-332628424fc5" /><br>
 
+Достаточно много времени ушло на решение следующей проблемы: скопировав настройки etcd из презентации, не сразу понял, что в параметр ETCD_DATA_DIR надо ещё добавить значение ETCD_INITIAL_CLUSTER_TOKEN="pg-cluster", чтобы получился следующий путь ETCD_DATA_DIR="/var/lib/etcd/pg-cluster", пока этого не сделал, кластер не запускался.
+
 ### 3. Установка и настройка Patroni
 
 
