@@ -30,7 +30,9 @@ postgres=# create user replicator replication login encrypted password 'replicat
 postgres=# \q
 ```
 
-Перезагрузка кластера базы данных `sudo pg_ctlcluster 18 main restart` и тест соединения с БД PostgreSQL через приложение DBeaver прошёл успешно
+Перезагрузка кластера базы данных `sudo pg_ctlcluster 18 main restart` и тест соединения с БД PostgreSQL через приложение DBeaver прошёл успешно. Содержимое базы данных на первом узле следующее:
+<img width="2099" height="843" alt="image" src="https://github.com/user-attachments/assets/fdf7f70b-8f19-40f1-926d-35fcd6b2adcc" /><br>
+
 
 Останавливаю PostgreSQL, отключаю автоматический запуск сервиса PostgreSQL, на второй и третьей ноде удаляю содержимое каталога pgdata
 ```
