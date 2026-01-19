@@ -32,8 +32,13 @@ postgres=# \q
 
 Перезагрузка кластера базы данных `sudo pg_ctlcluster 18 main restart` и тест соединения с БД PostgreSQL через приложение DBeaver прошёл успешно
 
-Отключаю автоматический запуск сервиса PostgreSQL `sudo systemctl disable postgresql.service`
-<img width="1801" height="221" alt="image" src="https://github.com/user-attachments/assets/1c923260-e1c5-46af-bbb6-9df4e35869da" /><br>
+Останавливаю PostgreSQL, отключаю автоматический запуск сервиса PostgreSQL, на второй и третьей ноде удаляю содержимое каталога pgdata
+```
+sudo systemctl stop postgresql
+sudo systemctl disable postgresql.service
+sudo rm -rf /var/lib/postgresql/18/main/
+```
+<img width="1801" height="221" alt="image" src="https://github.com/user-attachments/assets/dcee54d8-850d-4f49-974b-defbe7138af6" /><br>
 
 ### 2. Установка и настройка etcd
 ```
