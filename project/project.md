@@ -74,7 +74,6 @@ ETCD_DATA_DIR="/var/lib/etcd/pg-cluster"
 ETCD_ELECTION_TIMEOUT="10000"
 ETCD_HEARTBEAT_INTERVAL="2000"
 ETCD_INITIAL_ELECTION_TICK_ADVANCE="false"
-ETCD_ENABLE_V2="true"
 ```
 
 ```
@@ -90,7 +89,6 @@ ETCD_DATA_DIR="/var/lib/etcd/pg-cluster"
 ETCD_ELECTION_TIMEOUT="10000"
 ETCD_HEARTBEAT_INTERVAL="2000"
 ETCD_INITIAL_ELECTION_TICK_ADVANCE="false"
-ETCD_ENABLE_V2="true"
 ```
 
 ```
@@ -106,7 +104,6 @@ ETCD_DATA_DIR="/var/lib/etcd/pg-cluster"
 ETCD_ELECTION_TIMEOUT="10000"
 ETCD_HEARTBEAT_INTERVAL="2000"
 ETCD_INITIAL_ELECTION_TICK_ADVANCE="false"
-ETCD_ENABLE_V2="true"
 ```
 
 Запускаю etcd на трёх узлах `sudo systemctl start etcd' и проверяю состояние кластера etcd, кластер стартован успешно
