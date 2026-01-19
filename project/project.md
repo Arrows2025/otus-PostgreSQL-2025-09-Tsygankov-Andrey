@@ -132,4 +132,18 @@ etcdctl endpoint status --cluster -w table
 
 ### 3. Установка и настройка Patroni
 
+На трёх узнал устанавливаю Patroni
+```
+sudo apt install python3.12-venv -- установка модуля для создания виртуальных окружений
+sudo mkdir-p /opt/patroni -- создание каталога для Patroni
+sudo chown postgres:postgres /opt/patroni -- передача прав владения каталогом пользователю postgres
+sudo -u postgres python3 -m venv /opt/patroni/venv -- создание виртуального окружения от имени postgres
+sudo -u postgres /opt/patroni/venv/bin/pip install 'patroni[etcd3]' -- установка Patroni с поддержкой etcd3
+sudo -u postgres /opt/patroni/venv/bin/pip install 'psycopg2-binary' -- установка драйвера для работы Patroni с PostgreSQL
+```
+<img width="2553" height="1301" alt="image" src="https://github.com/user-attachments/assets/74957c10-a731-403e-80fa-f9fcee47ad43" />
+<img width="2553" height="1301" alt="image" src="https://github.com/user-attachments/assets/32a4d2f9-0ae5-4e45-ac79-ef0779012057" />
+<img width="2553" height="1271" alt="image" src="https://github.com/user-attachments/assets/71d8debd-7e8e-42c7-84d6-b453b791ba10" />
+<img width="2553" height="281" alt="image" src="https://github.com/user-attachments/assets/afa05548-b806-42b4-ad7d-ea6be8cd8c9d" />
+
 
