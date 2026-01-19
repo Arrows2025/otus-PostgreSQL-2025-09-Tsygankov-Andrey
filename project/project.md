@@ -38,7 +38,7 @@ sudo systemctl stop postgresql
 sudo systemctl disable postgresql.service
 sudo rm -rf /var/lib/postgresql/18/main/
 ```
-<img width="1801" height="221" alt="image" src="https://github.com/user-attachments/assets/dcee54d8-850d-4f49-974b-defbe7138af6" /><br>
+<img width="1801" height="251" alt="image" src="https://github.com/user-attachments/assets/f7a31696-e6d1-4989-acfa-6b91bfd15542" /><br>
 
 ### 2. Установка и настройка etcd
 ```
