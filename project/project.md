@@ -191,6 +191,7 @@ postgresql:
   connect_address: 192.168.0.50:5432
   data_dir: /var/lib/postgresql/18/main
   bin_dir: /usr/lib/postgresql/18/bin
+  config_dir: /etc/postgresql/18/main
   authentication:
     replication:
       username: replicator
@@ -217,6 +218,7 @@ After=syslog.target network.target
 Type=simple
 User=postgres
 Group=postgres
+EnvironmentFile=/etc/patroni/patroni_env.confsudo mc
 ExecStart=/opt/patroni/venv/bin/patroni /etc/patroni/config.yml
 KillMode=process
 TimeoutSec=30
@@ -260,4 +262,5 @@ systemctl status patroni
 <img width="503" height="168" alt="image" src="https://github.com/user-attachments/assets/bda90768-71c1-43a4-8602-a34101788292" /><br>
 
 
+<img width="2030" height="441" alt="image" src="https://github.com/user-attachments/assets/96f03202-5951-4d84-924d-ca97ddb92ac4" />
 
