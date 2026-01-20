@@ -172,7 +172,8 @@ bootstrap:
     postgresql:
       use_pg_rewind: true
       pg_hba:
-      - host replication replicator 0.0.0.0/0 scram-sha-256
+      - host replication replicator 127.0.0.1/32 scram-sha-256
+      - host replication replicator 192.168.0.0/24 scram-sha-256
       - host all all 0.0.0.0/0 scram-sha-256
       parameters:
         wal_level: hot_standby
@@ -200,7 +201,7 @@ postgresql:
       username: postgres
       password: postgres
   parameters:
-    unix_socket_directories: /var/lib/postgresql/18/
+    unix_socket_directories: /var/lib/postgresql/18
 tags:
     nofailover: false
     noloadbalance: false
