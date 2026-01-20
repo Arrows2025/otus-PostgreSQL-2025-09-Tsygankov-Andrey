@@ -201,7 +201,7 @@ postgresql:
       username: postgres
       password: postgres
   parameters:
-    unix_socket_directories: /var/lib/postgresql/18
+    unix_socket_directories: /var/run/postgresql
 tags:
     nofailover: false
     noloadbalance: false
