@@ -218,7 +218,6 @@ After=syslog.target network.target
 Type=simple
 User=postgres
 Group=postgres
-EnvironmentFile=/etc/patroni/patroni_env.confsudo mc
 ExecStart=/opt/patroni/venv/bin/patroni /etc/patroni/config.yml
 KillMode=process
 TimeoutSec=30
@@ -240,8 +239,26 @@ systemctl status patroni
 
 Меняю переменную PATH для текущей сессии `export PATH="$PATH:/opt/patroni/venv/bin/"` и добавляю в файл `sudo nano /etc/environment` в переменную PATH путь установки Patroni `PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/patroni/venv/bin/"`, так как после установки Patroni файл patronictl система не видит
 
-Проверяю состояние кластера `patronictl -c /etc/patroni/config.yml list`, появилась первая нода
+Проверяю состояние кластера `patronictl -c /etc/patroni/config.yml list`, появилась первая нода, но она не запустилась
 <img width="1545" height="311" alt="image" src="https://github.com/user-attachments/assets/f857adf7-5036-449b-a81d-6532cd5fe587" /><br>
+
+Смотрю статус Patroni
+<img width="2030" height="441" alt="image" src="https://github.com/user-attachments/assets/96f03202-5951-4d84-924d-ca97ddb92ac4" /><br>
+
+Ошибка: postgres не может открыть файл конфигурации сервера "/var/lib/postgresql/18/main/postgresql.conf", добавляю в конфигурационный файл Patroni `sudo nano /etc/patroni/config.yml` параметр `postgresql.config_dir: /etc/postgresql/18/main`
+
+Останавливаю Patroni, удаляю ноду из кластера и заново стартую сервис Patroni на первой ноде
+```
+systemctl stop patroni
+patronictl -c /etc/patroni/config.yml remove patroni-cluster
+systemctl daemon-reload
+systemctl enable patroni
+systemctl start patroni
+systemctl status patroni
+```
+<img width="2489" height="1151" alt="image" src="https://github.com/user-attachments/assets/691f8b2b-5f14-44a0-8345-c6c388a35abc" /><br>
+<img width="2489" height="971" alt="image" src="https://github.com/user-attachments/assets/bb351748-9890-45b9-bfb3-7f56454c180b" /><br>
+
 
 Перевожу Patroni в автозапуск, стартую сервис Patroni и правлю переменную PATH на второй ноде - Patroni не запустился, забыл поменять в файле конфигурации Patroni параметр `name` :astonished::-1:
 <img width="1390" height="300" alt="image" src="https://github.com/user-attachments/assets/8dccfa06-919d-4406-848f-7dd3a7539576" /><br>
