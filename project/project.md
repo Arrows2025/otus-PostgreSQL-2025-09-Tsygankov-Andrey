@@ -146,6 +146,61 @@ sudo -u postgres /opt/patroni/venv/bin/pip install 'psycopg2-binary' -- уста
 <img width="2553" height="1301" alt="image" src="https://github.com/user-attachments/assets/74957c10-a731-403e-80fa-f9fcee47ad43" />
 <img width="2553" height="1301" alt="image" src="https://github.com/user-attachments/assets/32a4d2f9-0ae5-4e45-ac79-ef0779012057" />
 <img width="2553" height="1271" alt="image" src="https://github.com/user-attachments/assets/71d8debd-7e8e-42c7-84d6-b453b791ba10" />
-<img width="2553" height="281" alt="image" src="https://github.com/user-attachments/assets/afa05548-b806-42b4-ad7d-ea6be8cd8c9d" />
+<img width="2553" height="281" alt="image" src="https://github.com/user-attachments/assets/afa05548-b806-42b4-ad7d-ea6be8cd8c9d" /><br><br>
+
+Создаю файлы конфигураций Patroni на трёх узлах, аналогично представленному ниже для первой ноды
+```
+scope: patroni-cluster
+namespace: /patroni/
+name: node0
+restapi:
+  listen: 192.168.0.50:8008
+  connect_address: 192.168.0.50:8008
+etcd3:
+  protocol: http
+  hosts: 192.168.0.50:2379,192.168.0.51:2379,192.168.0.52:2379
+bootstrap:
+  dcs:
+    ttl: 30
+    loop_wait: 10
+    retry_timeout: 10
+    maximum_lag_on_failover: 1048576
+    postgresql:
+      use_pg_rewind: true
+      pg_hba:
+      - host replication replicator 0.0.0.0/0 scram-sha-256
+      - host all all 0.0.0.0/0 scram-sha-256
+      parameters:
+        wal_level: hot_standby
+        hot_standby: "on"
+  initdb:
+  - encoding: UTF8
+  - data-checksums
+  users:
+    arrows:
+      password: ********
+      options:
+      - createrole
+      - createdb
+postgresql:
+  listen: 192.168.0.50:5432
+  connect_address: 192.168.0.50:5432
+  data_dir: /var/lib/postgresql/18/main
+  bin_dir: /usr/lib/postgresql/18/bin
+  authentication:
+    replication:
+      username: replicator
+      password: replicator
+    superuser:
+      username: postgres
+      password: postgres
+  parameters:
+    unix_socket_directories: '.'
+tags:
+    nofailover: false
+    noloadbalance: false
+    clonefrom: false
+    nosync: false
+```
 
 
