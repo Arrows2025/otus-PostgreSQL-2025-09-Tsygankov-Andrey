@@ -256,6 +256,8 @@ systemctl status patroni
 Запускаю PostgreSQL на первой ноде и получаю следующее состояние кластера Patroni
 <img width="1609" height="311" alt="image" src="https://github.com/user-attachments/assets/78aeb364-8c34-4528-828c-62bbd1953a04" /><br>
 
+На второй и третьей ноде начал заполняться каталог pgdata `/var/lib/postgresql/18/main`, размер базы данных на первой ноде ~ 6,5 Гб, поэтому придётся некоторое время подождать
+<img width="503" height="168" alt="image" src="https://github.com/user-attachments/assets/bda90768-71c1-43a4-8602-a34101788292" /><br>
 
 
 
