@@ -200,7 +200,7 @@ postgresql:
       username: postgres
       password: postgres
   parameters:
-    unix_socket_directories: '.'
+    unix_socket_directories: /var/lib/postgresql/18/
 tags:
     nofailover: false
     noloadbalance: false
@@ -258,6 +258,11 @@ systemctl status patroni
 ```
 <img width="2489" height="1151" alt="image" src="https://github.com/user-attachments/assets/691f8b2b-5f14-44a0-8345-c6c388a35abc" /><br>
 <img width="2489" height="971" alt="image" src="https://github.com/user-attachments/assets/bb351748-9890-45b9-bfb3-7f56454c180b" /><br>
+<img width="1497" height="311" alt="image" src="https://github.com/user-attachments/assets/b9d3a5e0-712a-402d-8bd2-9d16d2332a17" />
+
+Первая нода стартовала, но зайти БД PostgreSQL не удалось
+
+
 
 
 Перевожу Patroni в автозапуск, стартую сервис Patroni и правлю переменную PATH на второй ноде - Patroni не запустился, забыл поменять в файле конфигурации Patroni параметр `name` :astonished::-1:
@@ -281,3 +286,10 @@ systemctl status patroni
 
 <img width="2030" height="441" alt="image" src="https://github.com/user-attachments/assets/96f03202-5951-4d84-924d-ca97ddb92ac4" />
 
+
+
+
+<img width="1497" height="191" alt="image" src="https://github.com/user-attachments/assets/c9f31a60-9622-4111-b3ed-fe8990218ef9" />
+
+
+<img width="1609" height="281" alt="image" src="https://github.com/user-attachments/assets/71ae881d-bc6e-40c8-bcf7-be49d76ae945" />
