@@ -207,4 +207,55 @@ tags:
     nosync: false
 ```
 
+Определяю Patroni как службу, на каждом узле создаю файл `sudo nano /etc/systemd/system/patroni.service` с одинаковым содержимым:
+```
+[Unit]
+Description=High availability PostgreSQL Cluster
+After=syslog.target network.target
+
+[Service]
+Type=simple
+User=postgres
+Group=postgres
+ExecStart=/opt/patroni/venv/bin/patroni /etc/patroni/config.yml
+KillMode=process
+TimeoutSec=30
+Restart=no
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Перевожу Patroni в автозапуск и стартую сервис Patroni на первой ноде
+```
+systemctl daemon-reload
+systemctl enable patroni
+systemctl start patroni
+systemctl status patroni
+```
+
+<img width="2537" height="1391" alt="image" src="https://github.com/user-attachments/assets/fe48ba03-6fc7-4260-92eb-123aad225f9b" /><br>
+
+Меняю переменную PATH для текущей сессии `export PATH="$PATH:/opt/patroni/venv/bin/"` и добавляю в файл `sudo nano /etc/environment` в переменную PATH путь установки Patroni `PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/patroni/venv/bin/"`, так как после установки Patroni файл patronictl система не видит
+
+Проверяю состояние кластера `patronictl -c /etc/patroni/config.yml list`, появилась первая нода
+<img width="1545" height="311" alt="image" src="https://github.com/user-attachments/assets/f857adf7-5036-449b-a81d-6532cd5fe587" /><br>
+
+Перевожу Patroni в автозапуск, стартую сервис Patroni и правлю переменную PATH на второй ноде - Patroni не запустился, забыл поменять в файле конфигурации Patroni параметр `name` :astonished::-1:
+<img width="1390" height="300" alt="image" src="https://github.com/user-attachments/assets/8dccfa06-919d-4406-848f-7dd3a7539576" /><br>
+
+Правлю параметр `name` в файле `sudo nano /etc/patroni/config.yml` на второй и третьей ноде, перезапускаю Patroni на второй ноде и проверяю состояние кластера, вторая нода добавилась :+1:
+<img width="1545" height="521" alt="image" src="https://github.com/user-attachments/assets/68132618-8ec1-47b1-b25c-f696c2ed1e4c" /><br>
+
+Перевожу Patroni в автозапуск, стартую сервис Patroni и правлю переменную PATH на третьей ноде, проверяю состояние кластера, третья нода добавилась, но первая нода стартанула с ошибкой и Patroni не смог выбрать лидера
+<img width="1545" height="761" alt="image" src="https://github.com/user-attachments/assets/d4d51480-2400-4234-b095-689a6234a115" /><br>
+
+Проверяю статус Patroni на первой ноде
+<img width="2230" height="299" alt="image" src="https://github.com/user-attachments/assets/c195bad3-be43-405f-804c-4871767452c6" /><br>
+
+Запускаю PostgreSQL на первой ноде и получаю следующее состояние кластера Patroni
+<img width="1609" height="311" alt="image" src="https://github.com/user-attachments/assets/78aeb364-8c34-4528-828c-62bbd1953a04" /><br>
+
+
+
 
