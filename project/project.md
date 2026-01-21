@@ -278,15 +278,18 @@ patronictl -c /etc/patroni/config.yml edit-config patroni-cluster
 Правлю параметр `name` в файле `sudo nano /etc/patroni/config.yml` на второй и третьей ноде, перезапускаю Patroni на второй ноде и проверяю состояние кластера, вторая нода добавилась в режиме создания реплики :+1:
 <img width="1609" height="281" alt="image" src="https://github.com/user-attachments/assets/dee351fb-9e67-4005-afa7-ab6b8df05aa9" /><br>
 
+На второй ноде начал заполняться каталог pgdata `/var/lib/postgresql/18/main`, размер базы данных на первой ноде ~ 6,5 Гб, там находятся базы инициализации утилит Pgbench и Sysbench. Примерно через пять минут вторая нода вышла в режим потоковой репликации `streaming`
+<img width="1497" height="281" alt="image" src="https://github.com/user-attachments/assets/3a123b5a-9581-4945-885d-f0751c9b4c30" /><br>
+
+Повторяю процедуру запуска Patroni на третьей ноде - перевожу Patroni в автозапуск, стартую сервис Patroni и правлю переменную PATH на третьей ноде, проверяю состояние кластера, третья нода добавилась в режиме создания реплики, примерно через пять минут третья нода также вышла в режим потоковой репликации `streaming` :+1:
+<img width="1609" height="551" alt="image" src="https://github.com/user-attachments/assets/0063eb6a-3d49-4831-90b6-d6ecd5dfeb35" /><br>
+
+Кластер Patroni успешно развёрнут
 
 
 
 
 
-
-
-
-Перевожу Patroni в автозапуск, стартую сервис Patroni и правлю переменную PATH на третьей ноде, проверяю состояние кластера, третья нода добавилась, но первая нода стартанула с ошибкой и Patroni не смог выбрать лидера
 <img width="1545" height="761" alt="image" src="https://github.com/user-attachments/assets/d4d51480-2400-4234-b095-689a6234a115" /><br>
 
 Проверяю статус Patroni на первой ноде
@@ -295,7 +298,10 @@ patronictl -c /etc/patroni/config.yml edit-config patroni-cluster
 Запускаю PostgreSQL на первой ноде и получаю следующее состояние кластера Patroni
 <img width="1609" height="311" alt="image" src="https://github.com/user-attachments/assets/78aeb364-8c34-4528-828c-62bbd1953a04" /><br>
 
-На второй и третьей ноде начал заполняться каталог pgdata `/var/lib/postgresql/18/main`, размер базы данных на первой ноде ~ 6,5 Гб, поэтому придётся некоторое время подождать<br>
+, 
+
+
+
 <img width="503" height="168" alt="image" src="https://github.com/user-attachments/assets/bda90768-71c1-43a4-8602-a34101788292" /><br>
 
 
