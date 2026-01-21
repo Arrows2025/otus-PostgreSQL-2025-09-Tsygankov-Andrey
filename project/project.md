@@ -275,8 +275,16 @@ patronictl -c /etc/patroni/config.yml edit-config patroni-cluster
 Перевожу Patroni в автозапуск, стартую сервис Patroni и правлю переменную PATH на второй ноде - Patroni не запустился, забыл поменять в файле конфигурации Patroni параметр `name` :astonished::-1:
 <img width="1390" height="300" alt="image" src="https://github.com/user-attachments/assets/8dccfa06-919d-4406-848f-7dd3a7539576" /><br>
 
-Правлю параметр `name` в файле `sudo nano /etc/patroni/config.yml` на второй и третьей ноде, перезапускаю Patroni на второй ноде и проверяю состояние кластера, вторая нода добавилась :+1:
-<img width="1545" height="521" alt="image" src="https://github.com/user-attachments/assets/68132618-8ec1-47b1-b25c-f696c2ed1e4c" /><br>
+Правлю параметр `name` в файле `sudo nano /etc/patroni/config.yml` на второй и третьей ноде, перезапускаю Patroni на второй ноде и проверяю состояние кластера, вторая нода добавилась в режиме создания реплики :+1:
+<img width="1609" height="281" alt="image" src="https://github.com/user-attachments/assets/dee351fb-9e67-4005-afa7-ab6b8df05aa9" /><br>
+
+
+
+
+
+
+
+
 
 Перевожу Patroni в автозапуск, стартую сервис Patroni и правлю переменную PATH на третьей ноде, проверяю состояние кластера, третья нода добавилась, но первая нода стартанула с ошибкой и Patroni не смог выбрать лидера
 <img width="1545" height="761" alt="image" src="https://github.com/user-attachments/assets/d4d51480-2400-4234-b095-689a6234a115" /><br>
