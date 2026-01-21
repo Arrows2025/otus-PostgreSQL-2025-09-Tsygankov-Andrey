@@ -151,7 +151,7 @@ sudo -u postgres /opt/patroni/venv/bin/pip install 'psycopg2-binary' -- уста
 Создаю файлы конфигураций Patroni на трёх узлах, аналогично представленному ниже для первой ноды
 ```
 sudo mkdir -p /etc/patroni
-sudo nano /etc/patroni/config.yml
+sudo nano /etc/patroni/config.yml -- итоговый файл конфигурации с учётом всех правок ниже по ошибочным запускам Patroni
 ```
 ```
 scope: patroni-cluster
@@ -260,8 +260,14 @@ systemctl status patroni
 <img width="2489" height="971" alt="image" src="https://github.com/user-attachments/assets/bb351748-9890-45b9-bfb3-7f56454c180b" /><br>
 <img width="1497" height="311" alt="image" src="https://github.com/user-attachments/assets/b9d3a5e0-712a-402d-8bd2-9d16d2332a17" />
 
-Первая нода стартовала, но зайти БД PostgreSQL не удалось
+Первая нода стартовала, но зайти БД PostgreSQL не удалось - `psql: ошибка: преобразовать имя "." в адрес не удалось: No address associated with hostname` :-1:
 
+В файле `sudo nano /etc/patroni/config.yml` правлю параметр `parameters.unix_socket_directories: '.'` на значение `/var/run/postgresql`, перезапускаю Patroni и проверяю коннект к базе - `psql: ошибка: подключиться к серверу через сокет "/var/run/postgresql/.s.PGSQL.5432" не удалось: ВАЖНО:  в pg_hba.conf нет записи для компьютера "[local]", пользователя "postgres", базы "postgres", без шифрования` :-1:
+
+Командой редактирования конфигурации кластера добавляю строку локального коннекта для пользователя `postgres`, подключение к базе данных прошло успешно :+1:
+```
+patronictl -c /etc/patroni/config.yml edit-config patroni-cluster
+```
 
 
 
