@@ -172,7 +172,6 @@ bootstrap:
     postgresql:
       use_pg_rewind: true
       pg_hba:
-      - local all postgres  peer
       - host    all             all             0.0.0.0/0               scram-sha-256
       - host    replication     replicator      0.0.0.0/0               scram-sha-256
       parameters:
@@ -294,3 +293,8 @@ systemctl status patroni
 
 
 <img width="1609" height="281" alt="image" src="https://github.com/user-attachments/assets/71ae881d-bc6e-40c8-bcf7-be49d76ae945" />
+
+
+
+      - local all postgres  peer
+
