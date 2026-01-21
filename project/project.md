@@ -268,6 +268,7 @@ systemctl status patroni
 ```
 patronictl -c /etc/patroni/config.yml edit-config patroni-cluster
 ```
+<img width="2521" height="1121" alt="image" src="https://github.com/user-attachments/assets/0f45265d-accd-4fbd-8bd3-e816f3b6b8d9" /><br>
 
 
 
