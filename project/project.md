@@ -286,36 +286,5 @@ patronictl -c /etc/patroni/config.yml edit-config patroni-cluster
 
 Кластер Patroni успешно развёрнут
 
-
-
-
-
-<img width="1545" height="761" alt="image" src="https://github.com/user-attachments/assets/d4d51480-2400-4234-b095-689a6234a115" /><br>
-
-Проверяю статус Patroni на первой ноде
-<img width="2230" height="299" alt="image" src="https://github.com/user-attachments/assets/c195bad3-be43-405f-804c-4871767452c6" /><br>
-
-Запускаю PostgreSQL на первой ноде и получаю следующее состояние кластера Patroni
-<img width="1609" height="311" alt="image" src="https://github.com/user-attachments/assets/78aeb364-8c34-4528-828c-62bbd1953a04" /><br>
-
-, 
-
-
-
-<img width="503" height="168" alt="image" src="https://github.com/user-attachments/assets/bda90768-71c1-43a4-8602-a34101788292" /><br>
-
-
-<img width="2030" height="441" alt="image" src="https://github.com/user-attachments/assets/96f03202-5951-4d84-924d-ca97ddb92ac4" />
-
-
-
-
-<img width="1497" height="191" alt="image" src="https://github.com/user-attachments/assets/c9f31a60-9622-4111-b3ed-fe8990218ef9" />
-
-
-<img width="1609" height="281" alt="image" src="https://github.com/user-attachments/assets/71ae881d-bc6e-40c8-bcf7-be49d76ae945" />
-
-
-
-      - local all postgres  peer
+### 4. Установка и настройка HAProxy
 
