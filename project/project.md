@@ -291,7 +291,7 @@ patronictl -c /etc/patroni/config.yml edit-config patroni-cluster
 
 ### 5. Тестирование
 
-Проверка работы репликации: создаю на первой ноде-лидере дополнительную базу данных в PostgreSQL `test_replication` и проверяю её наличие на репликах
+:arrow_right: Для проверки работы репликации создаю на первой ноде-лидере дополнительную базу данных в PostgreSQL `test_replication` и проверяю её наличие на репликах
 ```
 patronictl -c /etc/patroni/config.yml list
 sudo -u postgres psql
@@ -307,4 +307,15 @@ postgres=# \l
 Новая база данных `test_replication` появилась на обеих нодах-репликах
 <img width="2201" height="1001" alt="image" src="https://github.com/user-attachments/assets/83945208-af54-49c1-959f-4e822c9ec55c" />
 <img width="2201" height="1001" alt="image" src="https://github.com/user-attachments/assets/a7f5f6f0-553b-45af-88d9-175976c9686a" /><br>
+
+:arrow_right: Для проверки аварийного переключения имитирую выход из строя ноды-лидера путём выключения виртуальной машины `poweroff`
+<img width="1497" height="521" alt="image" src="https://github.com/user-attachments/assets/e99b9461-2cf2-4c52-b466-92aa00de5101" /><br>
+
+Лидером становится node2
+<img width="1497" height="641" alt="image" src="https://github.com/user-attachments/assets/d16f97ea-e27f-4710-8b4e-0a707c1fa8c4" /><br>
+
+Включаю отключённую виртуальную машину и отключенная нода возвращается в кластер в режиме режиме потоковой репликации
+<img width="1497" height="881" alt="image" src="https://github.com/user-attachments/assets/0b76898c-39d8-4723-9a5d-16c1d684800c" /><br>
+
+
 
