@@ -288,3 +288,23 @@ patronictl -c /etc/patroni/config.yml edit-config patroni-cluster
 
 ### 4. Установка и настройка HAProxy
 
+
+### 5. Тестирование
+
+Проверка работы репликации: создаю на первой ноде-лидере дополнительную базу данных в PostgreSQL `test_replication` и проверяю её наличие на репликах
+```
+patronictl -c /etc/patroni/config.yml list
+sudo -u postgres psql
+
+postgres=# \l
+postgres=# create database test_replication;
+CREATE DATABASE
+postgres=# \l
+```
+
+<img width="2201" height="1331" alt="image" src="https://github.com/user-attachments/assets/de594bd8-7a0c-4bbe-a443-9c6085abc6d5" /><br>
+
+Новая база данных `test_replication` появилась на обеих нодах-репликах
+<img width="2201" height="1001" alt="image" src="https://github.com/user-attachments/assets/83945208-af54-49c1-959f-4e822c9ec55c" />
+<img width="2201" height="1001" alt="image" src="https://github.com/user-attachments/assets/a7f5f6f0-553b-45af-88d9-175976c9686a" /><br>
+
