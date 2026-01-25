@@ -290,7 +290,7 @@ patronictl -c /etc/patroni/config.yml edit-config patroni-cluster
 
 ### 4. Установка и настройка HAProxy
 
-На первом узле устанавливаю HAProxy
+На первом узле устанавливаю HAProxy, конечно хотелось бы поставить HAProxy на отдельном узле, но вследствии отсутствия ресурсов, приходится ставить на узел с базой данных
 ```
 sudo apt-get install haproxy         # установка etcd-server
 haproxy -v                           # проверка установки
