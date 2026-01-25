@@ -298,8 +298,55 @@ haproxy -v                           # проверка установки
 <img width="1929" height="1331" alt="image" src="https://github.com/user-attachments/assets/f4d7ef59-ca02-4675-a1a6-5856b1164864" />
 <img width="1929" height="221" alt="image" src="https://github.com/user-attachments/assets/81a9d5e9-c0ad-47ea-845d-8a807b91faf1" /><br>
 
+Редактирую файл конфигурации HAProxy `sudo nano /etc/haproxy/haproxy.cfg`
+```
+global
+    maxconn 100
 
+defaults
+    log    global
+    mode    tcp
+    retries 2
+    timeout client 30m
+    timeout connect 4s
+    timeout server 30m
+    timeout check 5s
 
+listen stats
+    mode http
+    bind 192.168.0.50:7000
+    stats enable
+    stats uri /
+
+listen primary
+    bind *:5000
+    option httpchk OPTIONS /master
+    http-check expect status 200
+    default-server inter 3s fall 3 rise 2 on-marked-down shutdown-sessions
+    server node0 192.168.0.50:5432 maxconn 100 check port 8008
+    server node1 192.168.0.51:5432 maxconn 100 check port 8008
+    server node2 192.168.0.52:5432 maxconn 100 check port 8008
+
+listen standbys
+    balance roundrobin
+    bind *:5001
+    option httpchk OPTIONS /replica
+    http-check expect status 200
+    default-server inter 3s fall 3 rise 2 on-marked-down shutdown-sessions
+    server node0 192.168.0.50:5432 maxconn 100 check port 8008
+    server node1 192.168.0.51:5432 maxconn 100 check port 8008
+    server node2 192.168.0.52:5432 maxconn 100 check port 8008
+```
+
+Стартую сервис HAProxy, определяю HAProxy как службу и проверяю статус HAProxy
+```
+sudo systemctl start haproxy.service
+sudo systemctl enable haproxy.service
+sudo systemctl status haproxy.service
+```
+<img width="2537" height="971" alt="image" src="https://github.com/user-attachments/assets/0d847f70-72a6-4605-9a70-ea4e144453ab" />
+
+HAProxy успешно стартован, в браузере по адресу http://192.168.0.50:7000/ получаю следующую статистику
 
 
 
