@@ -287,6 +287,14 @@ patronictl -c /etc/patroni/config.yml edit-config patroni-cluster
 Кластер Patroni успешно развёрнут
 
 ### 4. Установка и настройка HAProxy
+```
+sudo apt-get update                  # обновление системы
+sudo apt-get install haproxy         # установка etcd-server
+haproxy -v                           # проверка установки
+```
+
+
+
 
 
 ### 5. Тестирование
