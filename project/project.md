@@ -43,6 +43,8 @@ sudo rm -rf /var/lib/postgresql/18/main/
 <img width="1801" height="251" alt="image" src="https://github.com/user-attachments/assets/f7a31696-e6d1-4989-acfa-6b91bfd15542" /><br>
 
 ### 2. Установка и настройка etcd
+
+На трёх узлах устанавливаю etcd
 ```
 sudo apt-get update                  # обновление системы
 sudo apt-get install etcd-server     # установка etcd-server
@@ -134,7 +136,7 @@ etcdctl endpoint status --cluster -w table
 
 ### 3. Установка и настройка Patroni
 
-На трёх узнал устанавливаю Patroni
+На трёх узлах устанавливаю Patroni
 ```
 sudo apt install python3.12-venv -- установка модуля для создания виртуальных окружений
 sudo mkdir -p /opt/patroni -- создание каталога для Patroni
@@ -287,11 +289,16 @@ patronictl -c /etc/patroni/config.yml edit-config patroni-cluster
 Кластер Patroni успешно развёрнут
 
 ### 4. Установка и настройка HAProxy
+
+На первом узле устанавливаю HAProxy
 ```
-sudo apt-get update                  # обновление системы
 sudo apt-get install haproxy         # установка etcd-server
 haproxy -v                           # проверка установки
 ```
+<img width="1929" height="1331" alt="image" src="https://github.com/user-attachments/assets/f4d7ef59-ca02-4675-a1a6-5856b1164864" />
+<img width="1929" height="221" alt="image" src="https://github.com/user-attachments/assets/81a9d5e9-c0ad-47ea-845d-8a807b91faf1" /><br>
+
+
 
 
 
