@@ -350,10 +350,10 @@ HAProxy успешно стартован, в браузере по адресу
 <img width="1242" height="937" alt="image" src="https://github.com/user-attachments/assets/79d3baae-d7c7-44bf-8a62-ee1d3a63dd24" /><br>
 
 В клиенте DBeaver 25.3.3 добавляю новое соединение к PostgreSQL по адресу HAProxy 192.168.0.50:5000 и проверяю на какой узел в данный момент ходит клиент - IP-адрес node1 192.168.0.51, т.к. лидером в данный момент является node1
-<img width="704" height="241" alt="image" src="https://github.com/user-attachments/assets/49c3ce4b-cc93-439f-9bde-1ad5825b1585" />
-<img width="1497" height="281" alt="image" src="https://github.com/user-attachments/assets/ae99e4eb-027d-4b88-98bb-cf0eb8b2c575" /><br>
+<img width="1497" height="281" alt="image" src="https://github.com/user-attachments/assets/ae99e4eb-027d-4b88-98bb-cf0eb8b2c575" />
+<img width="704" height="241" alt="image" src="https://github.com/user-attachments/assets/49c3ce4b-cc93-439f-9bde-1ad5825b1585" /><br>
 
-Для проверки работы HAProxy останавливаю Patroni на узле 192.168.0.51, лидером становится node0 с IP 192.168.0.50, эта информация отображается в статистике и DBeaver 25.3.3 обращается к узлу 192.168.0.50
+Для проверки работы HAProxy останавливаю Patroni на узле 192.168.0.51 `systemctl stop patroni`, лидером становится node0 с IP 192.168.0.50, эта информация отображается в статистике и DBeaver 25.3.3 обращается к узлу 192.168.0.50
 <img width="1497" height="281" alt="image" src="https://github.com/user-attachments/assets/1aac19c9-5cf3-4c5f-a8b8-4bc976aee8cf" />
 <img width="1242" height="937" alt="image" src="https://github.com/user-attachments/assets/1641698e-adab-473e-bbb9-234f7a2d132a" />
 <img width="695" height="245" alt="image" src="https://github.com/user-attachments/assets/287bb430-ba1c-44ed-8adf-9102cd70a8d8" />
