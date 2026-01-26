@@ -399,7 +399,7 @@ patronictl -c /etc/patroni/config.yml list
 <img width="2521" height="1241" alt="image" src="https://github.com/user-attachments/assets/dcc77338-e258-4763-9141-92e359d7a1e3" />
 <img width="2521" height="1241" alt="image" src="https://github.com/user-attachments/assets/6cc006df-9f26-4596-bd30-bd32a34c3531" />
 <img width="2521" height="1241" alt="image" src="https://github.com/user-attachments/assets/cd9647aa-497d-4c78-9ee6-d0bbe300307d" />
-<img width="2521" height="581" alt="image" src="https://github.com/user-attachments/assets/64a0dfa0-ac6c-48c5-9a3d-01d988985746" /><br>
+<img width="2521" height="581" alt="image" src="https://github.com/user-attachments/assets/64a0dfa0-ac6c-48c5-9a3d-01d988985746" /><br><br>
 
 Повторный запуск утилиты проходит успешно. Включаю виртуальную машину, node1 успешно возвращается в кластер
 <img width="2521" height="1271" alt="image" src="https://github.com/user-attachments/assets/177ba04d-15a6-445d-a8be-72c26e372650" />
