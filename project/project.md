@@ -404,6 +404,20 @@ patronictl -c /etc/patroni/config.yml list
 Повторный запуск утилиты проходит успешно. Включаю виртуальную машину, node1 успешно возвращается в кластер
 <img width="2521" height="1271" alt="image" src="https://github.com/user-attachments/assets/177ba04d-15a6-445d-a8be-72c26e372650" />
 
+:arrow_right: Теперь пробую отключить Patroni на ноде-лидере node0 192.168.0.50 во время выполнения утилиты Pgbench, получаю аналогичный результат - утилита Pgbench завершает работу с ошибкой
+<img width="2089" height="1241" alt="image" src="https://github.com/user-attachments/assets/84bf57f2-b2c5-451f-b587-2e16066cbb3e" />
+<img width="2089" height="1241" alt="image" src="https://github.com/user-attachments/assets/e0abf79e-a80a-4862-9baa-0d8f9da09417" />
+<img width="2089" height="1241" alt="image" src="https://github.com/user-attachments/assets/3742d243-aa75-4381-86dc-42214e7a59bd" />
+<img width="2089" height="1241" alt="image" src="https://github.com/user-attachments/assets/c530b1e7-5c4e-4513-92fd-6be5e45abd46" />
+<img width="2089" height="491" alt="image" src="https://github.com/user-attachments/assets/95ce854d-96f7-43b0-bdce-6a203c15010b" /><br>
+
+Повторный запуск утилиты проходит успешно. Запускаю Patroni, node0 успешно возвращается в кластер
+<img width="2089" height="1181" alt="image" src="https://github.com/user-attachments/assets/4c61883d-8ed6-45a0-9049-4262a4e19ab2" />
+
+
+
+
+
 
 
 
