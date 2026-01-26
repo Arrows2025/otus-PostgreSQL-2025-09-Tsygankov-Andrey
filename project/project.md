@@ -388,5 +388,24 @@ postgres=# \l
 Включаю отключённую виртуальную машину и отключенная нода возвращается в кластер в режиме режиме потоковой репликации
 <img width="1497" height="881" alt="image" src="https://github.com/user-attachments/assets/0b76898c-39d8-4723-9a5d-16c1d684800c" /><br>
 
+:arrow_right: Проверяю поведение кластера под нагрузкой утилитой Pgbench c аварийным отключением ноды-лидера путём выключения виртуальной машины `poweroff`. Запускаю утилиту Pgbench через HAProxy 192.168.0.50:5000 и выключаю виртуальную машину с нодой-лидером node1 192.168.0.51. После выключения ноды-лидера утилита Pgbench завершает работу с ошибкой
+```
+sudo su postgres
+pgbench -h 192.168.0.50 -p 5000 -c 50 -j 2 -P 10 -T 60 pbtest
+
+patronictl -c /etc/patroni/config.yml list
+```
+<img width="2521" height="1241" alt="image" src="https://github.com/user-attachments/assets/23ab852d-51bd-4291-9092-1a7d60ea101c" />
+<img width="2521" height="1241" alt="image" src="https://github.com/user-attachments/assets/dcc77338-e258-4763-9141-92e359d7a1e3" />
+<img width="2521" height="1241" alt="image" src="https://github.com/user-attachments/assets/6cc006df-9f26-4596-bd30-bd32a34c3531" />
+<img width="2521" height="1241" alt="image" src="https://github.com/user-attachments/assets/cd9647aa-497d-4c78-9ee6-d0bbe300307d" />
+<img width="2521" height="581" alt="image" src="https://github.com/user-attachments/assets/64a0dfa0-ac6c-48c5-9a3d-01d988985746" /><br>
+
+Повторный запуск утилиты проходит успешно. Включаю виртуальную машину, node1 успешно возвращается в кластер
+<img width="2521" height="1271" alt="image" src="https://github.com/user-attachments/assets/177ba04d-15a6-445d-a8be-72c26e372650" />
+
+
+
+
 
 
