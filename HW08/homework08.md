@@ -17,5 +17,8 @@ postgres=# show deadlock_timeout;
 
 
 
-:two: Для инициализации Pgbench создаю для тестов базу данных pbtest и инициализирую утилиту Pgbench
+2️⃣ Для инициализации Pgbench создаю для тестов базу данных pbtest и инициализирую утилиту Pgbench
 
+3️⃣
+
+4️⃣
