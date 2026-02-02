@@ -15,7 +15,39 @@ postgres=# show deadlock_timeout;
 ```
 <img width="857" height="1211" alt="image" src="https://github.com/user-attachments/assets/3d99012f-46a2-42cf-92bc-9902e73fceb1" /><br>
 
+Узнаю PID сессии, создаю таблицу test_locks с текстовым полем, заполняю её случайными сгенерированными данными в размере 1 миллион строк
+```
+sudo -u postgres psql
 
+postgres=# SELECT pg_backend_pid();
+postgres=# CREATE TABLE test_locks (
+    id SERIAL PRIMARY KEY,
+    Data TEXT
+);
+postgres=# INSERT INTO test_locks (Data) SELECT md5(random()::text) FROM generate_series(1, 1000000);
+
+postgres=# UPDATE test_locks set Data = Data || '+test1';
+```
+
+```
+postgres=# UPDATE test_locks set Data = Data || '+test2';
+```
+
+
+
+
+Задание со ⭐ : Безымянная процедура, которая в цикле несколько раз обновляет все строки и добавляет к строкам номер шага цикла +S1+S2+S3... и т.д.
+
+DO
+$BODY$
+BEGIN
+    FOR i IN 1 .. 10 LOOP
+        UPDATE test_table set Data = Data || '+S' || i;
+        RAISE NOTICE 'Шаг %', i;
+    END LOOP;
+END;
+$BODY$
+LANGUAGE plpgsql;
 
 2️⃣ Для инициализации Pgbench создаю для тестов базу данных pbtest и инициализирую утилиту Pgbench
 
