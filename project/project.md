@@ -208,6 +208,11 @@ tags:
     noloadbalance: false
     clonefrom: false
     nosync: false
+log:
+  level: INFO
+  dir: /var/log/patroni
+  file_size: 50000000
+  file_num: 10
 ```
 
 Определяю Patroni как службу, на каждом узле создаю файл `sudo nano /etc/systemd/system/patroni.service` с одинаковым содержимым:
@@ -287,6 +292,15 @@ patronictl -c /etc/patroni/config.yml edit-config patroni-cluster
 <img width="1609" height="551" alt="image" src="https://github.com/user-attachments/assets/0063eb6a-3d49-4831-90b6-d6ecd5dfeb35" /><br>
 
 Кластер Patroni успешно развёрнут
+
+В файл `sudo nano /etc/patroni/config.yml` добавлен блок для логов Patroni
+```
+log:
+  level: INFO
+  dir: /var/log/patroni
+  file_size: 50000000
+  file_num: 10
+```
 
 ### 4. Установка и настройка HAProxy
 
