@@ -41,37 +41,9 @@ postgres=# UPDATE test_locks set Data = Data || '+test2';
 В журнале появилась запись о блокировке, как только время ожидания превысило 200 мс `Process holding the lock: 11083. Wait queue: 11861.`
 <img width="2521" height="521" alt="image" src="https://github.com/user-attachments/assets/17d64905-fca2-4420-b333-4a008f0c6631" /><br>
 
-
-
-
-<img width="1657" height="671" alt="image" src="https://github.com/user-attachments/assets/e6ba9d39-a3d1-4b20-8f79-ffb10fe0803e" />
-
-```
-postgres=# UPDATE test_locks set Data = Data || '+test2';
-```
-
-
-
-
-<img width="1305" height="461" alt="image" src="https://github.com/user-attachments/assets/4cba337a-802d-4ee9-b525-ee71e8cc6afb" />
-
-
-
-Задание со ⭐ : Безымянная процедура, которая в цикле несколько раз обновляет все строки и добавляет к строкам номер шага цикла +S1+S2+S3... и т.д.
-
-DO
-$BODY$
-BEGIN
-    FOR i IN 1 .. 10 LOOP
-        UPDATE test_table set Data = Data || '+S' || i;
-        RAISE NOTICE 'Шаг %', i;
-    END LOOP;
-END;
-$BODY$
-LANGUAGE plpgsql;
-
-2️⃣ Для инициализации Pgbench создаю для тестов базу данных pbtest и инициализирую утилиту Pgbench
+2️⃣ ...
 
 3️⃣
 
 4️⃣
+<img width="1305" height="461" alt="image" src="https://github.com/user-attachments/assets/4cba337a-802d-4ee9-b525-ee71e8cc6afb" />
