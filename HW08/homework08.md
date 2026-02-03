@@ -36,6 +36,10 @@ postgres=# UPDATE test_locks set Data = Data || '+test2';
 
 
 
+<img width="1305" height="461" alt="image" src="https://github.com/user-attachments/assets/4cba337a-802d-4ee9-b525-ee71e8cc6afb" />
+
+
+
 Задание со ⭐ : Безымянная процедура, которая в цикле несколько раз обновляет все строки и добавляет к строкам номер шага цикла +S1+S2+S3... и т.д.
 
 DO
