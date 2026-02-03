@@ -38,6 +38,9 @@ postgres=# UPDATE test_locks set Data = Data || '+test2';
 ```
 <img width="1065" height="491" alt="image" src="https://github.com/user-attachments/assets/29112083-f73c-4c19-ac0f-a7f186f326d7" /><br>
 
+В журнале появилась запись о блокировке, как только время ожидания превысило 200 мс `Process holding the lock: 11083. Wait queue: 11861.`
+<img width="2521" height="521" alt="image" src="https://github.com/user-attachments/assets/17d64905-fca2-4420-b333-4a008f0c6631" /><br>
+
 
 
 
