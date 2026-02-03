@@ -3,7 +3,7 @@
 
 1️⃣ Настраиваю сервер, чтобы в журнал сообщений сбрасывалась информация о блокировках, удерживаемых более 200 миллисекунд. Для этого проверяю и включаю параметр `log_lock_waits`, устанавливаю параметр `deadlock_timeout` равным 200 мс и перезагружаю файлы конфигурации PostgreSQL
 ```
-sudo -u postgres psql
+sudo -u postgres psql --cluster 18/otus
 
 postgres=# show log_lock_waits;
 postgres=# ALTER SYSTEM SET log_lock_waits = on;
@@ -17,7 +17,7 @@ postgres=# show deadlock_timeout;
 
 Узнаю PID сессии, создаю таблицу test_locks с текстовым полем, заполняю её случайными сгенерированными данными в размере 1 миллион строк
 ```
-sudo -u postgres psql
+sudo -u postgres psql --cluster 18/otus
 
 postgres=# SELECT pg_backend_pid();
 postgres=# CREATE TABLE test_locks (
