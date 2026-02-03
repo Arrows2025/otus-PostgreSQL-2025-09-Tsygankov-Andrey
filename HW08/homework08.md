@@ -15,7 +15,7 @@ postgres=# show deadlock_timeout;
 ```
 <img width="857" height="1211" alt="image" src="https://github.com/user-attachments/assets/3d99012f-46a2-42cf-92bc-9902e73fceb1" /><br>
 
-Узнаю PID сессии, создаю таблицу test_locks с текстовым полем, заполняю её случайными сгенерированными данными в размере 1 миллион строк
+Узнаю PID = 11083 сессии чёрного окна, создаю таблицу test_locks с текстовым полем, заполняю её случайными сгенерированными данными в размере 1 миллион строк и запускаю UPDATE этого текстового поля по всей таблице
 ```
 sudo -u postgres psql --cluster 18/otus
 
@@ -25,9 +25,23 @@ postgres=# CREATE TABLE test_locks (
     Data TEXT
 );
 postgres=# INSERT INTO test_locks (Data) SELECT md5(random()::text) FROM generate_series(1, 1000000);
-
 postgres=# UPDATE test_locks set Data = Data || '+test1';
 ```
+<img width="1657" height="671" alt="image" src="https://github.com/user-attachments/assets/e532cbb2-a8cf-4a73-ba95-62be775d6a70" /><br>
+
+Параллельно во второй сессии PID = 11861 синего окна тоже запускаю UPDATE текстового поля по всей таблице test_locks, второй UPDATE ожидает завершения первого UPDATE и только после этого начинает выполняться
+```
+sudo -u postgres psql --cluster 18/otus
+
+postgres=# SELECT pg_backend_pid();
+postgres=# UPDATE test_locks set Data = Data || '+test2';
+```
+<img width="1065" height="491" alt="image" src="https://github.com/user-attachments/assets/29112083-f73c-4c19-ac0f-a7f186f326d7" /><br>
+
+
+
+
+<img width="1657" height="671" alt="image" src="https://github.com/user-attachments/assets/e6ba9d39-a3d1-4b20-8f79-ffb10fe0803e" />
 
 ```
 postgres=# UPDATE test_locks set Data = Data || '+test2';
