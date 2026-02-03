@@ -64,6 +64,7 @@ FROM pg_locks WHERE relation = 'test_locks'::regclass order by pid;
 ```
 <img width="1657" height="1181" alt="image" src="https://github.com/user-attachments/assets/4632a97d-cad6-4ddb-b32a-00c0575b540d" /><br>
 
+После первого UPDATE первая сессия PID = 52652 заблокировала таблицу в режиме RowExclusiveLock
 
 
 
