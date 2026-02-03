@@ -64,7 +64,11 @@ FROM pg_locks WHERE relation = 'test_locks'::regclass order by pid;
 ```
 <img width="1657" height="1181" alt="image" src="https://github.com/user-attachments/assets/4632a97d-cad6-4ddb-b32a-00c0575b540d" /><br>
 
-После первого UPDATE первая сессия PID = 52652 заблокировала таблицу в режиме RowExclusiveLock
+После первого UPDATE первая сессия PID = 52652 заблокировала таблицу `test_locks` в режиме RowExclusiveLock, granted = true, всё доступно для выполнения.
+
+После второго UPDATE вторая сессия PID = 52766 заблокировала таблицу `test_locks` в режиме RowExclusiveLock и версию строки в режиме ExclusiveLock, granted = true, всё доступно для выполнения, но сессия PID = 52766 ожидает завершения сессии PID = 52652
+
+После третьего UPDATE вторая сессия PID = 52831 заблокировала таблицу `test_locks` в режиме RowExclusiveLock и версию строки в режиме ExclusiveLock, granted у блокировки таблицы = true, granted у блокировки версии строки = false означает, что процесс блокировку не получил и будет её ожидать, так как минимум один другой процесс удерживает блокировку той же строки в конфликтующем режиме, сессия PID = 52831 ожидает завершения сессии PID = 52766, которая в свою очередь ожидает завершения сессии PID = 52652
 
 
 
