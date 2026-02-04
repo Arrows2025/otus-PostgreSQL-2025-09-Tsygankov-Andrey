@@ -115,8 +115,10 @@ INSERT INTO Table_C (Data) VALUES ('Тест 1'),('Тест 2'),('Тест 3');
 ```
 <img width="1849" height="611" alt="image" src="https://github.com/user-attachments/assets/65295618-add8-4dbc-a78b-c31f5ef902a2" />
 <img width="1865" height="731" alt="image" src="https://github.com/user-attachments/assets/092009a4-23d2-4f95-b026-b8249bff6fe2" />
-<img width="1849" height="701" alt="image" src="https://github.com/user-attachments/assets/e8b7fed3-7b7f-485f-8018-cd50e1266898" />
+<img width="1849" height="701" alt="image" src="https://github.com/user-attachments/assets/e8b7fed3-7b7f-485f-8018-cd50e1266898" /><br>
 
+В журнале сообщений отобразилась информация о воспроизведённых взаимоблокировках и запросах, которые к этим взаимоблокировкам привели, таким образом по журналу сообщений можно найти взаимоблокировки и причины их появления постфактум
+<img width="2560" height="1380" alt="image" src="https://github.com/user-attachments/assets/763caf67-6d0c-4fe8-9663-00097daa1028" /><br>
 
 
 
