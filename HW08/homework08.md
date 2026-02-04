@@ -125,4 +125,14 @@ INSERT INTO Table_C (Data) VALUES ('Тест 1'),('Тест 2'),('Тест 3');
 4️⃣ Задание со ⭐: Две транзакции, выполняющие единственную команду UPDATE без WHERE одной и той же таблицы, могут вызвать взаимоблокировку.
 
 Для проверки в первой сессии PID = 102270 синего окна запускаю UPDATE без WHERE таблицы `test_locks` с прямым ORDER BY, а во второй сессии PID = 102363 зелёного окна запускаю UPDATE без WHERE этой же таблицы с обратным ORDER BY. Таблица содержит один миллион строк и в какой-то момент оба запущенных UPDATE вышли на блокировку одних и тех же строк в конфликтующем режиме, что вызвало взаимоблокировку
-<img width="1305" height="461" alt="image" src="https://github.com/user-attachments/assets/4cba337a-802d-4ee9-b525-ee71e8cc6afb" />
+```
+UPDATE test_locks set Data = Data || '+test3' WHERE id IN (SELECT id FROM test_locks ORDER BY id ASC);
+```
+<img width="1881" height="431" alt="image" src="https://github.com/user-attachments/assets/5d788f99-39f4-42d3-b069-a3851cec2043" />
+
+```
+UPDATE test_locks set Data = Data || '+test4' WHERE id IN (SELECT id FROM test_locks ORDER BY id DESC);
+```
+<img width="1881" height="551" alt="image" src="https://github.com/user-attachments/assets/13edef98-a32f-4396-98c1-b80882330327" />
+
+
