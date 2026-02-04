@@ -73,7 +73,52 @@ FROM pg_locks WHERE relation = 'test_locks'::regclass order by pid;
 После `COMMIT;` первой сессии PID = 52652 выполнилась вторая сессия PID = 52766, в pg_locks остались две блокировки на таблицу в режиме RowExclusiveLock, блокировки на версию строки пропали, конфликтующего режима на одну строку больше нет, так как и в первой и во второй сессии UPDATE этой строки уже выполнен. После `COMMIT;` второй сессии PID = 52766 выполнилась третья сессия PID = 52766, после `COMMIT;` третьей сессии PID = 52831 все блокировки ушли
 <img width="1657" height="1031" alt="image" src="https://github.com/user-attachments/assets/166e08c7-00c7-408d-857e-e0864c3bc288" /><br>
 
-3️⃣
+3️⃣ Чтобы воспроизвести взаимоблокировку трёх транзакций создаю три таблицы и заполняю их произвольными данными
+
+```
+CREATE TABLE Table_A(
+  id SERIAL PRIMARY KEY,
+  Data TEXT
+);
+
+CREATE TABLE Table_B(
+  id SERIAL PRIMARY KEY,
+  Data TEXT
+);
+
+CREATE TABLE Table_C(
+  id SERIAL PRIMARY KEY,
+  Data TEXT
+);
+
+INSERT INTO Table_A (Data) VALUES ('Тест 1'),('Тест 2'),('Тест 3');
+INSERT INTO Table_B (Data) VALUES ('Тест 1'),('Тест 2'),('Тест 3');
+INSERT INTO Table_C (Data) VALUES ('Тест 1'),('Тест 2'),('Тест 3');
+```
+<img width="1113" height="911" alt="image" src="https://github.com/user-attachments/assets/3a741495-b6c6-4066-846f-bcc6245b579f" /><br>
+
+В первой сессии PID = 82993 синего окна выполняю UPDATE на строку таблицы Table_A, во второй сессии PID = 83011 зелёного окна выполняю UPDATE на строку таблицы Table_B, в третьей сессии PID = 83039 красного окна выполняю UPDATE на строку таблицы Table_C
+
+Далее в первой сессии синего окна выполняю UPDATE на строку таблицы Table_B, в второй сессии зелёного окна выполняю UPDATE на строку таблицы Table_C, а в третьей сессии красного окна выполняю UPDATE на строку таблицы Table_A, и в третьей сессии получаю взаимоблокировку
+```
+ОШИБКА:  обнаружена взаимоблокировка
+ПОДРОБНОСТИ:  Процесс 83039 ожидает в режиме ShareLock блокировку "транзакция 780"; заблокирован процессом 82993.
+Процесс 82993 ожидает в режиме ShareLock блокировку "транзакция 781"; заблокирован процессом 83011.
+Процесс 83011 ожидает в режиме ShareLock блокировку "транзакция 782"; заблокирован процессом 83039.
+```
+
+Далее во второй сессии зелёного окна выполняю UPDATE на строку таблицы Table_A, и во второй сессии получаю взаимоблокировку
+```
+ОШИБКА:  обнаружена взаимоблокировка
+ПОДРОБНОСТИ:  Процесс 83011 ожидает в режиме ShareLock блокировку "транзакция 780"; заблокирован процессом 82993.
+Процесс 82993 ожидает в режиме ShareLock блокировку "транзакция 781"; заблокирован процессом 83011.
+```
+<img width="1849" height="611" alt="image" src="https://github.com/user-attachments/assets/65295618-add8-4dbc-a78b-c31f5ef902a2" />
+<img width="1865" height="731" alt="image" src="https://github.com/user-attachments/assets/092009a4-23d2-4f95-b026-b8249bff6fe2" />
+<img width="1849" height="701" alt="image" src="https://github.com/user-attachments/assets/e8b7fed3-7b7f-485f-8018-cd50e1266898" />
+
+
+
 
 4️⃣
 <img width="1305" height="461" alt="image" src="https://github.com/user-attachments/assets/4cba337a-802d-4ee9-b525-ee71e8cc6afb" />
