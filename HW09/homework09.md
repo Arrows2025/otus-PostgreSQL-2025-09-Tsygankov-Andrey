@@ -157,3 +157,38 @@ INSERT INTO movies."values" (id_movie,id_user,value) VALUES
 	 (5,2,7),
 	 (3,3,10);
 ```
+
+1️⃣ Прямое соединение (INNER JOIN)
+```sql
+SELECT *
+FROM movies.movie m
+INNER JOIN movies.genres mg ON m.id_movie = mg.id_movie
+INNER JOIN movies.genre g on g.id_genre = mg.id_genre;
+```
+Выборка показывает список фильмов и полный список всех жанров ко всем фильмам, у которых существует хотя бы один жанр в таблице `genres`
+<img width="1178" height="644" alt="image" src="https://github.com/user-attachments/assets/edfe011c-4d9d-4e56-8603-f3def5565abf" /><br>
+
+2️⃣ Левостороннее соединение (LEFT JOIN)
+```sql
+SELECT *
+FROM movies.movie m
+LEFT JOIN movies.genres mg ON m.id_movie = mg.id_movie
+LEFT JOIN movies.genre g on g.id_genre = mg.id_genre;
+```
+Выборка показывает список всех фильмов, как с существующим жанром, так и без него
+<img width="1175" height="668" alt="image" src="https://github.com/user-attachments/assets/c24f75c6-415b-455a-adaf-65c69b130bc6" /><br>
+
+2️⃣ Левостороннее соединение (LEFT JOIN)
+```sql
+SELECT *
+FROM movies.movie m
+LEFT JOIN movies.genres mg ON m.id_movie = mg.id_movie
+LEFT JOIN movies.genre g on g.id_genre = mg.id_genre;
+```
+Выборка показывает список всех фильмов, как с существующим жанром, так и без него
+<img width="1175" height="668" alt="image" src="https://github.com/user-attachments/assets/c24f75c6-415b-455a-adaf-65c69b130bc6" /><br>
+
+
+
+
+
