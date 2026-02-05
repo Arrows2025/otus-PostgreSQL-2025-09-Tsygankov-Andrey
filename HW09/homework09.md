@@ -195,8 +195,36 @@ FROM movies.movie m
 CROSS JOIN movies.genres mg
 CROSS JOIN movies.genre g;
 ```
-Выборка формирует декартово произведение — каждая строка из таблицы `movie (6 строк)` комбинируется с каждой строкой из таблицы `genres (15 строк)` и с каждой строкой из таблицы `genre (13 строк)` : 6 * 15 * 13 =  1170 строк в выборке.
+Выборка формирует декартово произведение — каждая строка из таблицы `movie (6 строк)` комбинируется с каждой строкой из таблицы `genres (15 строк)` и с каждой строкой из таблицы `genre (13 строк)` : 6 * 15 * 13 =  1170 строк в выборке
 <img width="1193" height="1224" alt="image" src="https://github.com/user-attachments/assets/018afee8-dfdf-408c-afb9-fff13b3851fc" /><br>
+
+5️⃣ Полное соединение (FULL OUTER JOIN)
+```sql
+SELECT *
+FROM movies.movie m
+FULL OUTER JOIN movies.genres mg ON m.id_movie = mg.id_movie
+FULL OUTER JOIN movies.genre g on g.id_genre = mg.id_genre;
+```
+Выборка возвращает все записи из таблиц фильмов и жанров, независимо от наличия соответствия записей между ними
+<img width="1174" height="740" alt="image" src="https://github.com/user-attachments/assets/1a1c4e96-9161-4d3d-9c7c-113f0bef17de" /><br>
+
+6️⃣ Комбинированный запрос с несколькими типами соединений
+```sql
+SELECT *
+FROM movies.movie m
+CROSS JOIN movies.genres mg
+LEFT JOIN movies.genre g on g.id_genre = mg.id_genre;
+```
+Выборка показывает список всех жанров из таблицы `genres` с каждым фильмом из таблицы `movie` и для каждой выбранной строки показывает название этого жанра из таблицы `genre`
+<img width="1177" height="1147" alt="image" src="https://github.com/user-attachments/assets/6582e9a0-5c13-45a1-a7c4-158879e5bfbf" /><br>
+
+
+
+
+
+
+
+
 
 
 
