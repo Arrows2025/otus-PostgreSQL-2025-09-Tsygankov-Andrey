@@ -246,7 +246,7 @@ ORDER BY aver_value DESC;
 ```
 <img width="802" height="419" alt="image" src="https://github.com/user-attachments/assets/89d7f131-48cc-4a21-86e5-a580cf027ee2" /><br>
 
-3️⃣ Топ активных пользователей с количеством оценок и средней оценкой за фильмы
+3️⃣ Топ активных пользователей с максимальным количеством оценок и средней оценкой за фильмы
 ```sql
 SELECT name_user, count(value) count_value, round(sum(value)/count(value)::numeric, 2) aver_value
 FROM movies.users u
