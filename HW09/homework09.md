@@ -216,13 +216,45 @@ CROSS JOIN movies.genres mg
 LEFT JOIN movies.genre g on g.id_genre = mg.id_genre;
 ```
 Выборка показывает список всех жанров из таблицы `genres` с каждым фильмом из таблицы `movie` и для каждой выбранной строки показывает название этого жанра из таблицы `genre`
-<img width="1177" height="1147" alt="image" src="https://github.com/user-attachments/assets/6582e9a0-5c13-45a1-a7c4-158879e5bfbf" /><br>
+<img width="1210" height="1218" alt="image" src="https://github.com/user-attachments/assets/49ccbf2e-e13b-42d2-a71d-b3618cf2e32c" /><br>
 
 
+<b>Задание со ⭐</b><br>
+Для реальной задачи "Мини-фильмотека" мне потребовались бы следующие запросы
 
+1️⃣ Список всех фильмов со всеми существующими или несуществующими атрибутами, объединёнными в строки
+```sql
+SELECT table_genres.id_movie, name_movie, table_genres.year, list_genres, string_agg(name_country, ', ' ORDER BY mc.id_country) list_countries FROM (
+   SELECT m.id_movie, name_movie, year, string_agg(name_genre, ', ' order by mg.id_genre) list_genres
+   FROM movies.movie m
+   LEFT JOIN movies.genres mg ON m.id_movie = mg.id_movie
+   LEFT JOIN movies.genre g ON g.id_genre = mg.id_genre
+   GROUP BY m.id_movie, name_movie) table_genres
+LEFT JOIN movies.countries mc ON table_genres.id_movie = mc.id_movie
+LEFT JOIN movies.country c ON c.id_country = mc.id_country
+GROUP BY table_genres.id_movie, name_movie, year, list_genres;
+```
+<img width="1446" height="500" alt="image" src="https://github.com/user-attachments/assets/d6f7f0a9-d8ea-443f-8036-c83c1e4b604b" /><br>
 
+2️⃣ Топ фильмов по средней пользовательской оценке
+```sql
+SELECT name_movie, year, round(sum(value)/count(value)::numeric, 2) aver_value
+FROM movies.movie m
+RIGHT JOIN movies."values" mv ON m.id_movie = mv.id_movie
+GROUP BY name_movie, year
+ORDER BY aver_value DESC;
+```
+<img width="802" height="419" alt="image" src="https://github.com/user-attachments/assets/89d7f131-48cc-4a21-86e5-a580cf027ee2" /><br>
 
-
+3️⃣ Топ активных пользователей с количеством оценок и средней оценкой за фильмы
+```sql
+SELECT name_user, count(value) count_value, round(sum(value)/count(value)::numeric, 2) aver_value
+FROM movies.users u
+RIGHT JOIN movies."values" mv ON u.id_user = mv.id_user
+GROUP BY name_user
+ORDER BY count_value DESC, aver_value DESC;
+```
+<img width="980" height="544" alt="image" src="https://github.com/user-attachments/assets/79f52cf8-6086-46e5-ae24-6de87fdb22b2" /><br>
 
 
 
