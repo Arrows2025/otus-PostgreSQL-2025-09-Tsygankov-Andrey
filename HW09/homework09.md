@@ -175,7 +175,7 @@ FROM movies.movie m
 LEFT JOIN movies.genres mg ON m.id_movie = mg.id_movie
 LEFT JOIN movies.genre g on g.id_genre = mg.id_genre;
 ```
-Выборка показывает список всех фильмов, как с существующим жанром, так и без него
+Выборка показывает список всех фильмов как с существующим жанром, так и без него
 <img width="1175" height="668" alt="image" src="https://github.com/user-attachments/assets/c24f75c6-415b-455a-adaf-65c69b130bc6" /><br>
 
 3️⃣ Правостороннее соединение (RIGHT JOIN)
