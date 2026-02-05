@@ -178,15 +178,28 @@ LEFT JOIN movies.genre g on g.id_genre = mg.id_genre;
 Выборка показывает список всех фильмов, как с существующим жанром, так и без него
 <img width="1175" height="668" alt="image" src="https://github.com/user-attachments/assets/c24f75c6-415b-455a-adaf-65c69b130bc6" /><br>
 
-2️⃣ Левостороннее соединение (LEFT JOIN)
+3️⃣ Правостороннее соединение (RIGHT JOIN)
 ```sql
 SELECT *
 FROM movies.movie m
-LEFT JOIN movies.genres mg ON m.id_movie = mg.id_movie
-LEFT JOIN movies.genre g on g.id_genre = mg.id_genre;
+RIGHT JOIN movies.genres mg ON m.id_movie = mg.id_movie
+RIGHT JOIN movies.genre g on g.id_genre = mg.id_genre;
 ```
-Выборка показывает список всех фильмов, как с существующим жанром, так и без него
-<img width="1175" height="668" alt="image" src="https://github.com/user-attachments/assets/c24f75c6-415b-455a-adaf-65c69b130bc6" /><br>
+Выборка показывает список всех жанров, даже если для этого жанра нет никакого фильма
+<img width="1172" height="712" alt="image" src="https://github.com/user-attachments/assets/ebc833ea-1eeb-40a6-8f2f-7dcf9e85e3a6" /><br>
+
+4️⃣ Кросс соединение (CROSS JOIN)
+```sql
+SELECT *
+FROM movies.movie m
+CROSS JOIN movies.genres mg
+CROSS JOIN movies.genre g;
+```
+Выборка формирует декартово произведение — каждая строка из таблицы `movie (6 строк)` комбинируется с каждой строкой из таблицы `genres (15 строк)` и с каждой строкой из таблицы `genre (13 строк)` : 6 * 15 * 13 =  1170 строк в выборке.
+<img width="1193" height="1224" alt="image" src="https://github.com/user-attachments/assets/018afee8-dfdf-408c-afb9-fff13b3851fc" /><br>
+
+
+
 
 
 
