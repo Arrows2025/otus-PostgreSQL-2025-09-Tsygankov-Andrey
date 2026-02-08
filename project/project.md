@@ -110,7 +110,7 @@ ETCD_HEARTBEAT_INTERVAL="2000"
 ETCD_INITIAL_ELECTION_TICK_ADVANCE="false"
 ```
 
-Запускаю etcd на трёх узлах `sudo systemctl start etcd' и проверяю состояние кластера etcd, кластер стартован успешно
+Запускаю etcd на трёх узлах `sudo systemctl start etcd` и проверяю состояние кластера etcd, кластер стартован успешно
 ```
 etcdctl member list
 etcdctl endpoint --cluster health
