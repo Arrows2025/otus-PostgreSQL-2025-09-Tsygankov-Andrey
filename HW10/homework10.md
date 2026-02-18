@@ -17,11 +17,9 @@ CREATE TABLE nsgruz (
 ```
 
 1️⃣ Обычный индекс
-```
-arrows@ubuntu24server:~$ sudo -u postgres psql --cluster 18/otus
-psql (18.0 (Ubuntu 18.0-1.pgdg24.04+3))
-Введите "help", чтобы получить справку.
+Проверяю план запроса с поиском по имени груза - поле `name_grn`, получаю последовательное сканирование по всей таблице Seq Scan со стоимостью выполнения `cost=0.00..155.18`. Создаю обычный индекс на поле `name_grn` и снова проверяю план запроса по имени груза, после создания индекса в плане запроса получаю сканирование индекса Index Scan со стоимостью выполнения `cost=0.28..8.30`, быстрее последовательного сканирования без индекса более чем в 18 раз, но незначительно выросла подготовка к выполнению запроса с нуля до 0.28
 
+```
 postgres=# explain select * from nsgruz where name_grn = 'БЕНЗИН';
                         QUERY PLAN
 ----------------------------------------------------------
@@ -31,6 +29,7 @@ postgres=# explain select * from nsgruz where name_grn = 'БЕНЗИН';
 
 postgres=# CREATE INDEX idx_nsgruz_name_grn ON nsgruz(name_grn);
 CREATE INDEX
+
 postgres=# explain select * from nsgruz where name_grn = 'БЕНЗИН';
                                      QUERY PLAN
 ------------------------------------------------------------------------------------
