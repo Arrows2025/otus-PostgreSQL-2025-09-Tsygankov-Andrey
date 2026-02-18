@@ -17,7 +17,7 @@ CREATE TABLE nsgruz (
 ```
 
 1️⃣ Обычный индекс
-```sql
+```
 arrows@ubuntu24server:~$ sudo -u postgres psql --cluster 18/otus
 psql (18.0 (Ubuntu 18.0-1.pgdg24.04+3))
 Введите "help", чтобы получить справку.
