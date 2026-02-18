@@ -1,7 +1,7 @@
 # Домашнее задание 10
 ## Работа с индексами
 
-Для выполнения домашнего задания создаю и заполняю таблицу "Справочник грузов" `nsgruz`, структура таблицы представлена ниже
+Для выполнения домашнего задания создаю и заполняю таблицу "Справочник грузов" `nsgruz`, структура таблицы с данными представлена ниже
 ```sql
 CREATE TABLE nsgruz (
 	kod_gr bpchar(6) NOT NULL,
@@ -83,6 +83,7 @@ postgres=# explain select * from nsgruz where kl_gr = '1';
 
 postgres=# CREATE INDEX idx_nsgruz_kl_gr_1 ON nsgruz(kl_gr) where kl_gr = '1';
 CREATE INDEX
+
 postgres=# explain select * from nsgruz where kl_gr = '1';
                                      QUERY PLAN
 ------------------------------------------------------------------------------------
@@ -98,6 +99,32 @@ postgres=# explain select * from nsgruz where kl_gr = '2';
    Filter: (kl_gr = '2'::bpchar)
 (2 строки)
 ```
-<img width="1395" height="933" alt="image" src="https://github.com/user-attachments/assets/6ac5dc8b-21dc-4366-8550-d4c99a5901b7" /><br>
+<img width="1395" height="933" alt="image" src="https://github.com/user-attachments/assets/6ac5dc8b-21dc-4366-8550-d4c99a5901b7" /><br><br>
+
+3️⃣ <b>Индекс на поле с функцией</b>
+
+Проверяю план запроса с поиском по сокращённому имени груза с функцией приведения к нижнему регистру lower, получаю последовательное сканирование по всей таблице Seq Scan со стоимостью выполнения `cost=0.00..180.85`. Создаю индекс на поле с функцией lower и снова проверяю план запроса с поиском по полю с функцией, после создания индекса в плане запроса получаю сканирование кучи битовой карты Bitmap Heap Scan со стоимостью выполнения `cost=4.48..62.25`, в котором начальная стоимость `cost=0.00..4.48` это первичное сканирование по индексу с построением битовой карты Bitmap Index Scan. В итоге быстрее почти в три раза, чем последовательное сканирование по всей таблице.
+
+```
+postgres=# explain select * from nsgruz where lower(ns_gruz_s) = 'бензин';
+                        QUERY PLAN
+-----------------------------------------------------------
+ Seq Scan on nsgruz  (cost=0.00..180.85 rows=26 width=117)
+   Filter: (lower((ns_gruz_s)::text) = 'бензин'::text)
+(2 строки)
+
+postgres=# CREATE INDEX idx_nsgruz_ns_gruz_s ON nsgruz(lower(ns_gruz_s));
+CREATE INDEX
+
+postgres=# explain select * from nsgruz where lower(ns_gruz_s) = 'бензин';
+                                     QUERY PLAN
+------------------------------------------------------------------------------------
+ Bitmap Heap Scan on nsgruz  (cost=4.48..62.25 rows=26 width=117)
+   Recheck Cond: (lower((ns_gruz_s)::text) = 'бензин'::text)
+   ->  Bitmap Index Scan on idx_nsgruz_ns_gruz_s  (cost=0.00..4.48 rows=26 width=0)
+         Index Cond: (lower((ns_gruz_s)::text) = 'бензин'::text)
+(4 строки)
+```
+<img width="1395" height="753" alt="image" src="https://github.com/user-attachments/assets/01b2f8f9-8c1b-4673-b0be-72f211b231b6" /><br><br>
 
 
