@@ -101,7 +101,7 @@ postgres=# explain select * from nsgruz where kl_gr = '2';
 ```
 <img width="1395" height="933" alt="image" src="https://github.com/user-attachments/assets/6ac5dc8b-21dc-4366-8550-d4c99a5901b7" /><br><br>
 
-3️⃣ <b>Индекс на поле с функцией</b>
+4️⃣ <b>Индекс на поле с функцией</b>
 
 Проверяю план запроса с поиском по сокращённому имени груза с функцией приведения к нижнему регистру lower, получаю последовательное сканирование по всей таблице Seq Scan со стоимостью выполнения `cost=0.00..180.85`. Создаю индекс на поле с функцией lower и снова проверяю план запроса с поиском по полю с функцией, после создания индекса в плане запроса получаю сканирование кучи битовой карты Bitmap Heap Scan со стоимостью выполнения `cost=4.48..62.25`, в котором начальная стоимость `cost=0.00..4.48` это первичное сканирование по индексу с построением битовой карты Bitmap Index Scan. В итоге быстрее почти в три раза, чем последовательное сканирование по всей таблице.
 
@@ -127,4 +127,70 @@ postgres=# explain select * from nsgruz where lower(ns_gruz_s) = 'бензин';
 ```
 <img width="1395" height="753" alt="image" src="https://github.com/user-attachments/assets/01b2f8f9-8c1b-4673-b0be-72f211b231b6" /><br><br>
 
+5️⃣ <b>Индекс на несколько полей</b>
 
+Проверяю план запроса с поиском по двум полям, получаю последовательное сканирование по всей таблице Seq Scan со стоимостью выполнения `cost=0.00..168.01`. Создаю составной индекс на два поля, которые участвуют в поиске, и снова проверяю план запроса с поиском по двум полям, после создания индекса в плане запроса получаю сканирование кучи битовой карты Bitmap Heap Scan со стоимостью выполнения `cost=18.18..123.67`, в котором начальная стоимость `cost=0.00..17.94` это первичное сканирование по индексу с построением битовой карты Bitmap Index Scan. В итоге быстрее примерно в 1,36 раза, чем последовательное сканирование по всей таблице
+
+```
+postgres=# explain select * from nsgruz where kl_gr = '3' and kod_group = '18';
+                            QUERY PLAN
+------------------------------------------------------------------
+ Seq Scan on nsgruz  (cost=0.00..168.01 rows=966 width=117)
+   Filter: ((kl_gr = '3'::bpchar) AND (kod_group = '18'::bpchar))
+(2 строки)
+
+postgres=# CREATE INDEX idx_nsgruz_kl_gr_kod_group ON nsgruz(kl_gr, kod_group);
+CREATE INDEX
+postgres=# explain select * from nsgruz where kl_gr = '3' and kod_group = '18';
+                                         QUERY PLAN
+--------------------------------------------------------------------------------------------
+ Bitmap Heap Scan on nsgruz  (cost=18.18..123.67 rows=966 width=117)
+   Recheck Cond: ((kl_gr = '3'::bpchar) AND (kod_group = '18'::bpchar))
+   ->  Bitmap Index Scan on idx_nsgruz_kl_gr_kod_group  (cost=0.00..17.94 rows=966 width=0)
+         Index Cond: ((kl_gr = '3'::bpchar) AND (kod_group = '18'::bpchar))
+(4 строки)
+```
+<img width="1523" height="723" alt="image" src="https://github.com/user-attachments/assets/7fcdd954-41d6-4b96-abdc-54c8fe9e5b5d" /><br><br>
+
+6️⃣ Размер пяти созданных индексов превысил размер самой таблицы из пяти тысяч записей (запрос взят из практики и сохранён на будущее)
+```sql
+SELECT
+    TABLE_NAME,
+    pg_size_pretty(table_size) AS table_size,
+    pg_size_pretty(indexes_size) AS indexes_size,
+    pg_size_pretty(total_size) AS total_size
+FROM (
+    SELECT
+        TABLE_NAME,
+        pg_table_size(TABLE_NAME) AS table_size,
+        pg_indexes_size(TABLE_NAME) AS indexes_size,
+        pg_total_relation_size(TABLE_NAME) AS total_size
+    FROM (
+        SELECT ('"' || table_schema || '"."' || TABLE_NAME || '"') AS TABLE_NAME
+        FROM information_schema.tables
+    ) AS all_tables
+    ORDER BY total_size DESC
+
+    ) AS pretty_sizes
+WHERE table_name like '%nsgruz%';
+```
+<img width="822" height="597" alt="image" src="https://github.com/user-attachments/assets/7328bced-5dc3-49d5-994e-f6b0764239db" /><br>
+
+Можно проверить и удалить неиспользуемые индексы, чтобы они не занимали место на диске (запрос взят из практики и сохранён на будущее)
+```sql
+SELECT s.schemaname,
+       s.relname AS tablename,
+       s.indexrelname AS indexname,
+       pg_size_pretty(pg_relation_size(s.indexrelid)) AS index_size,
+       s.idx_scan
+FROM pg_catalog.pg_stat_user_indexes s
+   JOIN pg_catalog.pg_index i ON s.indexrelid = i.indexrelid
+WHERE s.idx_scan < 10      -- has never been scanned
+  AND 0 <>ALL (i.indkey)  -- no index column is an expression
+  AND NOT i.indisunique   -- is not a UNIQUE index
+  AND NOT EXISTS          -- does not enforce a constraint
+         (SELECT 1 FROM pg_catalog.pg_constraint c
+          WHERE c.conindid = s.indexrelid)
+ORDER BY pg_relation_size(s.indexrelid) DESC;
+```
+<img width="937" height="587" alt="image" src="https://github.com/user-attachments/assets/f323ef0a-90c0-4ecf-9001-703875a74a87" />
