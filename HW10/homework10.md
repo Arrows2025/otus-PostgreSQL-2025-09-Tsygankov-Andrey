@@ -1,5 +1,17 @@
 # Домашнее задание 10
 ## Работа с индексами
 
-Для выполнения домашнего задания в новой схеме `movies` создан набор таблиц для задачи "Мини-фильмотека", таблицы заполнены произвольными данными
+Для выполнения домашнего задания создаю и заполняю таблицу Справочник грузов `nsgruz`, структура таблицы представлена ниже
 ```sql
+CREATE TABLE nsgruz (
+	kod_gr bpchar(6) NOT NULL,
+	kl_gr bpchar(1) NULL,
+	name_gr bpchar(15) NULL,
+	name_grn bpchar(18) NULL,
+	name_grk bpchar(18) NULL,
+	ns_gruz_s bpchar(6) NULL,
+	kod_group bpchar(3) NULL,
+	kod_gr_etsng bpchar(6) NULL,
+	CONSTRAINT xpknsgruz PRIMARY KEY (kod_gr)
+);
+```
