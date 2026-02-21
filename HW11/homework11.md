@@ -26,6 +26,8 @@ CREATE TABLE bookings.bookings (
 );
 ```
 ```sql
+\connect demo
+
 CREATE TABLE bookings.bookings_part (
 	book_ref bpchar(6) NOT NULL,
 	book_date timestamptz NOT NULL,
@@ -33,10 +35,13 @@ CREATE TABLE bookings.bookings_part (
 	CONSTRAINT bookings_part_pkey PRIMARY KEY (book_ref,book_date)
 ) PARTITION BY RANGE (book_date);
 ```
-Таблица бронирований `bookings` содержит данные за год с сентября 2025 года по август 2026 года включительно, создам 12 секций с диапазонами по месяцам и секцию `default` для данных, которые не попадают в диапазоны секционирования
+Таблица бронирований `bookings` содержит данные за год с сентября 2025 года по август 2026 года включительно
 ```sql
-SELECT min(book_date), max(book_date) FROM bookings.bookings; -- 2025-09-01 03:00:06.265 +0300	->	2026-09-01 02:59:58.283 +0300
+SELECT min(book_date), max(book_date) FROM bookings.bookings; -- 2025-09-01 00:00:06.265219+00 | 2026-08-31 23:59:58.283465+00
 ```
+<img width="2217" height="581" alt="image" src="https://github.com/user-attachments/assets/9b30763d-7daa-4234-a2e6-a1b3677a7c9f" /><br>
+
+Создам 12 секций с диапазонами по месяцам и секцию `default` для данных, которые не попадают в диапазоны секционирования
 ```sql
 CREATE TABLE bookings.bookings_part_2025_09 PARTITION OF bookings.bookings_part FOR VALUES FROM ('2025-09-01') TO ('2025-10-01');
 CREATE TABLE bookings.bookings_part_2025_10 PARTITION OF bookings.bookings_part FOR VALUES FROM ('2025-10-01') TO ('2025-11-01');
@@ -53,9 +58,17 @@ CREATE TABLE bookings.bookings_part_2026_08 PARTITION OF bookings.bookings_part 
 
 CREATE TABLE bookings.bookings_part_other PARTITION OF bookings.bookings_part DEFAULT;
 ```
-Переношу данные из оригинальной таблицы бронирований `bookings` в секционированную таблицу бронирований `bookings_part`
+<img width="2217" height="851" alt="image" src="https://github.com/user-attachments/assets/7f50fa4c-1f86-4296-9275-b817b9bd013d" /><br>
+
+Переношу данные из оригинальной таблицы бронирований `bookings` в секционированную таблицу бронирований `bookings_part`, после переноса проверяю распределение данных по секциям - данные распределились равномерно
 ```
 INSERT INTO bookings.bookings_part
 SELECT * FROM bookings.bookings;
+
+SELECT tableoid::regclass AS partition, count(*)
+FROM bookings_part
+GROUP BY tableoid;
 ```
+<img width="2217" height="731" alt="image" src="https://github.com/user-attachments/assets/67aa2e8e-653d-45e5-afe3-ae8e039b2c48" /><br>
+
 
