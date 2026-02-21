@@ -61,13 +61,29 @@ CREATE TABLE bookings.bookings_part_other PARTITION OF bookings.bookings_part DE
 <img width="2217" height="851" alt="image" src="https://github.com/user-attachments/assets/7f50fa4c-1f86-4296-9275-b817b9bd013d" /><br>
 
 Переношу данные из оригинальной таблицы бронирований `bookings` в секционированную таблицу бронирований `bookings_part`, после переноса проверяю распределение данных по секциям - данные распределились равномерно
-```
-INSERT INTO bookings.bookings_part
+```sql
+demo=# INSERT INTO bookings.bookings_part
 SELECT * FROM bookings.bookings;
+INSERT 0 4905238
 
-SELECT tableoid::regclass AS partition, count(*)
+demo=# SELECT tableoid::regclass AS partition, count(*)
 FROM bookings_part
 GROUP BY tableoid;
+       partition       | count
+-----------------------+--------
+ bookings_part_2025_09 | 448064
+ bookings_part_2025_10 | 434159
+ bookings_part_2025_11 | 410670
+ bookings_part_2025_12 | 410796
+ bookings_part_2026_01 | 412036
+ bookings_part_2026_02 | 370985
+ bookings_part_2026_03 | 408667
+ bookings_part_2026_04 | 383124
+ bookings_part_2026_05 | 399596
+ bookings_part_2026_06 | 403237
+ bookings_part_2026_07 | 411392
+ bookings_part_2026_08 | 412512
+(12 строк)
 ```
 <img width="2217" height="731" alt="image" src="https://github.com/user-attachments/assets/67aa2e8e-653d-45e5-afe3-ae8e039b2c48" /><br>
 
