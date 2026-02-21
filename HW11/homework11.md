@@ -33,23 +33,23 @@ CREATE TABLE bookings.bookings_part (
 	CONSTRAINT bookings_part_pkey PRIMARY KEY (book_ref,book_date)
 ) PARTITION BY RANGE (book_date);
 ```
-Таблица бронирований `bookings` содержит данные за год с сентября 2025 года по сентябрь 2026 года, создам 12 секций с диапазонами по месяцам и секцию `default` для данных, которые не попадают в диапазоны секционирования
+Таблица бронирований `bookings` содержит данные за год с сентября 2025 года по август 2026 года включительно, создам 12 секций с диапазонами по месяцам и секцию `default` для данных, которые не попадают в диапазоны секционирования
 ```sql
 SELECT min(book_date), max(book_date) FROM bookings.bookings; -- 2025-09-01 03:00:06.265 +0300	->	2026-09-01 02:59:58.283 +0300
 ```
 ```sql
 CREATE TABLE bookings.bookings_part_2025_09 PARTITION OF bookings.bookings_part FOR VALUES FROM ('2025-09-01') TO ('2025-10-01');
-CREATE TABLE bookings.bookings_part_2025_09 PARTITION OF bookings.bookings_part FOR VALUES FROM ('2025-10-01') TO ('2025-11-01');
-CREATE TABLE bookings.bookings_part_2025_09 PARTITION OF bookings.bookings_part FOR VALUES FROM ('2025-11-01') TO ('2025-12-01');
-CREATE TABLE bookings.bookings_part_2025_09 PARTITION OF bookings.bookings_part FOR VALUES FROM ('2025-12-01') TO ('2026-01-01');
-CREATE TABLE bookings.bookings_part_2025_09 PARTITION OF bookings.bookings_part FOR VALUES FROM ('2026-01-01') TO ('2026-02-01');
-CREATE TABLE bookings.bookings_part_2025_09 PARTITION OF bookings.bookings_part FOR VALUES FROM ('2026-02-01') TO ('2026-03-01');
-CREATE TABLE bookings.bookings_part_2025_09 PARTITION OF bookings.bookings_part FOR VALUES FROM ('2026-03-01') TO ('2026-04-01');
-CREATE TABLE bookings.bookings_part_2025_09 PARTITION OF bookings.bookings_part FOR VALUES FROM ('2026-04-01') TO ('2026-05-01');
-CREATE TABLE bookings.bookings_part_2025_09 PARTITION OF bookings.bookings_part FOR VALUES FROM ('2026-05-01') TO ('2026-06-01');
-CREATE TABLE bookings.bookings_part_2025_09 PARTITION OF bookings.bookings_part FOR VALUES FROM ('2026-06-01') TO ('2026-07-01');
-CREATE TABLE bookings.bookings_part_2025_09 PARTITION OF bookings.bookings_part FOR VALUES FROM ('2026-07-01') TO ('2026-08-01');
-CREATE TABLE bookings.bookings_part_2025_09 PARTITION OF bookings.bookings_part FOR VALUES FROM ('2026-08-01') TO ('2026-09-01');
+CREATE TABLE bookings.bookings_part_2025_10 PARTITION OF bookings.bookings_part FOR VALUES FROM ('2025-10-01') TO ('2025-11-01');
+CREATE TABLE bookings.bookings_part_2025_11 PARTITION OF bookings.bookings_part FOR VALUES FROM ('2025-11-01') TO ('2025-12-01');
+CREATE TABLE bookings.bookings_part_2025_12 PARTITION OF bookings.bookings_part FOR VALUES FROM ('2025-12-01') TO ('2026-01-01');
+CREATE TABLE bookings.bookings_part_2026_01 PARTITION OF bookings.bookings_part FOR VALUES FROM ('2026-01-01') TO ('2026-02-01');
+CREATE TABLE bookings.bookings_part_2026_02 PARTITION OF bookings.bookings_part FOR VALUES FROM ('2026-02-01') TO ('2026-03-01');
+CREATE TABLE bookings.bookings_part_2026_03 PARTITION OF bookings.bookings_part FOR VALUES FROM ('2026-03-01') TO ('2026-04-01');
+CREATE TABLE bookings.bookings_part_2026_04 PARTITION OF bookings.bookings_part FOR VALUES FROM ('2026-04-01') TO ('2026-05-01');
+CREATE TABLE bookings.bookings_part_2026_05 PARTITION OF bookings.bookings_part FOR VALUES FROM ('2026-05-01') TO ('2026-06-01');
+CREATE TABLE bookings.bookings_part_2026_06 PARTITION OF bookings.bookings_part FOR VALUES FROM ('2026-06-01') TO ('2026-07-01');
+CREATE TABLE bookings.bookings_part_2026_07 PARTITION OF bookings.bookings_part FOR VALUES FROM ('2026-07-01') TO ('2026-08-01');
+CREATE TABLE bookings.bookings_part_2026_08 PARTITION OF bookings.bookings_part FOR VALUES FROM ('2026-08-01') TO ('2026-09-01');
 
 CREATE TABLE bookings.bookings_part_other PARTITION OF bookings.bookings_part DEFAULT;
 ```
