@@ -13,4 +13,5 @@ gunzip -c /tmp/demo-20250901-1y.sql.gz | psql -U postgres --cluster 18/otus
 <img width="1572" height="1235" alt="image" src="https://github.com/user-attachments/assets/53f23af1-c79e-48d5-bfbe-db90c46110a0" />
 
 Некоторые таблицы по объёму превосходят таблицу бронирований `bookings`, но выборки из них в логике схемы данных производятся по ключевым полям, выполняются быстро и не требуют значительных ресурсов
-<img width="1054" height="348" alt="image" src="https://github.com/user-attachments/assets/19a13d33-eb11-4927-9ac0-dc5326b4696a" />
+
+<img width="1054" height="348" alt="image" src="https://github.com/user-attachments/assets/19a13d33-eb11-4927-9ac0-dc5326b4696a" /><br>
