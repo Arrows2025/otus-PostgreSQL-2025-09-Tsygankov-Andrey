@@ -87,5 +87,18 @@ GROUP BY tableoid;
 ```
 <img width="2217" height="731" alt="image" src="https://github.com/user-attachments/assets/67aa2e8e-653d-45e5-afe3-ae8e039b2c48" /><br>
 
+Проанализирую план выполнения запросов до секционирования и после него, выбрав данные из таблиц за интервал в 10 дней, который находится в одной секции секционированной таблицы. Время выполнения запроса из секционированной таблицы уменьшилось в 7,6 раз: 201.370 мс против 1523.706 мс до секционирования. После секционирования последовательное сканирование идёт только по одной партиции - bookings_part_2026_03, которая содержит в 10 раз меньше данных относительно несекционированной таблицы, что значительно ускоряет выполнение запроса.
+```sql
+EXPLAIN ANALYZE
+SELECT * FROM bookings
+WHERE book_date BETWEEN '2026-03-10' AND '2026-03-20';
 
-<img width="2521" height="911" alt="image" src="https://github.com/user-attachments/assets/cbf1f389-d1c4-4504-ba08-0555181e6330" />
+EXPLAIN ANALYZE
+SELECT * FROM bookings_part
+WHERE book_date BETWEEN '2026-03-10' AND '2026-03-20';
+```
+<img width="2521" height="911" alt="image" src="https://github.com/user-attachments/assets/cbf1f389-d1c4-4504-ba08-0555181e6330" /><br>
+
+Протестирую основные операции на секционированной таблице - операции вставки, обновления и удаления работают корректно
+<img width="1331" height="903" alt="image" src="https://github.com/user-attachments/assets/4b75debb-d200-40ed-9ac9-1f4ab36dfffe" /><br>
+
