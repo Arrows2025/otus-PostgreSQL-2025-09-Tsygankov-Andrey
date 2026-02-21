@@ -15,3 +15,21 @@ gunzip -c /tmp/demo-20250901-1y.sql.gz | psql -U postgres --cluster 18/otus
 Некоторые таблицы по объёму превосходят таблицу бронирований `bookings`, но выборки из них в логике схемы данных производятся по ключевым полям, выполняются быстро и не требуют значительных ресурсов
 
 <img width="1054" height="348" alt="image" src="https://github.com/user-attachments/assets/19a13d33-eb11-4927-9ac0-dc5326b4696a" /><br>
+
+Секционирование таблицы бронирований целесообразно производить по диапазону дат бронирования - поле `book_date`. По аналогии с оригинальной таблицей бронирований `bookings` создаю секционированную таблицу бронирований `bookings_part`, в состав первичного ключа добавляю поле секционирования `book_date`, так как ограничение уникальности в секционированной таблице должно включать все секционирующие столбцы
+```sql
+CREATE TABLE bookings.bookings (
+	book_ref bpchar(6) NOT NULL,
+	book_date timestamptz NOT NULL,
+	total_amount numeric(10, 2) NOT NULL,
+	CONSTRAINT bookings_pkey PRIMARY KEY (book_ref)
+);
+```
+```sql
+CREATE TABLE bookings.bookings_part (
+	book_ref bpchar(6) NOT NULL,
+	book_date timestamptz NOT NULL,
+	total_amount numeric(10, 2) NOT null,
+	CONSTRAINT bookings_part_pkey PRIMARY KEY (book_ref,book_date)
+) PARTITION BY RANGE (book_date);
+```
