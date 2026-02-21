@@ -15,3 +15,6 @@ CREATE TABLE nsgruz (
 	CONSTRAINT xpknsgruz PRIMARY KEY (kod_gr)
 );
 ```
+
+
+<img width="1193" height="281" alt="image" src="https://github.com/user-attachments/assets/0c2d3178-b67e-4157-a686-d39ec84d53cf" />
