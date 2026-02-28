@@ -103,18 +103,71 @@ FOR EACH ROW
 EXECUTE FUNCTION fnc_good_sum_mart();
 ```
 
-
 <img width="2105" height="1301" alt="image" src="https://github.com/user-attachments/assets/1dba3771-150d-4d10-a97b-cf5db1caece1" /><br>
 
-
-Инициализирую таблицу исходными данными продаж
+Инициализирую таблицу `good_sum_mart` исходными данными продаж
 ```sql
 SET search_path = pract_functions, public;
+
 INSERT INTO good_sum_mart
 SELECT G.good_name, sum(G.good_price * S.sales_qty)
 FROM goods G
 INNER JOIN sales S ON S.good_id = G.goods_id
 GROUP BY G.good_name;
+
 SELECT * FROM good_sum_mart;
+
+        good_name         |   sum_sale
+--------------------------+--------------
+ Автомобиль Ferrari FXX K | 185000000.01
+ Спички хозяйственные     |        65.50
+(2 строки)
 ```
-<img width="1065" height="641" alt="image" src="https://github.com/user-attachments/assets/05e782d0-61e2-4c64-a79b-cdcb705a0240" />
+<img width="1065" height="641" alt="image" src="https://github.com/user-attachments/assets/05e782d0-61e2-4c64-a79b-cdcb705a0240" /><br>
+
+```sql
+
+-- Добавляю две продажи товара 'Автомобиль Ferrari FXX K', проверяю результат
+INSERT INTO sales (good_id, sales_qty) VALUES (2, 2);
+
+SELECT * FROM good_sum_mart;
+
+        good_name         |   sum_sale
+--------------------------+--------------
+ Спички хозяйственные     |        65.50
+ Автомобиль Ferrari FXX K | 555000000.03
+(2 строки)
+
+-- Правлю добавленную строку `sales_id = 15` на три продажи, проверяю результат
+postgres=# SELECT * FROM sales;
+ sales_id | good_id |          sales_time           | sales_qty
+----------+---------+-------------------------------+-----------
+        1 |       1 | 2026-02-27 22:58:23.096612+00 |        10
+        2 |       1 | 2026-02-27 22:58:23.096612+00 |         1
+        3 |       1 | 2026-02-27 22:58:23.096612+00 |       120
+        4 |       2 | 2026-02-27 22:58:23.096612+00 |         1
+       15 |       2 | 2026-02-28 01:49:39.937299+00 |         2
+(5 строк)
+
+UPDATE sales SET sales_qty = 3 where sales_id = 15;
+
+SELECT * FROM good_sum_mart;
+
+        good_name         |   sum_sale
+--------------------------+--------------
+ Спички хозяйственные     |        65.50
+ Автомобиль Ferrari FXX K | 740000000.04
+(2 строки)
+
+-- Удаляю добавленную строку, проверяю результат
+DELETE FROM sales where sales_id = 15;
+
+postgres=# SELECT * FROM good_sum_mart;
+
+        good_name         |   sum_sale
+--------------------------+--------------
+ Спички хозяйственные     |        65.50
+ Автомобиль Ferrari FXX K | 185000000.01
+(2 строки)
+```
+<img width="1065" height="1181" alt="image" src="https://github.com/user-attachments/assets/97071052-21ea-47fa-984e-8d3377cbc992" />
