@@ -140,7 +140,7 @@ SELECT * FROM good_sum_mart;
 (2 строки)
 
 
--- Правлю добавленную строку `sales_id = 15` на три продажи, проверяю результат
+-- Правлю добавленную строку sales_id = 15 на три продажи, проверяю результат
 
 postgres=# SELECT * FROM sales;
  sales_id | good_id |          sales_time           | sales_qty
@@ -194,8 +194,9 @@ SELECT * FROM good_sum_mart;
 
 -- Добавляю 4 продажи товара 'Компьютер' в таблицу sales, проверяю результат
 INSERT INTO sales (good_id, sales_qty) VALUES (3, 4);
-INSERT 0 1
-postgres=# SELECT * FROM good_sum_mart;
+
+SELECT * FROM good_sum_mart;
+
         good_name         |   sum_sale
 --------------------------+--------------
  Спички хозяйственные     |        65.50
@@ -203,11 +204,15 @@ postgres=# SELECT * FROM good_sum_mart;
  Компьютер                |    400000.00
 (3 строки)
 
-postgres=# UPDATE goods SET good_price = 33000 WHERE goods_id = 3;
-UPDATE 1
-postgres=# INSERT INTO sales (good_id, sales_qty) VALUES (3, 3);
-INSERT 0 1
-postgres=# SELECT * FROM good_sum_mart;
+Изменяю цену товара 'Компьютер' в таблице goods на 33 000
+UPDATE goods SET good_price = 33000 WHERE goods_id = 3;
+
+-- Добавляю ещё 3 продажи товара 'Компьютер' в таблицу sales с новой ценой и проверяю результат - к результату со старыми ценами добавилась сумма с новой ценой
+
+INSERT INTO sales (good_id, sales_qty) VALUES (3, 3);
+
+SELECT * FROM good_sum_mart;
+
         good_name         |   sum_sale
 --------------------------+--------------
  Спички хозяйственные     |        65.50
