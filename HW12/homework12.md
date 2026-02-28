@@ -127,7 +127,7 @@ SELECT * FROM good_sum_mart;
 
 ```sql
 
--- Добавляю две продажи товара 'Автомобиль Ferrari FXX K', проверяю результат
+-- Добавляю две продажи товара 'Автомобиль Ferrari FXX K' в таблицу sales, проверяю результат
 
 INSERT INTO sales (good_id, sales_qty) VALUES (2, 2);
 
@@ -176,3 +176,45 @@ postgres=# SELECT * FROM good_sum_mart;
 (2 строки)
 ```
 <img width="1065" height="1181" alt="image" src="https://github.com/user-attachments/assets/97071052-21ea-47fa-984e-8d3377cbc992" /><br>
+
+```sql
+
+-- Добавляю новый товар 'Компьютер' в таблицу goods с ценой 100 000
+
+INSERT INTO goods (goods_id, good_name, good_price)
+VALUES  (3, 'Компьютер', 100000);
+
+SELECT * FROM good_sum_mart;
+
+        good_name         |   sum_sale
+--------------------------+--------------
+ Спички хозяйственные     |        65.50
+ Автомобиль Ferrari FXX K | 185000000.01
+(2 строки)
+
+-- Добавляю 4 продажи товара 'Компьютер' в таблицу sales, проверяю результат
+INSERT INTO sales (good_id, sales_qty) VALUES (3, 4);
+INSERT 0 1
+postgres=# SELECT * FROM good_sum_mart;
+        good_name         |   sum_sale
+--------------------------+--------------
+ Спички хозяйственные     |        65.50
+ Автомобиль Ferrari FXX K | 185000000.01
+ Компьютер                |    400000.00
+(3 строки)
+
+postgres=# UPDATE goods SET good_price = 33000 WHERE goods_id = 3;
+UPDATE 1
+postgres=# INSERT INTO sales (good_id, sales_qty) VALUES (3, 3);
+INSERT 0 1
+postgres=# SELECT * FROM good_sum_mart;
+        good_name         |   sum_sale
+--------------------------+--------------
+ Спички хозяйственные     |        65.50
+ Автомобиль Ferrari FXX K | 185000000.01
+ Компьютер                |    499000.00
+(3 строки)
+```
+
+<img width="1097" height="1031" alt="image" src="https://github.com/user-attachments/assets/98ef4c4d-f83d-4c6c-b24c-a734b01a6bf9" /><br>
+
