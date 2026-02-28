@@ -128,6 +128,7 @@ SELECT * FROM good_sum_mart;
 ```sql
 
 -- Добавляю две продажи товара 'Автомобиль Ferrari FXX K', проверяю результат
+
 INSERT INTO sales (good_id, sales_qty) VALUES (2, 2);
 
 SELECT * FROM good_sum_mart;
@@ -138,7 +139,9 @@ SELECT * FROM good_sum_mart;
  Автомобиль Ferrari FXX K | 555000000.03
 (2 строки)
 
+
 -- Правлю добавленную строку `sales_id = 15` на три продажи, проверяю результат
+
 postgres=# SELECT * FROM sales;
  sales_id | good_id |          sales_time           | sales_qty
 ----------+---------+-------------------------------+-----------
@@ -159,7 +162,9 @@ SELECT * FROM good_sum_mart;
  Автомобиль Ferrari FXX K | 740000000.04
 (2 строки)
 
+
 -- Удаляю добавленную строку, проверяю результат
+
 DELETE FROM sales where sales_id = 15;
 
 postgres=# SELECT * FROM good_sum_mart;
@@ -170,4 +175,4 @@ postgres=# SELECT * FROM good_sum_mart;
  Автомобиль Ferrari FXX K | 185000000.01
 (2 строки)
 ```
-<img width="1065" height="1181" alt="image" src="https://github.com/user-attachments/assets/97071052-21ea-47fa-984e-8d3377cbc992" />
+<img width="1065" height="1181" alt="image" src="https://github.com/user-attachments/assets/97071052-21ea-47fa-984e-8d3377cbc992" /><br>
