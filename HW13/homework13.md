@@ -14,21 +14,15 @@ postgres=# \c test_db;
 test_db=# CREATE SCHEMA my_schema;
 CREATE SCHEMA
 
-test_db=# CREATE TABLE table1 (
-    id SERIAL PRIMARY KEY,
-    Data TEXT
-);
+test_db=# CREATE TABLE my_schema.table1 (id SERIAL PRIMARY KEY, Data TEXT);
 CREATE TABLE
 
-test_db=# CREATE TABLE table2 (
-    id SERIAL PRIMARY KEY,
-    Data TEXT
-);
+test_db=# CREATE TABLE my_schema.table2 (LIKE my_schema.table1 INCLUDING ALL);
 CREATE TABLE
 
-test_db=# INSERT INTO table1 (Data) SELECT md5(random()::text) FROM generate_series(1, 100);
+test_db=# INSERT INTO my_schema.table1 (Data) SELECT md5(random()::text) FROM generate_series(1, 100);
 INSERT 0 100
 ```
 
-<img width="1513" height="731" alt="image" src="https://github.com/user-attachments/assets/b52acc99-a7f6-49c4-a190-7f30666d502a" /><br>
+<img width="1673" height="551" alt="image" src="https://github.com/user-attachments/assets/ce2faa47-e30d-45cc-af4f-7fae9eb35856" /><br>
 
