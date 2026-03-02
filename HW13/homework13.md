@@ -49,7 +49,7 @@ test_db=# select count(*) from my_schema.table2;
 (1 строка)
 ```
 
-<img width="1625" height="671" alt="image" src="https://github.com/user-attachments/assets/f0df207e-7ae9-4d40-a3b8-2f630e6ae9df" /><br>
+<img width="1625" height="671" alt="image" src="https://github.com/user-attachments/assets/f0df207e-7ae9-4d40-a3b8-2f630e6ae9df" /><br><br>
 
 :two: С помощью утилиты `PG_DUMP` создаю сжатый дамп (-Fc) только схемы `my_schema`
 ```
