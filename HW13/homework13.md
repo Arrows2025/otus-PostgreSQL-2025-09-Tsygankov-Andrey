@@ -50,3 +50,9 @@ test_db=# select count(*) from my_schema.table2;
 ```
 
 <img width="1625" height="671" alt="image" src="https://github.com/user-attachments/assets/f0df207e-7ae9-4d40-a3b8-2f630e6ae9df" /><br>
+
+
+
+<img width="2297" height="431" alt="image" src="https://github.com/user-attachments/assets/e7e56b27-ba46-4878-97d1-f6641f065be5" /><br>
+
+
