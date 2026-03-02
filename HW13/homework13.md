@@ -25,7 +25,7 @@ INSERT 0 100
 ```
 <img width="1673" height="551" alt="image" src="https://github.com/user-attachments/assets/8fb7a0ae-fae4-4efd-8ab7-fe8fb6678a17" /><br>
 
-Создаю новый каталог для бекапа под пользователем postgres `/var/lib/postgresql/backups/`, подключаюсь с базе данных `test_db` и выгружаю таблицу `table1` в файл CSV командой COPY, проверяю наличие файла на диске. Далее восстанавливаю данные в таблицу `table2` путём загрузки файла CSV с помощью команды COPY, проверяю наличие данных в таблице `table2`
+Создаю новый каталог для бекапа под пользователем postgres `/var/lib/postgresql/backups/`, подключаюсь с базе данных `test_db` и выгружаю таблицу `table1` в файл CSV командой COPY, проверяю наличие файла на диске. Далее восстанавливаю данные в таблицу `table2` путём загрузки файла CSV командой COPY, проверяю наличие данных в таблице `table2`
 ```
 sudo -u postgres mkdir /var/lib/postgresql/backups/
 sudo -u postgres psql --cluster 18/otus -d test_db
