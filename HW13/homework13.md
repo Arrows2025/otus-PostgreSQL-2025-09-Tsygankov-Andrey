@@ -1,7 +1,7 @@
 # Домашнее задание 13
 ## Бэкапы
 
-Для выполнения домашнего задания подключаюсь в БД PostgreSQL, создаю базу данных `test_db`, в ней создаю схему `my_schema` и две одинаковых таблицы `table1` и `table2`, первую таблицу заполняю случайными сгенерированными данными в размере 100 строк
+:one: Для выполнения домашнего задания подключаюсь в БД PostgreSQL, создаю базу данных `test_db`, в ней создаю схему `my_schema` и две одинаковых таблицы `table1` и `table2`, первую таблицу заполняю случайными сгенерированными данными в размере 100 строк
 ```
 sudo -u postgres psql --cluster 18/otus
 
@@ -51,8 +51,45 @@ test_db=# select count(*) from my_schema.table2;
 
 <img width="1625" height="671" alt="image" src="https://github.com/user-attachments/assets/f0df207e-7ae9-4d40-a3b8-2f630e6ae9df" /><br>
 
+:two: С помощью утилиты `PG_DUMP` создаю сжатый дамп (-Fc) только схемы `my_schema`
+```
+sudo -u postgres pg_dump --cluster 18/otus -d test_db -n my_schema -Fc -f /var/lib/postgresql/backups/my_schema.gz
+```
+Создаю новую базу данных `restored_db` и в ней создаю схему `my_schema`
+```
+sudo -u postgres psql --cluster 18/otus
 
+postgres=# CREATE DATABASE restored_db;
+CREATE DATABASE
+postgres=# \c restored_db;
+Вы подключены к базе данных "restored_db" как пользователь "postgres".
+restored_db=# CREATE SCHEMA my_schema;
+CREATE SCHEMA
+restored_db=# \q
+```
 
-<img width="2297" height="431" alt="image" src="https://github.com/user-attachments/assets/e7e56b27-ba46-4878-97d1-f6641f065be5" /><br>
+Из созданного дампа c помощью утилиты `PG_RESTORE` в новую базу данных `restored_db` восстанавливаю только таблицу `my_schema.table2`
+```
+sudo -u postgres pg_restore --cluster 18/otus -d restored_db -n my_schema -t table2 /var/lib/postgresql/backups/my_schema.gz
+```
+Проверяю наличие восстановленой таблицы и её содержимое
+```
+sudo -u postgres psql --cluster 18/otus -d restored_db
 
+restored_db=# \dt my_schema.*
+              Список таблиц
+   Схема   |  Имя   |   Тип   | Владелец
+-----------+--------+---------+----------
+ my_schema | table2 | таблица | postgres
+(1 строка)
 
+restored_db=# select count(*) from my_schema.table2;
+ count
+-------
+   100
+(1 строка)
+```
+<img width="2425" height="971" alt="image" src="https://github.com/user-attachments/assets/692f31bb-b649-412a-b584-38899906e0a5" /><br>
+
+Прилагаю скрин созданных и заполненых таблиц, использованных в домашнем задании
+<img width="1651" height="1093" alt="image" src="https://github.com/user-attachments/assets/6c62fa0c-7e6e-459d-9a85-7cc94595be2d" />
