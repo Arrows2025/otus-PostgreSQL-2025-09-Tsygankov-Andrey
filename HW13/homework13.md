@@ -17,13 +17,13 @@ CREATE SCHEMA
 test_db=# CREATE TABLE my_schema.table1 (id SERIAL PRIMARY KEY, Data TEXT);
 CREATE TABLE
 
-test_db=# CREATE TABLE my_schema.table2 (LIKE my_schema.table1 INCLUDING ALL);
+test_db=# CREATE TABLE my_schema.table2 (id SERIAL PRIMARY KEY, Data TEXT);
 CREATE TABLE
 
 test_db=# INSERT INTO my_schema.table1 (Data) SELECT md5(random()::text) FROM generate_series(1, 100);
 INSERT 0 100
 ```
-<img width="1673" height="551" alt="image" src="https://github.com/user-attachments/assets/ce2faa47-e30d-45cc-af4f-7fae9eb35856" /><br>
+<img width="1673" height="551" alt="image" src="https://github.com/user-attachments/assets/8fb7a0ae-fae4-4efd-8ab7-fe8fb6678a17" /><br>
 
 Создаю новый каталог для бекапа под пользователем postgres `/var/lib/postgresql/backups/`, подключаюсь с базе данных `test_db` и выгружаю таблицу `table1` в файл CSV командой COPY, проверяю наличие файла на диске. Далее восстанавливаю данные в таблицу `table2` путём загрузки файла CSV с помощью команды COPY, проверяю наличие данных в таблице `table2`
 ```
