@@ -92,4 +92,5 @@ restored_db=# select count(*) from my_schema.table2;
 <img width="2425" height="971" alt="image" src="https://github.com/user-attachments/assets/692f31bb-b649-412a-b584-38899906e0a5" /><br>
 
 Прилагаю скрин созданных и заполненых таблиц, использованных в домашнем задании
+
 <img width="1651" height="1093" alt="image" src="https://github.com/user-attachments/assets/6c62fa0c-7e6e-459d-9a85-7cc94595be2d" />
