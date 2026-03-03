@@ -6,5 +6,26 @@
 
 Подключаюсь к базе данных на ВМ1 и устанавливаю для логической репликации wal_level = logical
 ```
+sudo -u postgres psql --cluster 18/otus
 
+postgres=# ALTER SYSTEM SET wal_level = logical;
+ALTER SYSTEM
+postgres=# \q
 ```
+Перегружаю кластер и заново подключаюсь, создаю базу данных `replica`, в ней две таблицы test и test2, на таблицу test создаю публикацию test_pub
+```
+sudo pg_ctlcluster 18 otus restart
+sudo -u postgres psql --cluster 18/otus
+
+postgres=# CREATE DATABASE replica;
+CREATE DATABASE
+postgres=# \c replica;
+Вы подключены к базе данных "replica" как пользователь "postgres".
+replica=# CREATE TABLE test (id SERIAL PRIMARY KEY, Data TEXT);
+CREATE TABLE
+replica=# CREATE TABLE test2 (id SERIAL PRIMARY KEY, Data TEXT);
+CREATE TABLE
+replica=# CREATE PUBLICATION test_pub FOR TABLE test;
+CREATE PUBLICATION
+```
+<img width="1097" height="731" alt="image" src="https://github.com/user-attachments/assets/9bfbb29f-588b-4406-a5aa-0b3eecc43044" /><br>
