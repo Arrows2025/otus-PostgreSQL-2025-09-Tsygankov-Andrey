@@ -5,6 +5,7 @@
 * Ubuntu24Server - IP 192.168.0.50
 * Ubuntu24Node1 - IP 192.168.0.51
 * Ubuntu24Node2 - IP 192.168.0.52
+
 <img width="1089" height="624" alt="image" src="https://github.com/user-attachments/assets/4181101a-49b5-4d3e-a5e3-50335b5bb097" /><br>
 
 Подключаюсь к базе данных на ВМ1 и устанавливаю `wal_level = logical` для логической репликации
