@@ -228,4 +228,48 @@ Ver Cluster Port Status         Owner    Data directory               Log file
 
 Устанавливаю PostgreSQL с пакетами дополнительных программ: `sudo apt update && sudo apt upgrade -y -q && sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list' && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add - && sudo apt-get update && sudo apt -y install postgresql && sudo apt install unzip && sudo apt -y install mc`
 
+На ВМ4 создаю новый кластер `otus4`, настраиваю конфигурационные файлы PostgreSQL `postgresql.conf` и `pg_hba.conf`, останавливаю кластер, удаляю папку /var/lib/postgresql/18/otus4 и проверяю её наличие на диске, с помощью утилиты pg_basebackup делаю бэкап кластера `otus3` с ВМ3 с ключом -R, который создаст заготовку управляющего файла recovery.conf
+```
+sudo pg_createcluster 18 otus4 --start
+
+18  otus4   5433 online postgres /var/lib/postgresql/18/otus4 /var/log/postgresql/postgresql-18-otus4.log
+
+sudo nano /etc/postgresql/18/otus4/postgresql.conf
+sudo nano /etc/postgresql/18/otus4/pg_hba.conf
+sudo pg_ctlcluster 18 otus4 stop
+
+ls -la /var/lib/postgresql/18/
+total 16
+drwxr-xr-x  4 postgres postgres 4096 Mar  4 03:54 .
+drwxr-xr-x  3 postgres postgres 4096 Mar  4 03:28 ..
+drwx------ 19 postgres postgres 4096 Mar  4 03:34 main
+drwx------ 19 postgres postgres 4096 Mar  4 04:04 otus4
+
+sudo rm -rf /var/lib/postgresql/18/otus4
+
+ls -la /var/lib/postgresql/18/
+total 12
+drwxr-xr-x  3 postgres postgres 4096 Mar  4 04:06 .
+drwxr-xr-x  3 postgres postgres 4096 Mar  4 03:28 ..
+drwx------ 19 postgres postgres 4096 Mar  4 03:34 main
+
+sudo -u postgres pg_basebackup -h 192.168.0.52 -p 5433 -R -D /var/lib/postgresql/18/otus4
+
+ls -la /var/lib/postgresql/18/
+total 16
+drwxr-xr-x  4 postgres postgres 4096 Mar  4 04:06 .
+drwxr-xr-x  3 postgres postgres 4096 Mar  4 03:28 ..
+drwx------ 19 postgres postgres 4096 Mar  4 03:34 main
+drwx------ 19 postgres postgres 4096 Mar  4 04:06 otus4
+
+sudo pg_ctlcluster 18 otus4 start
+pg_lsclusters
+
+Ver Cluster Port Status Owner    Data directory               Log file
+18  main    5432 online postgres /var/lib/postgresql/18/main  /var/log/postgresql/postgresql-18-main.log
+18  otus4   5433 online postgres /var/lib/postgresql/18/otus4 /var/log/postgresql/postgresql-18-otus4.log
+```
+<img width="2073" height="791" alt="image" src="https://github.com/user-attachments/assets/7a961a7d-31bf-428e-a24c-3fb66c18b365" />
+<img width="2073" height="911" alt="image" src="https://github.com/user-attachments/assets/bc810952-2661-4022-b264-e4cc26af71f5" /><br><br>
+
 
