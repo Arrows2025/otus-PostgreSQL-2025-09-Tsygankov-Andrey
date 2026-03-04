@@ -195,11 +195,16 @@ replica=# select * from test2;
 
 <img width="2533" height="707" alt="image" src="https://github.com/user-attachments/assets/1acbd77c-8244-4048-a8f6-51be1ee2edc1" /><br>
 
-⭐ Устанавливаю сервер Ubuntu 24.04.3 на четвёртую виртуальную машину и настраиваю ему статический IP-адрес 192.168.0.53:
+⭐ Настроить физическую репликацию с ВМ4, используя ВМ3 в качестве источника
+
+
+
+
+Устанавливаю сервер Ubuntu 24.04.3 на четвёртую виртуальную машину и настраиваю ему статический IP-адрес 192.168.0.53:
 * Ubuntu24Node3 - IP 192.168.0.53
 
 <img width="1089" height="624" alt="image" src="https://github.com/user-attachments/assets/0c8792fa-50ad-4347-87b7-01f4f1885e40" /><br>
 
-Устанавливаю PostgreSQL
+Устанавливаю PostgreSQL с пакетами дополнительных программ: `sudo apt update && sudo apt upgrade -y -q && sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list' && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add - && sudo apt-get update && sudo apt -y install postgresql && sudo apt install unzip && sudo apt -y install mc`
 
 
