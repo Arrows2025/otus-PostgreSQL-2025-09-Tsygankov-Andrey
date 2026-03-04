@@ -272,4 +272,9 @@ Ver Cluster Port Status Owner    Data directory               Log file
 <img width="2073" height="791" alt="image" src="https://github.com/user-attachments/assets/7a961a7d-31bf-428e-a24c-3fb66c18b365" />
 <img width="2073" height="911" alt="image" src="https://github.com/user-attachments/assets/bc810952-2661-4022-b264-e4cc26af71f5" /><br><br>
 
+Проверка физической репликации на ВМ4: вставляю по строке в таблицу `test` на ВМ1 и в таблицу `test2` на ВМ2, новая строка по логической репликации попадает на ВМ3 и далее по физической репликации на ВМ4, при попытке вставить строку на ВМ4 выдаёт ошибку, что база данных находится в режиме только для чтения
+<img width="2538" height="1185" alt="image" src="https://github.com/user-attachments/assets/388aaa9c-4ffe-4e42-b5a3-7080158f7e90" /><br>
+
+Физическая репликация передаёт не только DML, но и DDL изменения в кластере `otus3` на ВМ3: пробую создать и заполнить новую таблицу `test3` на ВМ3 - новая таблица `test3` с данными реплицируется на ВМ4
+<img width="2486" height="916" alt="image" src="https://github.com/user-attachments/assets/a2fac169-4baf-4c48-8428-1169989cb8b2" />
 
