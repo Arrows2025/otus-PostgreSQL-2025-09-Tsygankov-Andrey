@@ -34,7 +34,7 @@ CREATE PUBLICATION
 ```
 <img width="1097" height="731" alt="image" src="https://github.com/user-attachments/assets/9bfbb29f-588b-4406-a5aa-0b3eecc43044" /><br>
 
-:two: На ВМ2 создаю и стартую новый кластер `otus2`, настраиваю конфигурационный файлы PostgreSQL `postgresql.conf` и `pg_hba.conf`, подключаюсь к кластеру, устанавливаю пароль для пользователя `postgres` и `wal_level = logical` для логической репликации
+:two: На ВМ2 создаю и стартую новый кластер `otus2`, настраиваю конфигурационные файлы PostgreSQL `postgresql.conf` и `pg_hba.conf`, подключаюсь к кластеру, устанавливаю пароль для пользователя `postgres` и `wal_level = logical` для логической репликации
 ```
 sudo pg_createcluster 18 otus2 --start
 
@@ -87,7 +87,7 @@ CREATE SUBSCRIPTION
 ```
 <img width="1433" height="401" alt="image" src="https://github.com/user-attachments/assets/10216c52-8688-49c9-9136-02db42be83d8" /><br>
 
-:four: На ВМ3 создаю и стартую новый кластер `otus3`, настраиваю конфигурационный файлы PostgreSQL `postgresql.conf` и `pg_hba.conf`, подключаюсь к кластеру, устанавливаю пароль для пользователя `postgres`. Параметр `wal_level` не меняю, так как этот кластер используется для чтения объединённых данных и резервного копирования, для публикаций он не используется
+:four: На ВМ3 создаю и стартую новый кластер `otus3`, настраиваю конфигурационные файлы PostgreSQL `postgresql.conf` и `pg_hba.conf`, подключаюсь к кластеру, устанавливаю пароль для пользователя `postgres`. Параметр `wal_level` не меняю, так как этот кластер используется для чтения объединённых данных и резервного копирования, для публикаций он не используется
 ```
 sudo pg_createcluster 18 otus3 --start
 
@@ -197,6 +197,26 @@ replica=# select * from test2;
 
 ⭐ Настроить физическую репликацию с ВМ4, используя ВМ3 в качестве источника
 
+На ВМ3 подключаюсь к кластеру `otus3`, проверяю параметр wal_level, он по умолчанию установлен в значение `replica`, ничего не меняю, настраиваю конфигурационный файл PostgreSQL `pg_hba.conf`
+```
+sudo -u postgres psql --cluster 18/otus3
+
+postgres=# show wal_level;
+ wal_level
+-----------
+ replica
+(1 строка)
+
+postgres=# \q
+arrows@ubuntu24node2:~$ sudo nano /etc/postgresql/18/otus3/pg_hba.conf
+arrows@ubuntu24node2:~$ sudo pg_ctlcluster 18 otus3 restart
+arrows@ubuntu24node2:~$ pg_lsclusters
+Ver Cluster Port Status         Owner    Data directory               Log file
+18  main    5432 online,patroni postgres /var/lib/postgresql/18/main  /var/log/postgresql/postgresql-18-main.log
+18  otus3   5433 online         postgres /var/lib/postgresql/18/otus3 /var/log/postgresql/postgresql-18-otus3.log
+arrows@ubuntu24node2:~$
+```
+<img width="1849" height="581" alt="image" src="https://github.com/user-attachments/assets/dd12d601-9997-434e-bc9e-80753b94de1d" /><br>
 
 
 
