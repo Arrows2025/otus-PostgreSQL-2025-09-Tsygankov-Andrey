@@ -197,7 +197,7 @@ replica=# select * from test2;
 
 ⭐ Настроить физическую репликацию с ВМ4, используя ВМ3 в качестве источника
 
-На ВМ3 подключаюсь к кластеру `otus3`, проверяю параметр wal_level, он по умолчанию установлен в значение `replica`, ничего не меняю, настраиваю конфигурационный файл PostgreSQL `pg_hba.conf`
+На ВМ3 подключаюсь к кластеру `otus3`, проверяю параметр wal_level, он по умолчанию установлен в значение `replica`, ничего не меняю, настраиваю конфигурационный файл PostgreSQL `pg_hba.conf`, добавляю строку для репликации: `host    replication     all             192.168.0.52/24         scram-sha-256`, перегружаю кластер и проверяю его статус
 ```
 sudo -u postgres psql --cluster 18/otus3
 
@@ -208,13 +208,14 @@ postgres=# show wal_level;
 (1 строка)
 
 postgres=# \q
-arrows@ubuntu24node2:~$ sudo nano /etc/postgresql/18/otus3/pg_hba.conf
-arrows@ubuntu24node2:~$ sudo pg_ctlcluster 18 otus3 restart
-arrows@ubuntu24node2:~$ pg_lsclusters
+
+sudo nano /etc/postgresql/18/otus3/pg_hba.conf
+sudo pg_ctlcluster 18 otus3 restart
+pg_lsclusters
+
 Ver Cluster Port Status         Owner    Data directory               Log file
 18  main    5432 online,patroni postgres /var/lib/postgresql/18/main  /var/log/postgresql/postgresql-18-main.log
 18  otus3   5433 online         postgres /var/lib/postgresql/18/otus3 /var/log/postgresql/postgresql-18-otus3.log
-arrows@ubuntu24node2:~$
 ```
 <img width="1849" height="581" alt="image" src="https://github.com/user-attachments/assets/dd12d601-9997-434e-bc9e-80753b94de1d" /><br>
 
