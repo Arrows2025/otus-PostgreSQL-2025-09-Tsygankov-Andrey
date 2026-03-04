@@ -150,7 +150,7 @@ replica=# \dRs
 <img width="2533" height="559" alt="image" src="https://github.com/user-attachments/assets/fccaf263-9aa3-4da2-a1f1-4b9f66011923" /><br>
 
 
-Вставляю строку в базе данных `replica` на ВМ1 и проверяю наличие этой строки на ВМ2 и ВМ3 - строка реплицировалась
+Вставляю строку в таблицу `test` на ВМ1 и проверяю наличие этой строки в таблицах `test` на ВМ2 и ВМ3 - строка реплицировалась
 ```
 sudo -u postgres psql --cluster 18/otus
 
@@ -172,3 +172,25 @@ replica=# select * from test;
 ```
 <img width="2530" height="707" alt="image" src="https://github.com/user-attachments/assets/3a52644f-b5b8-4d7d-a38a-632aee5b841e" /><br>
 
+Вставляю строку в таблицу `test2` на ВМ2 и проверяю наличие этой строки в таблицах `test2` на ВМ1 и ВМ3 - строка реплицировалась
+```
+sudo -u postgres psql --cluster 18/otus2
+
+postgres=# \c replica
+Вы подключены к базе данных "replica" как пользователь "postgres".
+replica=# select * from test2;
+ id | data
+----+------
+(0 строк)
+
+replica=# insert into test2(data) values ('ВМ2');
+INSERT 0 1
+
+replica=# select * from test2;
+ id | data
+----+------
+  1 | ВМ2
+(1 строка)
+```
+
+<img width="2533" height="707" alt="image" src="https://github.com/user-attachments/assets/1acbd77c-8244-4048-a8f6-51be1ee2edc1" /><br>
