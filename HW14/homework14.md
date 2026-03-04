@@ -194,3 +194,8 @@ replica=# select * from test2;
 ```
 
 <img width="2533" height="707" alt="image" src="https://github.com/user-attachments/assets/1acbd77c-8244-4048-a8f6-51be1ee2edc1" /><br>
+
+⭐ Устанавливаю сервер Ubuntu 24.04.3 на четвёртую виртуальную машину и настраиваю ему статический IP-адрес 192.168.0.53:
+* Ubuntu24Node3 - IP 192.168.0.53
+
+
