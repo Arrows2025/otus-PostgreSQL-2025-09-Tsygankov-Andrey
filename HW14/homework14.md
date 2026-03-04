@@ -8,7 +8,7 @@
 
 <img width="1089" height="624" alt="image" src="https://github.com/user-attachments/assets/4181101a-49b5-4d3e-a5e3-50335b5bb097" /><br>
 
-Подключаюсь к базе данных на ВМ1 и устанавливаю `wal_level = logical` для логической репликации
+:one: Подключаюсь к базе данных на ВМ1 и устанавливаю `wal_level = logical` для логической репликации
 ```
 sudo -u postgres psql --cluster 18/otus
 
@@ -34,7 +34,7 @@ CREATE PUBLICATION
 ```
 <img width="1097" height="731" alt="image" src="https://github.com/user-attachments/assets/9bfbb29f-588b-4406-a5aa-0b3eecc43044" /><br>
 
-На ВМ2 создаю и стартую новый кластер `otus2`, настраиваю конфигурационный файлы PostgreSQL `postgresql.conf` и `pg_hba.conf`, подключаюсь к кластеру, устанавливаю пароль для пользователя `postgres` и `wal_level = logical` для логической репликации
+:two: На ВМ2 создаю и стартую новый кластер `otus2`, настраиваю конфигурационный файлы PostgreSQL `postgresql.conf` и `pg_hba.conf`, подключаюсь к кластеру, устанавливаю пароль для пользователя `postgres` и `wal_level = logical` для логической репликации
 ```
 sudo pg_createcluster 18 otus2 --start
 
@@ -72,4 +72,18 @@ CREATE SUBSCRIPTION
 ```
 <img width="2073" height="1121" alt="image" src="https://github.com/user-attachments/assets/67b150fb-7b9a-4788-bb5f-23dba7ae9e5d" />
 <img width="2073" height="671" alt="image" src="https://github.com/user-attachments/assets/2929af9d-b5f5-42c7-97d6-663fe3736d45" /><br>
+
+:three: На ВМ1 подключаюсь к кластеру и к базе данных `replica` и на публикацию `test2_pub` таблицы `test2` с ВМ2 создаю подписку `test2_sub`
+```
+sudo -u postgres psql --cluster 18/otus
+
+postgres=# \c replica
+Вы подключены к базе данных "replica" как пользователь "postgres".
+replica=# CREATE SUBSCRIPTION test2_sub
+CONNECTION 'host=192.168.0.51 port=5433 user=postgres password=postgres dbname=replica'
+PUBLICATION test2_pub WITH (copy_data = true);
+ЗАМЕЧАНИЕ:  на сервере публикации создан слот репликации "test2_sub"
+CREATE SUBSCRIPTION
+```
+<img width="1433" height="401" alt="image" src="https://github.com/user-attachments/assets/10216c52-8688-49c9-9136-02db42be83d8" /><br>
 
