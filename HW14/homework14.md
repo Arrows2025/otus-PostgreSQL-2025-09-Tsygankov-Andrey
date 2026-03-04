@@ -71,7 +71,7 @@ PUBLICATION test_pub WITH (copy_data = true);
 CREATE SUBSCRIPTION
 ```
 <img width="2073" height="1121" alt="image" src="https://github.com/user-attachments/assets/67b150fb-7b9a-4788-bb5f-23dba7ae9e5d" />
-<img width="2073" height="671" alt="image" src="https://github.com/user-attachments/assets/2929af9d-b5f5-42c7-97d6-663fe3736d45" /><br>
+<img width="2073" height="671" alt="image" src="https://github.com/user-attachments/assets/2929af9d-b5f5-42c7-97d6-663fe3736d45" /><br><br>
 
 :three: На ВМ1 подключаюсь к кластеру и к базе данных `replica` и на публикацию `test2_pub` таблицы `test2` с ВМ2 создаю подписку `test2_sub`
 ```
