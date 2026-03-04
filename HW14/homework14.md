@@ -200,6 +200,6 @@ replica=# select * from test2;
 
 <img width="1089" height="624" alt="image" src="https://github.com/user-attachments/assets/0c8792fa-50ad-4347-87b7-01f4f1885e40" /><br>
 
-
+Устанавливаю PostgreSQL
 
 
